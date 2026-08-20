@@ -1,0 +1,1718 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NumPy 실무 레퍼런스 — 메소드 A to Z</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="reference.css">
+</head>
+<body>
+
+<div class="bar">
+  <div class="bar-in">
+    <a class="home" href="../index.html">← 홈</a>
+    <div class="brand">NumPy<span>[:]</span>Reference</div>
+    <input id="q" type="search" placeholder="함수 이름으로 찾기 —  reshape, where, argsort …" aria-label="함수 검색">
+    <div id="qn" aria-live="polite"></div>
+  </div>
+</div>
+
+<header class="hero">
+  <h1>NumPy 메소드 사전</h1>
+</header>
+
+<div class="wrap">
+<nav class="toc" aria-label="목차">
+  <ol>
+    <li><a href="#rank"><span class="k">§</span>사용 빈도 랭킹</a></li>
+    <li><a href="#core"><span class="k">§</span>먼저 알아야 할 4가지</a></li>
+    <li><a href="#a"><span class="k">A</span>배열 생성</a></li>
+    <li><a href="#b"><span class="k">B</span>속성과 dtype</a></li>
+    <li><a href="#c"><span class="k">C</span>형태 변형</a></li>
+    <li><a href="#d"><span class="k">D</span>결합·분할·반복</a></li>
+    <li><a href="#e"><span class="k">E</span>인덱싱과 선택</a></li>
+    <li><a href="#f"><span class="k">F</span>수학 연산</a></li>
+    <li><a href="#g"><span class="k">G</span>통계·집계</a></li>
+    <li><a href="#h"><span class="k">H</span>논리·비교</a></li>
+    <li><a href="#i"><span class="k">I</span>정렬·탐색</a></li>
+    <li><a href="#j"><span class="k">J</span>집합·고유값</a></li>
+    <li><a href="#k"><span class="k">K</span>선형대수</a></li>
+    <li><a href="#l"><span class="k">L</span>난수</a></li>
+    <li><a href="#m"><span class="k">M</span>입출력</a></li>
+    <li><a href="#n"><span class="k">N</span>실무 레시피</a></li>
+    <li><a href="#o"><span class="k">O</span>성능과 함정</a></li>
+    <li><a href="#p"><span class="k">P</span>NumPy 2.0 변경점</a></li>
+    <li><a href="#z"><span class="k">Z</span>전체 색인</a></li>
+  </ol>
+</nav>
+
+<main>
+
+<!-- ============ 랭킹 ============ -->
+<section id="rank">
+  <div class="sec-h"><span class="key">§</span><h2>사용 빈도 랭킹 Top 25</h2></div>
+  <p class="sec-note">여기 있는 25개만 손에 익어도 실무 코드의 대부분이 커버됩니다. 이 문서의 카드에는 <span class="rank">#01</span> 같은 배지로 순위를 표시했습니다.</p>
+  <div class="viz wide"><svg viewBox="0 0 700 704" style="max-width:700px" xmlns="http://www.w3.org/2000/svg" role="img"><defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" class="ahp"/></marker></defs><text class="rl" x="150" y="54" text-anchor="end">np.array</text><rect class="bar b1" x="162" y="40" width="470" height="19" rx="3"/><text class="rn" x="640" y="54">100</text><text class="rl" x="150" y="80" text-anchor="end">np.zeros</text><rect class="bar b1" x="162" y="66" width="432" height="19" rx="3"/><text class="rn" x="602" y="80">92</text><text class="rl" x="150" y="106" text-anchor="end">np.arange</text><rect class="bar b1" x="162" y="92" width="423" height="19" rx="3"/><text class="rn" x="593" y="106">90</text><text class="rl" x="150" y="132" text-anchor="end">reshape</text><rect class="bar b1" x="162" y="118" width="404" height="19" rx="3"/><text class="rn" x="574" y="132">86</text><text class="rl" x="150" y="158" text-anchor="end">np.random.*</text><rect class="bar b1" x="162" y="144" width="394" height="19" rx="3"/><text class="rn" x="564" y="158">84</text><text class="rl" x="150" y="184" text-anchor="end">np.sum</text><rect class="bar b2" x="162" y="170" width="385" height="19" rx="3"/><text class="rn" x="555" y="184">82</text><text class="rl" x="150" y="210" text-anchor="end">np.mean</text><rect class="bar b2" x="162" y="196" width="376" height="19" rx="3"/><text class="rn" x="546" y="210">80</text><text class="rl" x="150" y="236" text-anchor="end">np.ones</text><rect class="bar b2" x="162" y="222" width="366" height="19" rx="3"/><text class="rn" x="536" y="236">78</text><text class="rl" x="150" y="262" text-anchor="end">np.dot / @</text><rect class="bar b2" x="162" y="248" width="347" height="19" rx="3"/><text class="rn" x="517" y="262">74</text><text class="rl" x="150" y="288" text-anchor="end">np.shape</text><rect class="bar b2" x="162" y="274" width="338" height="19" rx="3"/><text class="rn" x="508" y="288">72</text><text class="rl" x="150" y="314" text-anchor="end">np.max/min</text><rect class="bar b2" x="162" y="300" width="329" height="19" rx="3"/><text class="rn" x="499" y="314">70</text><text class="rl" x="150" y="340" text-anchor="end">np.linspace</text><rect class="bar b2" x="162" y="326" width="319" height="19" rx="3"/><text class="rn" x="489" y="340">68</text><text class="rl" x="150" y="366" text-anchor="end">np.concatenate</text><rect class="bar b3" x="162" y="352" width="300" height="19" rx="3"/><text class="rn" x="470" y="366">64</text><text class="rl" x="150" y="392" text-anchor="end">np.where</text><rect class="bar b3" x="162" y="378" width="291" height="19" rx="3"/><text class="rn" x="461" y="392">62</text><text class="rl" x="150" y="418" text-anchor="end">np.sqrt</text><rect class="bar b3" x="162" y="404" width="282" height="19" rx="3"/><text class="rn" x="452" y="418">60</text><text class="rl" x="150" y="444" text-anchor="end">np.argmax/argmin</text><rect class="bar b3" x="162" y="430" width="272" height="19" rx="3"/><text class="rn" x="442" y="444">58</text><text class="rl" x="150" y="470" text-anchor="end">np.astype</text><rect class="bar b3" x="162" y="456" width="263" height="19" rx="3"/><text class="rn" x="433" y="470">56</text><text class="rl" x="150" y="496" text-anchor="end">np.abs</text><rect class="bar b3" x="162" y="482" width="253" height="19" rx="3"/><text class="rn" x="423" y="496">54</text><text class="rl" x="150" y="522" text-anchor="end">np.exp/log</text><rect class="bar b3" x="162" y="508" width="244" height="19" rx="3"/><text class="rn" x="414" y="522">52</text><text class="rl" x="150" y="548" text-anchor="end">np.transpose/.T</text><rect class="bar b3" x="162" y="534" width="235" height="19" rx="3"/><text class="rn" x="405" y="548">50</text><text class="rl" x="150" y="574" text-anchor="end">np.std/var</text><rect class="bar b3" x="162" y="560" width="225" height="19" rx="3"/><text class="rn" x="395" y="574">48</text><text class="rl" x="150" y="600" text-anchor="end">np.unique</text><rect class="bar b3" x="162" y="586" width="216" height="19" rx="3"/><text class="rn" x="386" y="600">46</text><text class="rl" x="150" y="626" text-anchor="end">np.sort/argsort</text><rect class="bar b3" x="162" y="612" width="206" height="19" rx="3"/><text class="rn" x="376" y="626">44</text><text class="rl" x="150" y="652" text-anchor="end">np.stack/vstack</text><rect class="bar b3" x="162" y="638" width="197" height="19" rx="3"/><text class="rn" x="367" y="652">42</text><text class="rl" x="150" y="678" text-anchor="end">np.linalg.*</text><rect class="bar b3" x="162" y="664" width="188" height="19" rx="3"/><text class="rn" x="358" y="678">40</text><text class="gt" x="20" y="24">상대 사용 빈도 지수 (100 = 최상위)</text></svg></div>
+</section>
+
+<!-- ============ 핵심 개념 ============ -->
+<section id="core">
+  <div class="sec-h"><span class="key">§</span><h2>먼저 알아야 할 4가지</h2></div>
+  <p class="sec-note">개별 함수를 외우기 전에 이 네 가지를 이해하면 나머지는 대부분 유추됩니다. NumPy에서 나는 버그의 90%는 <b>축(axis)</b>, <b>브로드캐스팅</b>, <b>뷰/복사</b>, <b>dtype</b>에서 나옵니다.</p>
+
+  <div class="fn">
+    <div class="fn-h"><h3>① 축(axis) — "어느 방향으로 접을 것인가"</h3></div>
+    <p><code>axis</code>는 "그 축이 사라지는 방향"으로 기억하세요. <code>(2,3)</code> 배열에 <code>sum(axis=0)</code>을 하면 0번 축(길이 2)이 사라져 <code>(3,)</code>이 됩니다. 행이 사라졌으니 <b>세로로 접은</b> 것이고, 결과는 열별 합계입니다.</p>
+    <div class="viz wide"><svg viewBox="0 0 700 212" style="max-width:700px" xmlns="http://www.w3.org/2000/svg" role="img"><defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" class="ahp"/></marker></defs><rect class="c c-base" x="90" y="60" width="40" height="34" rx="4"/><text class="ct ct-base" x="110.0" y="81.5">1</text><rect class="c c-base" x="134" y="60" width="40" height="34" rx="4"/><text class="ct ct-base" x="154.0" y="81.5">2</text><rect class="c c-base" x="178" y="60" width="40" height="34" rx="4"/><text class="ct ct-base" x="198.0" y="81.5">3</text><rect class="c c-base" x="90" y="98" width="40" height="34" rx="4"/><text class="ct ct-base" x="110.0" y="119.5">4</text><rect class="c c-base" x="134" y="98" width="40" height="34" rx="4"/><text class="ct ct-base" x="154.0" y="119.5">5</text><rect class="c c-base" x="178" y="98" width="40" height="34" rx="4"/><text class="ct ct-base" x="198.0" y="119.5">6</text><text class="axl" x="60" y="80">axis 0</text><line class="ar" x1="62" y1="90" x2="62" y2="150" marker-end="url(#ah)"/><text class="axl" x="90" y="40">axis 1</text><line class="ar" x1="92" y1="46" x2="212" y2="46" marker-end="url(#ah)"/><text class="gd" x="24" y="192">shape = (2, 3)  ·  axis 0 = 세로로 접기(행이 사라짐) · axis 1 = 가로로 접기(열이 사라짐)</text><rect class="c c-acc" x="380" y="60" width="40" height="34" rx="4"/><text class="ct ct-acc" x="400.0" y="81.5">5</text><rect class="c c-acc" x="424" y="60" width="40" height="34" rx="4"/><text class="ct ct-acc" x="444.0" y="81.5">7</text><rect class="c c-acc" x="468" y="60" width="40" height="34" rx="4"/><text class="ct ct-acc" x="488.0" y="81.5">9</text><text class="gt" x="380" y="50">sum(axis=0) → (3,)</text><rect class="c c-acc2" x="380" y="130" width="40" height="34" rx="4"/><text class="ct ct-acc2" x="400.0" y="151.5">6</text><rect class="c c-acc2" x="380" y="168" width="40" height="34" rx="4"/><text class="ct ct-acc2" x="400.0" y="189.5">15</text><text class="gt" x="380" y="122">sum(axis=1) → (2,)</text></svg></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out"><span class="c"># 축을 지정하지 않으면 전체를 하나로 접는다</span>
+s = np.array([[1, 2, 3], [4, 5, 6]])
+print(np.sum(s))            <span class="c"># 스칼라</span>
+print(np.sum(s, axis=0))    <span class="c"># 열별 합계</span>
+print(np.sum(s, axis=1))    <span class="c"># 행별 합계</span>
+print(np.sum(s, axis=1, keepdims=True))  <span class="c"># 축을 남겨 (2,1)로</span></pre>
+    <div class="out">21
+[5 7 9]
+[ 6 15]
+[[ 6]
+ [15]]</div>
+    <div class="tip"><code>keepdims=True</code>는 브로드캐스팅과 짝을 이룹니다. <code>x / x.sum(axis=1, keepdims=True)</code>는 행별 정규화가 되지만, <code>keepdims</code>가 없으면 shape이 어긋나 에러가 나거나 엉뚱한 축으로 나눠집니다.</div>
+  </div>
+
+  <div class="fn">
+    <div class="fn-h"><h3>② 브로드캐스팅 — 반복문 없이 shape 맞추기</h3></div>
+    <p>shape이 다른 배열끼리 연산할 때, NumPy는 <b>뒤쪽 축부터</b> 비교해서 크기가 같거나 한쪽이 1이면 자동으로 늘려 맞춥니다. 실제로 메모리를 복제하지는 않으므로 공짜에 가깝습니다.</p>
+    <div class="viz"><svg viewBox="0 0 366 200" style="max-width:366px" xmlns="http://www.w3.org/2000/svg" role="img"><defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" class="ahp"/></marker></defs><g transform="translate(14,48.0)"><rect class="c c-base" x="0" y="0" width="40" height="34" rx="4"/><text class="ct ct-base" x="20.0" y="21.5">0</text><rect class="c c-base" x="0" y="38" width="40" height="34" rx="4"/><text class="ct ct-base" x="20.0" y="59.5">10</text><rect class="c c-base" x="0" y="76" width="40" height="34" rx="4"/><text class="ct ct-base" x="20.0" y="97.5">20</text><text class="gd" x="20.0" y="128" text-anchor="middle">(3, 1)</text></g><line class="ar" x1="78" y1="114.0" x2="136" y2="114.0" marker-end="url(#ah)"/><text class="al" x="107.0" y="106.0" text-anchor="middle">복제</text><g transform="translate(160,48.0)"><rect class="c c-base" x="0" y="0" width="40" height="34" rx="4"/><text class="ct ct-base" x="20.0" y="21.5">0</text><rect class="c c-ghost" x="44" y="0" width="40" height="34" rx="4"/><text class="ct ct-ghost" x="64.0" y="21.5">0</text><rect class="c c-ghost" x="88" y="0" width="40" height="34" rx="4"/><text class="ct ct-ghost" x="108.0" y="21.5">0</text><rect class="c c-ghost" x="132" y="0" width="40" height="34" rx="4"/><text class="ct ct-ghost" x="152.0" y="21.5">0</text><rect class="c c-base" x="0" y="38" width="40" height="34" rx="4"/><text class="ct ct-base" x="20.0" y="59.5">10</text><rect class="c c-ghost" x="44" y="38" width="40" height="34" rx="4"/><text class="ct ct-ghost" x="64.0" y="59.5">10</text><rect class="c c-ghost" x="88" y="38" width="40" height="34" rx="4"/><text class="ct ct-ghost" x="108.0" y="59.5">10</text><rect class="c c-ghost" x="132" y="38" width="40" height="34" rx="4"/><text class="ct ct-ghost" x="152.0" y="59.5">10</text><rect class="c c-base" x="0" y="76" width="40" height="34" rx="4"/><text class="ct ct-base" x="20.0" y="97.5">20</text><rect class="c c-ghost" x="44" y="76" width="40" height="34" rx="4"/><text class="ct ct-ghost" x="64.0" y="97.5">20</text><rect class="c c-ghost" x="88" y="76" width="40" height="34" rx="4"/><text class="ct ct-ghost" x="108.0" y="97.5">20</text><rect class="c c-ghost" x="132" y="76" width="40" height="34" rx="4"/><text class="ct ct-ghost" x="152.0" y="97.5">20</text><text class="gd" x="86.0" y="128" text-anchor="middle">(3, 4)</text></g></svg></div>
+    <div class="viz"><svg viewBox="0 0 492 200" style="max-width:492px" xmlns="http://www.w3.org/2000/svg" role="img"><defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" class="ahp"/></marker></defs><g transform="translate(14,86.0)"><rect class="c c-base" x="0" y="0" width="40" height="34" rx="4"/><text class="ct ct-base" x="20.0" y="21.5">1</text><rect class="c c-base" x="44" y="0" width="40" height="34" rx="4"/><text class="ct ct-base" x="64.0" y="21.5">2</text><rect class="c c-base" x="88" y="0" width="40" height="34" rx="4"/><text class="ct ct-base" x="108.0" y="21.5">3</text><rect class="c c-base" x="132" y="0" width="40" height="34" rx="4"/><text class="ct ct-base" x="152.0" y="21.5">4</text><text class="gd" x="86.0" y="52" text-anchor="middle">(4,)</text></g><line class="ar" x1="210" y1="114.0" x2="268" y2="114.0" marker-end="url(#ah)"/><text class="al" x="239.0" y="106.0" text-anchor="middle">복제</text><g transform="translate(292,48.0)"><rect class="c c-base" x="0" y="0" width="40" height="34" rx="4"/><text class="ct ct-base" x="20.0" y="21.5">1</text><rect class="c c-base" x="44" y="0" width="40" height="34" rx="4"/><text class="ct ct-base" x="64.0" y="21.5">2</text><rect class="c c-base" x="88" y="0" width="40" height="34" rx="4"/><text class="ct ct-base" x="108.0" y="21.5">3</text><rect class="c c-base" x="132" y="0" width="40" height="34" rx="4"/><text class="ct ct-base" x="152.0" y="21.5">4</text><rect class="c c-ghost" x="0" y="38" width="40" height="34" rx="4"/><text class="ct ct-ghost" x="20.0" y="59.5">1</text><rect class="c c-ghost" x="44" y="38" width="40" height="34" rx="4"/><text class="ct ct-ghost" x="64.0" y="59.5">2</text><rect class="c c-ghost" x="88" y="38" width="40" height="34" rx="4"/><text class="ct ct-ghost" x="108.0" y="59.5">3</text><rect class="c c-ghost" x="132" y="38" width="40" height="34" rx="4"/><text class="ct ct-ghost" x="152.0" y="59.5">4</text><rect class="c c-ghost" x="0" y="76" width="40" height="34" rx="4"/><text class="ct ct-ghost" x="20.0" y="97.5">1</text><rect class="c c-ghost" x="44" y="76" width="40" height="34" rx="4"/><text class="ct ct-ghost" x="64.0" y="97.5">2</text><rect class="c c-ghost" x="88" y="76" width="40" height="34" rx="4"/><text class="ct ct-ghost" x="108.0" y="97.5">3</text><rect class="c c-ghost" x="132" y="76" width="40" height="34" rx="4"/><text class="ct ct-ghost" x="152.0" y="97.5">4</text><text class="gd" x="86.0" y="128" text-anchor="middle">(3, 4)</text></g></svg></div>
+    <h4>규칙</h4>
+    <ul class="plain">
+      <li>차원 수가 다르면 <b>앞쪽에 1을 채워</b> 맞춥니다. <code>(3,4)</code> vs <code>(4,)</code> → <code>(3,4)</code> vs <code>(1,4)</code></li>
+      <li>각 축에서 크기가 <b>같거나 한쪽이 1</b>이면 통과. 둘 다 1이 아니면서 다르면 <code>ValueError</code></li>
+      <li>크기 1인 축은 상대 축 크기만큼 <b>반복된 것처럼</b> 동작합니다</li>
+    </ul>
+    <h4>예시 코드</h4>
+    <pre class="has-out">m = np.arange(6).reshape(2, 3)
+print(m + 10)                        <span class="c"># 스칼라 브로드캐스팅</span>
+print(m * np.array([1, 10, 100]))    <span class="c"># (2,3) * (3,) → 열마다 다른 배율</span>
+print(m + np.array([[100], [200]]))  <span class="c"># (2,3) + (2,1) → 행마다 다른 오프셋</span></pre>
+    <div class="out">[[10 11 12]
+ [13 14 15]]
+[[  0  10 200]
+ [  3  40 500]]
+[[100 101 102]
+ [203 204 205]]</div>
+    <div class="warn"><code>np.zeros((3,4)) + np.zeros((3,))</code>는 실패합니다. 뒤쪽 축부터 비교하므로 <code>4</code>와 <code>3</code>이 부딪힙니다.<br><code>ValueError: operands could not be broadcast together with shapes (3,4) (3,)</code><br>행 방향으로 더하고 싶었다면 <code>np.zeros((3,1))</code> 또는 <code>arr[:, None]</code>으로 축을 명시하세요.</div>
+  </div>
+
+  <div class="fn">
+    <div class="fn-h"><h3>③ 뷰(view)와 복사(copy) — 원본이 같이 바뀌는 이유</h3></div>
+    <p>기본 슬라이싱·<code>reshape</code>·<code>.T</code>·<code>ravel</code>은 <b>뷰</b>를 돌려줍니다. 같은 메모리를 다른 창으로 보는 것이라 한쪽을 수정하면 다른 쪽도 바뀝니다. 반면 <b>불리언 인덱싱·팬시 인덱싱·<code>flatten</code>·<code>copy</code></b>는 새 메모리를 만듭니다.</p>
+    <div class="viz wide"><svg viewBox="0 0 730 235" style="max-width:730px" xmlns="http://www.w3.org/2000/svg" role="img"><defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" class="ahp"/></marker></defs><rect class="c c-warn" x="20" y="60" width="40" height="34" rx="4"/><text class="ct ct-warn" x="40.0" y="81.5">99</text><rect class="c c-base" x="64" y="60" width="40" height="34" rx="4"/><text class="ct ct-base" x="84.0" y="81.5">1</text><rect class="c c-ghost" x="108" y="60" width="40" height="34" rx="4"/><text class="ct ct-ghost" x="128.0" y="81.5">2</text><rect class="c c-base" x="152" y="60" width="40" height="34" rx="4"/><text class="ct ct-base" x="172.0" y="81.5">3</text><rect class="c c-ghost" x="196" y="60" width="40" height="34" rx="4"/><text class="ct ct-ghost" x="216.0" y="81.5">4</text><rect class="c c-base" x="240" y="60" width="40" height="34" rx="4"/><text class="ct ct-base" x="260.0" y="81.5">5</text><text class="gt" x="20" y="50">base = np.arange(6)  ← 원본이 바뀐다</text><rect class="c c-warn" x="20" y="155" width="40" height="34" rx="4"/><text class="ct ct-warn" x="40.0" y="176.5">99</text><rect class="c c-ghost" x="64" y="155" width="40" height="34" rx="4"/><text class="ct ct-ghost" x="84.0" y="176.5">2</text><rect class="c c-ghost" x="108" y="155" width="40" height="34" rx="4"/><text class="ct ct-ghost" x="128.0" y="176.5">4</text><text class="gt" x="20" y="145">view = base[::2]   (같은 메모리)</text><line class="ar dash" x1="40" y1="98" x2="40" y2="150" marker-end="url(#ah)"/><line class="ar dash" x1="128" y1="98" x2="84" y2="150" marker-end="url(#ah)"/><line class="ar dash" x1="216" y1="98" x2="128" y2="150" marker-end="url(#ah)"/><rect class="c c-acc" x="400" y="155" width="40" height="34" rx="4"/><text class="ct ct-acc" x="420.0" y="176.5">0</text><rect class="c c-acc" x="444" y="155" width="40" height="34" rx="4"/><text class="ct ct-acc" x="464.0" y="176.5">2</text><rect class="c c-acc" x="488" y="155" width="40" height="34" rx="4"/><text class="ct ct-acc" x="508.0" y="176.5">4</text><text class="gt" x="400" y="145">copy = base[::2].copy()  (독립 메모리)</text><text class="gd" x="400" y="215">원본을 수정해도 영향 없음</text></svg></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">base = np.arange(6)
+view = base[::2]        <span class="c"># 슬라이싱 → 뷰</span>
+view[0] = 99
+print(base)             <span class="c"># 원본이 오염됨</span>
+
+cp = base[::2].copy()   <span class="c"># 명시적 복사</span>
+cp[1] = -1
+print(base)             <span class="c"># 원본은 그대로</span>
+print(np.shares_memory(base, view), view.base is base)</pre>
+    <div class="out">[99  1  2  3  4  5]
+[99  1  2  3  4  5]
+True True</div>
+    <div class="tip">함수 인자로 받은 배열을 제자리 수정(<code>arr[mask] = 0</code>, <code>arr += 1</code>)하면 호출자의 배열까지 바뀝니다. 라이브러리성 코드에서는 진입부에서 <code>arr = np.asarray(arr).copy()</code> 또는 <code>np.array(arr)</code>로 방어하세요. 반대로 대용량 파이프라인에서는 뷰를 활용해 복사를 피하는 게 성능의 핵심입니다.</div>
+  </div>
+
+  <div class="fn">
+    <div class="fn-h"><h3>④ dtype — 배열은 타입이 고정돼 있다</h3></div>
+    <p>파이썬 리스트와 달리 ndarray는 모든 원소가 같은 타입입니다. 이 덕분에 빠르지만, <b>오버플로와 암묵적 절삭</b>이라는 대가가 따릅니다.</p>
+    <div class="tbl-wrap">
+    <table>
+      <tr><th>dtype</th><th>크기</th><th>범위 / 특징</th><th>주 용도</th></tr>
+      <tr><td>int8 / uint8</td><td>1B</td><td>-128~127 / 0~255</td><td>이미지 픽셀, 마스크</td></tr>
+      <tr><td>int32</td><td>4B</td><td>±21억</td><td>인덱스, 라벨</td></tr>
+      <tr><td>int64</td><td>8B</td><td>정수 기본값(Linux/macOS)</td><td>일반 정수 연산</td></tr>
+      <tr><td>float32</td><td>4B</td><td>유효자릿수 ~7</td><td>딥러닝 텐서, 대용량</td></tr>
+      <tr><td>float64</td><td>8B</td><td>유효자릿수 ~15, 실수 기본값</td><td>과학 계산 기본</td></tr>
+      <tr><td>bool</td><td>1B</td><td>True/False</td><td>마스크</td></tr>
+      <tr><td>&lt;U10</td><td>가변</td><td>유니코드 고정 길이 문자열</td><td>라벨명 (길이 초과 시 <b>잘림</b>)</td></tr>
+    </table>
+    </div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">small = np.array([120, 120], dtype=np.int8)
+print(small + small)                       <span class="c"># 조용히 오버플로</span>
+print(np.array([1, 2], dtype=np.uint8) - np.array([3, 3], dtype=np.uint8))
+print(np.array([1.7, -2.9, 3.2]).astype(int))  <span class="c"># 반올림 아니라 0쪽으로 절삭</span>
+print(0.1 + 0.2 == 0.3, np.isclose(0.1 + 0.2, 0.3))</pre>
+    <div class="out">[-16 -16]
+[254 255]
+[ 1 -2  3]
+False True</div>
+    <div class="warn"><code>astype(int)</code>은 반올림이 아니라 <b>0 방향 절삭</b>입니다. 반올림을 원하면 <code>np.round(x).astype(int)</code>를 쓰세요. 그리고 실수 비교에는 절대 <code>==</code>를 쓰지 말고 <code>np.isclose</code> / <code>np.allclose</code>를 사용하세요.</div>
+  </div>
+</section>
+
+<!-- ============ A. 배열 생성 ============ -->
+<section id="a">
+  <div class="sec-h"><span class="key">A</span><h2>배열 생성</h2><span class="cnt">14 functions</span></div>
+  <p class="sec-note">모든 NumPy 코드는 여기서 시작합니다. 상위 5개 중 3개가 이 섹션에 있습니다.</p>
+
+  <div class="fn" data-key="np.array 배열생성 array">
+    <div class="fn-h"><span class="rank">#01</span><h3>np.array()</h3><span class="tag copy">복사</span></div>
+    <p>리스트·튜플·중첩 시퀀스를 ndarray로 만듭니다. 가장 많이 쓰이는 진입점이며, 기본적으로 <b>입력을 복사</b>합니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig">np.array(object, dtype=None, *, copy=True, order='K', subok=False, ndmin=0)</div>
+    <h4>파라미터</h4>
+    <div class="tbl-wrap"><table>
+      <tr><th>파라미터</th><th>설명</th><th>기본값 / 옵션</th></tr>
+      <tr><td>object <span class="req">필수</span></td><td>배열로 변환할 대상. 리스트, 튜플, 다른 ndarray, <code>__array__</code>를 구현한 객체</td><td>—</td></tr>
+      <tr><td>dtype</td><td>원소 타입을 강제. 생략하면 입력에서 가장 넓은 타입으로 추론</td><td><code>None</code> / <code>np.float32</code>, <code>int</code>, <code>'U10'</code> …</td></tr>
+      <tr><td>copy</td><td>복사 여부. NumPy 2.0부터 <code>False</code>는 "복사 불가하면 에러"라는 뜻으로 <b>의미가 바뀜</b></td><td><code>True</code> / <code>False</code>, <code>None</code>(가능하면 복사 회피)</td></tr>
+      <tr><td>order</td><td>메모리 배치. C=행 우선, F=열 우선</td><td><code>'K'</code> / <code>'C'</code>, <code>'F'</code>, <code>'A'</code></td></tr>
+      <tr><td>ndmin</td><td>결과의 최소 차원 수. 1D를 강제로 2D로 올릴 때</td><td><code>0</code></td></tr>
+    </table></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">import numpy as np
+
+arr = [1, 2, 3]
+a = np.array(arr)
+print(a, a.dtype, a.shape)
+
+b = np.array([[1, 2], [3, 4]], dtype=np.float32)
+print(b, b.dtype)</pre>
+    <div class="out">[1 2 3] int64 (3,)
+[[1. 2.]
+ [3. 4.]] float32</div>
+    <div class="warn">중첩 리스트의 길이가 들쭉날쭉하면(<code>[[1,2],[3]]</code>) NumPy 2.x에서는 <code>ValueError</code>입니다. 예전처럼 object 배열로 조용히 넘어가지 않습니다. 의도한 것이라면 <code>dtype=object</code>를 명시하세요.</div>
+  </div>
+
+  <div class="fn" data-key="np.asarray asarray">
+    <div class="fn-h"><h3>np.asarray()</h3><span class="tag view">가능하면 뷰</span></div>
+    <p>이미 ndarray면 <b>그대로 반환</b>하고, 아니면 변환합니다. 불필요한 복사를 피하고 싶은 함수 진입부의 관용구입니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig">np.asarray(a, dtype=None, order=None, *, device=None, copy=None, like=None)</div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">src = np.arange(3)
+print(np.asarray(src) is src)   <span class="c"># 복사 안 함</span>
+print(np.array(src) is src)     <span class="c"># 항상 새 배열</span>
+
+def normalize(x):
+    x = np.asarray(x, dtype=float)   <span class="c"># 리스트도 배열도 받는다</span>
+    return (x - x.mean()) / x.std()</pre>
+    <div class="out">True
+False</div>
+  </div>
+
+  <div class="fn" data-key="np.zeros zeros 영행렬">
+    <div class="fn-h"><span class="rank">#02</span><h3>np.zeros()</h3></div>
+    <p>0으로 채운 배열을 만듭니다. 결과를 담을 버퍼를 미리 확보할 때 가장 많이 쓰입니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig">np.zeros(shape, dtype=float, order='C')</div>
+    <h4>파라미터</h4>
+    <div class="tbl-wrap"><table>
+      <tr><th>파라미터</th><th>설명</th><th>기본값 / 옵션</th></tr>
+      <tr><td>shape <span class="req">필수</span></td><td>정수 또는 정수 튜플. <code>3</code>은 <code>(3,)</code>과 같음</td><td>—</td></tr>
+      <tr><td>dtype</td><td>원소 타입. <b>기본이 float64</b>라는 점에 주의</td><td><code>float</code> / <code>int</code>, <code>bool</code>, …</td></tr>
+      <tr><td>order</td><td>메모리 배치 순서</td><td><code>'C'</code> / <code>'F'</code></td></tr>
+    </table></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">print(np.zeros((2, 3)))
+print(np.ones((2, 3), dtype=int))
+print(np.full((2, 2), 7.5))
+print(np.zeros_like(np.array([[1, 2], [3, 4]])))  <span class="c"># shape·dtype을 그대로 따름</span></pre>
+    <div class="out">[[0. 0. 0.]
+ [0. 0. 0.]]
+[[1 1 1]
+ [1 1 1]]
+[[7.5 7.5]
+ [7.5 7.5]]
+[[0 0]
+ [0 0]]</div>
+    <div class="tip">형제 함수를 한 세트로 외우세요 — <code>zeros</code> / <code>ones</code> / <code>full(shape, value)</code> / <code>empty</code>(초기화 안 함, 가장 빠름) 그리고 각각의 <code>_like</code> 버전. <code>empty</code>는 쓰레기값이 들어 있으므로 반드시 전부 덮어쓸 때만 쓰세요.</div>
+  </div>
+
+  <div class="fn" data-key="np.arange arange 범위">
+    <div class="fn-h"><span class="rank">#03</span><h3>np.arange()</h3></div>
+    <p>파이썬 <code>range</code>의 배열 버전. <b>stop은 포함하지 않습니다.</b></p>
+    <h4>시그니처</h4>
+    <div class="sig">np.arange([start,] stop[, step], dtype=None)</div>
+    <h4>파라미터</h4>
+    <div class="tbl-wrap"><table>
+      <tr><th>파라미터</th><th>설명</th><th>기본값</th></tr>
+      <tr><td>start</td><td>시작값(포함)</td><td><code>0</code></td></tr>
+      <tr><td>stop <span class="req">필수</span></td><td>끝값 <b>(제외)</b></td><td>—</td></tr>
+      <tr><td>step</td><td>간격. 음수면 감소 수열</td><td><code>1</code></td></tr>
+      <tr><td>dtype</td><td>인자 타입에서 추론. 하나라도 실수면 float64</td><td><code>None</code></td></tr>
+    </table></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">print(np.arange(5))
+print(np.arange(1.5, 8.5, 0.7))
+print(np.arange(0, 1, 0.1).size)   <span class="c"># 부동소수점 오차로 개수가 흔들릴 수 있다</span></pre>
+    <div class="out">[0 1 2 3 4]
+[1.5 2.2 2.9 3.6 4.3 5.  5.7 6.4 7.1 7.8]
+10</div>
+    <div class="warn">step에 실수를 주면 부동소수점 누적 오차 때문에 원소 개수를 예측하기 어렵습니다. <b>개수가 중요하면 <code>linspace</code>를 쓰세요.</b></div>
+  </div>
+
+  <div class="fn" data-key="np.linspace linspace 등간격">
+    <div class="fn-h"><span class="rank">#12</span><h3>np.linspace()</h3></div>
+    <p>구간을 <b>개수 기준</b>으로 균등 분할합니다. 그래프의 x축, 그리드 샘플링에 표준입니다. <code>arange</code>와 달리 끝값을 포함합니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig">np.linspace(start, stop, num=50, endpoint=True, retstep=False, dtype=None, axis=0)</div>
+    <h4>파라미터</h4>
+    <div class="tbl-wrap"><table>
+      <tr><th>파라미터</th><th>설명</th><th>기본값</th></tr>
+      <tr><td>start / stop <span class="req">필수</span></td><td>구간의 양 끝</td><td>—</td></tr>
+      <tr><td>num</td><td>생성할 원소 개수</td><td><code>50</code></td></tr>
+      <tr><td>endpoint</td><td><code>stop</code> 포함 여부. <code>False</code>면 <code>arange</code>처럼 동작</td><td><code>True</code></td></tr>
+      <tr><td>retstep</td><td><code>True</code>면 <code>(배열, 간격)</code> 튜플 반환</td><td><code>False</code></td></tr>
+    </table></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">print(np.linspace(0, 10, 5))
+print(np.linspace(0, 1, 5, endpoint=False))
+v, step = np.linspace(0, 1, 5, retstep=True)
+print(v, step)</pre>
+    <div class="out">[ 0.   2.5  5.   7.5 10. ]
+[0.  0.2 0.4 0.6 0.8]
+[0.   0.25 0.5  0.75 1.  ] 0.25</div>
+    <div class="tip">로그 스케일이 필요하면 <code>np.logspace(start, stop, num, base=10)</code>. 학습률 스윕처럼 <code>1e-5 ~ 1e-1</code>을 균등 샘플링할 때 유용합니다.</div>
+  </div>
+
+  <div class="fn" data-key="np.eye identity 단위행렬">
+    <div class="fn-h"><h3>np.eye() · np.identity()</h3></div>
+    <p>단위행렬을 만듭니다. 선형대수뿐 아니라 <b>원-핫 인코딩</b>의 관용구로도 자주 쓰입니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig">np.eye(N, M=None, k=0, dtype=float, order='C')
+np.identity(n, dtype=float)   <span class="c"># 정사각 전용</span></div>
+    <h4>파라미터</h4>
+    <div class="tbl-wrap"><table>
+      <tr><th>파라미터</th><th>설명</th><th>기본값</th></tr>
+      <tr><td>N <span class="req">필수</span></td><td>행 수</td><td>—</td></tr>
+      <tr><td>M</td><td>열 수. 생략하면 N (정사각)</td><td><code>None</code></td></tr>
+      <tr><td>k</td><td>대각선 위치. 양수면 위쪽, 음수면 아래쪽 대각</td><td><code>0</code></td></tr>
+    </table></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">print(np.eye(3, dtype=int))
+print(np.eye(3, 4, k=1, dtype=int))   <span class="c"># 3x4, 한 칸 위 대각선</span></pre>
+    <div class="out">[[1 0 0]
+ [0 1 0]
+ [0 0 1]]
+[[0 1 0 0]
+ [0 0 1 0]
+ [0 0 0 1]]</div>
+  </div>
+
+  <div class="fn" data-key="np.meshgrid meshgrid 격자">
+    <div class="fn-h"><h3>np.meshgrid()</h3></div>
+    <p>1D 좌표 벡터들로 2D 격자 좌표를 만듭니다. 등고선·히트맵·3D 표면 플롯, 그리고 모든 픽셀 좌표 연산의 출발점입니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig">np.meshgrid(*xi, copy=True, sparse=False, indexing='xy')</div>
+    <div class="viz wide"><svg viewBox="0 0 620 156" style="max-width:620px" xmlns="http://www.w3.org/2000/svg" role="img"><defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" class="ahp"/></marker></defs><g transform="translate(14,61.0)"><rect class="c c-base" x="0" y="0" width="40" height="34" rx="4"/><text class="ct ct-base" x="20.0" y="21.5">0</text><rect class="c c-base" x="44" y="0" width="40" height="34" rx="4"/><text class="ct ct-base" x="64.0" y="21.5">1</text><rect class="c c-base" x="88" y="0" width="40" height="34" rx="4"/><text class="ct ct-base" x="108.0" y="21.5">2</text><text class="gd" x="64.0" y="52" text-anchor="middle">x</text></g><g transform="translate(162,42.0)"><rect class="c c-acc" x="0" y="0" width="40" height="34" rx="4"/><text class="ct ct-acc" x="20.0" y="21.5">0</text><rect class="c c-acc" x="0" y="38" width="40" height="34" rx="4"/><text class="ct ct-acc" x="20.0" y="59.5">10</text><text class="gd" x="20.0" y="90" text-anchor="middle">y</text></g><line class="ar" x1="226" y1="89.0" x2="292" y2="89.0" marker-end="url(#ah)"/><text class="al" x="259.0" y="81.0" text-anchor="middle">meshgrid</text><g transform="translate(316,42.0)"><rect class="c c-base" x="0" y="0" width="40" height="34" rx="4"/><text class="ct ct-base" x="20.0" y="21.5">0</text><rect class="c c-base" x="44" y="0" width="40" height="34" rx="4"/><text class="ct ct-base" x="64.0" y="21.5">1</text><rect class="c c-base" x="88" y="0" width="40" height="34" rx="4"/><text class="ct ct-base" x="108.0" y="21.5">2</text><rect class="c c-base" x="0" y="38" width="40" height="34" rx="4"/><text class="ct ct-base" x="20.0" y="59.5">0</text><rect class="c c-base" x="44" y="38" width="40" height="34" rx="4"/><text class="ct ct-base" x="64.0" y="59.5">1</text><rect class="c c-base" x="88" y="38" width="40" height="34" rx="4"/><text class="ct ct-base" x="108.0" y="59.5">2</text><text class="gd" x="64.0" y="90" text-anchor="middle">X (2,3)</text></g><g transform="translate(464,42.0)"><rect class="c c-acc" x="0" y="0" width="40" height="34" rx="4"/><text class="ct ct-acc" x="20.0" y="21.5">0</text><rect class="c c-acc" x="44" y="0" width="40" height="34" rx="4"/><text class="ct ct-acc" x="64.0" y="21.5">0</text><rect class="c c-acc" x="88" y="0" width="40" height="34" rx="4"/><text class="ct ct-acc" x="108.0" y="21.5">0</text><rect class="c c-acc" x="0" y="38" width="40" height="34" rx="4"/><text class="ct ct-acc" x="20.0" y="59.5">10</text><rect class="c c-acc" x="44" y="38" width="40" height="34" rx="4"/><text class="ct ct-acc" x="64.0" y="59.5">10</text><rect class="c c-acc" x="88" y="38" width="40" height="34" rx="4"/><text class="ct ct-acc" x="108.0" y="59.5">10</text><text class="gd" x="64.0" y="90" text-anchor="middle">Y (2,3)</text></g></svg></div>
+    <h4>파라미터</h4>
+    <div class="tbl-wrap"><table>
+      <tr><th>파라미터</th><th>설명</th><th>기본값</th></tr>
+      <tr><td>*xi <span class="req">필수</span></td><td>각 축의 1D 좌표 배열들</td><td>—</td></tr>
+      <tr><td>indexing</td><td><code>'xy'</code>는 (행=y, 열=x) 데카르트식, <code>'ij'</code>는 행렬 인덱스식</td><td><code>'xy'</code></td></tr>
+      <tr><td>sparse</td><td><code>True</code>면 브로드캐스팅용 축소 배열 반환 (메모리 절약)</td><td><code>False</code></td></tr>
+    </table></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">X, Y = np.meshgrid(np.array([0, 1, 2]), np.array([0, 10]))
+print(X)
+print(Y)
+print(X.shape)
+<span class="c"># 모든 격자점에서 함수값 한 번에 계산</span>
+Z = X ** 2 + Y</pre>
+    <div class="out">[[0 1 2]
+ [0 1 2]]
+[[ 0  0  0]
+ [10 10 10]]
+(2, 3)</div>
+    <div class="tip">격자가 크면 <code>sparse=True</code>로 <code>(1,3)</code>·<code>(2,1)</code>만 만들고 브로드캐스팅에 맡기세요. 1000×1000 격자에서 메모리가 수십 배 차이납니다.</div>
+  </div>
+
+  <div class="fn" data-key="배열생성 기타 empty fromiter frombuffer">
+    <div class="fn-h"><h3>그 밖의 생성 함수</h3></div>
+    <div class="tbl-wrap"><table>
+      <tr><th>함수</th><th>하는 일</th><th>예시</th></tr>
+      <tr><td>np.empty(shape)</td><td>초기화 없이 메모리만 확보 (가장 빠름, 쓰레기값)</td><td><code>np.empty((3,3))</code></td></tr>
+      <tr><td>np.full(shape, v)</td><td>지정 값으로 채움</td><td><code>np.full((2,2), np.nan)</code></td></tr>
+      <tr><td>np.*_like(a)</td><td>a와 같은 shape·dtype으로 생성</td><td><code>np.ones_like(img)</code></td></tr>
+      <tr><td>np.logspace(a,b,n)</td><td>로그 스케일 등간격</td><td><code>np.logspace(-5,-1,5)</code></td></tr>
+      <tr><td>np.geomspace(a,b,n)</td><td>등비수열</td><td><code>np.geomspace(1,1000,4)</code></td></tr>
+      <tr><td>np.diag(v)</td><td>1D→대각행렬 / 2D→대각원소 추출</td><td><code>np.diag([1,2,3])</code></td></tr>
+      <tr><td>np.tri / triu / tril</td><td>삼각행렬 (어텐션 마스크에 자주)</td><td><code>np.triu(np.ones((4,4)),k=1)</code></td></tr>
+      <tr><td>np.fromiter(it, dtype)</td><td>제너레이터에서 직접 생성 (리스트 경유 없이)</td><td><code>np.fromiter(range(5), int)</code></td></tr>
+      <tr><td>np.frombuffer(b, dtype)</td><td>바이트 버퍼를 복사 없이 배열로 해석</td><td>바이너리 파싱</td></tr>
+      <tr><td>np.copy(a)</td><td>깊은 복사</td><td><code>b = np.copy(a)</code></td></tr>
+    </table></div>
+  </div>
+</section>
+
+<!-- ============ B. 속성 ============ -->
+<section id="b">
+  <div class="sec-h"><span class="key">B</span><h2>속성과 dtype</h2><span class="cnt">9 attributes</span></div>
+  <p class="sec-note">디버깅의 8할은 <code>print(x.shape, x.dtype)</code>입니다. 함수가 아니라 속성이라 괄호가 없다는 점만 주의하세요.</p>
+
+  <div class="fn" data-key="shape ndim size dtype itemsize nbytes 속성">
+    <div class="fn-h"><span class="rank">#10</span><h3>ndarray 속성 <span class="dim">(괄호 없음)</span></h3></div>
+    <div class="tbl-wrap"><table>
+      <tr><th>속성</th><th>설명</th><th>예 <code>np.arange(24).reshape(2,3,4)</code></th></tr>
+      <tr><td>.shape</td><td>각 축의 크기 튜플. 가장 자주 보는 값</td><td><code>(2, 3, 4)</code></td></tr>
+      <tr><td>.ndim</td><td>축의 개수 = <code>len(shape)</code></td><td><code>3</code></td></tr>
+      <tr><td>.size</td><td>전체 원소 수 = shape의 곱</td><td><code>24</code></td></tr>
+      <tr><td>.dtype</td><td>원소 타입</td><td><code>int64</code></td></tr>
+      <tr><td>.itemsize</td><td>원소 1개의 바이트 수</td><td><code>8</code></td></tr>
+      <tr><td>.nbytes</td><td>총 메모리 = size × itemsize</td><td><code>192</code></td></tr>
+      <tr><td>.T</td><td>전치 뷰</td><td>shape <code>(4, 3, 2)</code></td></tr>
+      <tr><td>.flags</td><td>메모리 연속성 등 플래그</td><td><code>C_CONTIGUOUS: True</code></td></tr>
+      <tr><td>.base</td><td>뷰라면 원본 배열, 아니면 <code>None</code></td><td>뷰 판별에 사용</td></tr>
+    </table></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">x = np.arange(24).reshape(2, 3, 4)
+print(x.shape, x.ndim, x.size, x.dtype, x.itemsize, x.nbytes)
+
+big = np.zeros((1000, 1000))
+print(big.nbytes / 1e6, "MB", big.flags['C_CONTIGUOUS'], big.T.flags['C_CONTIGUOUS'])</pre>
+    <div class="out">(2, 3, 4) 3 24 int64 8 192
+8.0 MB True False</div>
+  </div>
+
+  <div class="fn" data-key="astype dtype 변환">
+    <div class="fn-h"><span class="rank">#17</span><h3>ndarray.astype()</h3><span class="tag copy">복사</span></div>
+    <p>dtype을 바꾼 <b>새 배열</b>을 만듭니다. float32 변환으로 메모리를 절반으로 줄이는 건 대용량 처리의 기본기입니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig">ndarray.astype(dtype, order='K', casting='unsafe', subok=True, copy=True)</div>
+    <h4>파라미터</h4>
+    <div class="tbl-wrap"><table>
+      <tr><th>파라미터</th><th>설명</th><th>기본값 / 옵션</th></tr>
+      <tr><td>dtype <span class="req">필수</span></td><td>목표 타입</td><td><code>np.float32</code>, <code>'int32'</code>, <code>bool</code> …</td></tr>
+      <tr><td>casting</td><td>허용할 변환 강도. <code>'safe'</code>는 정보 손실이 있으면 에러</td><td><code>'unsafe'</code> / <code>'safe'</code>, <code>'same_kind'</code></td></tr>
+      <tr><td>copy</td><td><code>False</code>면 타입이 이미 같을 때 복사 생략</td><td><code>True</code></td></tr>
+    </table></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">f = np.array([1.7, -2.9, 3.2])
+print(f.astype(int))     <span class="c"># 0 방향 절삭</span>
+print(f.astype(bool))    <span class="c"># 0이 아니면 True</span>
+print(np.round(f).astype(int))   <span class="c"># 진짜 반올림이 필요할 때</span>
+
+img = np.zeros((1080, 1920, 3), dtype=np.float64)
+print(img.nbytes / 1e6, "→", img.astype(np.float32).nbytes / 1e6, "MB")</pre>
+    <div class="out">[ 1 -2  3]
+[ True  True  True]
+[ 2 -3  3]
+49.7664 → 24.8832 MB</div>
+  </div>
+</section>
+
+<!-- ============ C. 형태 변형 ============ -->
+<section id="c">
+  <div class="sec-h"><span class="key">C</span><h2>형태 변형</h2><span class="cnt">11 functions</span></div>
+  <p class="sec-note">머신러닝 전처리 코드의 절반은 shape을 맞추는 일입니다. 이 섹션 함수들은 대부분 <b>뷰</b>를 반환하므로 비용이 거의 없습니다.</p>
+
+  <div class="fn" data-key="reshape 형태변경">
+    <div class="fn-h"><span class="rank">#04</span><h3>np.reshape() · ndarray.reshape()</h3><span class="tag view">뷰</span></div>
+    <p>원소 수를 유지한 채 shape을 바꿉니다. 데이터는 그대로, 읽는 방식만 바뀝니다.</p>
+    <div class="viz wide"><svg viewBox="0 0 758 194" style="max-width:758px" xmlns="http://www.w3.org/2000/svg" role="img"><defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" class="ahp"/></marker></defs><g transform="translate(14,80.0)"><rect class="c c-base" x="0" y="0" width="30" height="34" rx="4"/><text class="ct ct-base" x="15.0" y="21.5">0</text><rect class="c c-base" x="34" y="0" width="30" height="34" rx="4"/><text class="ct ct-base" x="49.0" y="21.5">1</text><rect class="c c-base" x="68" y="0" width="30" height="34" rx="4"/><text class="ct ct-base" x="83.0" y="21.5">2</text><rect class="c c-base" x="102" y="0" width="30" height="34" rx="4"/><text class="ct ct-base" x="117.0" y="21.5">3</text><rect class="c c-base" x="136" y="0" width="30" height="34" rx="4"/><text class="ct ct-base" x="151.0" y="21.5">4</text><rect class="c c-base" x="170" y="0" width="30" height="34" rx="4"/><text class="ct ct-base" x="185.0" y="21.5">5</text><rect class="c c-base" x="204" y="0" width="30" height="34" rx="4"/><text class="ct ct-base" x="219.0" y="21.5">6</text><rect class="c c-base" x="238" y="0" width="30" height="34" rx="4"/><text class="ct ct-base" x="253.0" y="21.5">7</text><rect class="c c-base" x="272" y="0" width="30" height="34" rx="4"/><text class="ct ct-base" x="287.0" y="21.5">8</text><rect class="c c-base" x="306" y="0" width="30" height="34" rx="4"/><text class="ct ct-base" x="321.0" y="21.5">9</text><rect class="c c-base" x="340" y="0" width="30" height="34" rx="4"/><text class="ct ct-base" x="355.0" y="21.5">10</text><rect class="c c-base" x="374" y="0" width="30" height="34" rx="4"/><text class="ct ct-base" x="389.0" y="21.5">11</text><text class="gd" x="202.0" y="52" text-anchor="middle">arange(12) → (12,)</text></g><line class="ar" x1="442" y1="108.0" x2="534" y2="108.0" marker-end="url(#ah)"/><text class="al" x="488.0" y="100.0" text-anchor="middle">reshape(3,4)</text><g transform="translate(558,42.0)"><rect class="c c-base" x="0" y="0" width="40" height="34" rx="4"/><text class="ct ct-base" x="20.0" y="21.5">0</text><rect class="c c-base" x="44" y="0" width="40" height="34" rx="4"/><text class="ct ct-base" x="64.0" y="21.5">1</text><rect class="c c-base" x="88" y="0" width="40" height="34" rx="4"/><text class="ct ct-base" x="108.0" y="21.5">2</text><rect class="c c-base" x="132" y="0" width="40" height="34" rx="4"/><text class="ct ct-base" x="152.0" y="21.5">3</text><rect class="c c-base" x="0" y="38" width="40" height="34" rx="4"/><text class="ct ct-base" x="20.0" y="59.5">4</text><rect class="c c-base" x="44" y="38" width="40" height="34" rx="4"/><text class="ct ct-base" x="64.0" y="59.5">5</text><rect class="c c-base" x="88" y="38" width="40" height="34" rx="4"/><text class="ct ct-base" x="108.0" y="59.5">6</text><rect class="c c-base" x="132" y="38" width="40" height="34" rx="4"/><text class="ct ct-base" x="152.0" y="59.5">7</text><rect class="c c-base" x="0" y="76" width="40" height="34" rx="4"/><text class="ct ct-base" x="20.0" y="97.5">8</text><rect class="c c-base" x="44" y="76" width="40" height="34" rx="4"/><text class="ct ct-base" x="64.0" y="97.5">9</text><rect class="c c-base" x="88" y="76" width="40" height="34" rx="4"/><text class="ct ct-base" x="108.0" y="97.5">10</text><rect class="c c-base" x="132" y="76" width="40" height="34" rx="4"/><text class="ct ct-base" x="152.0" y="97.5">11</text><text class="gd" x="86.0" y="128" text-anchor="middle">(3, 4)</text></g></svg></div>
+    <h4>시그니처</h4>
+    <div class="sig">np.reshape(a, shape, order='C')
+a.reshape(d0, d1, ...)</div>
+    <h4>파라미터</h4>
+    <div class="tbl-wrap"><table>
+      <tr><th>파라미터</th><th>설명</th><th>기본값 / 옵션</th></tr>
+      <tr><td>shape <span class="req">필수</span></td><td>새 shape. 원소 수의 곱이 원본과 같아야 함</td><td>—</td></tr>
+      <tr><td><b>-1</b></td><td>한 축에만 쓸 수 있는 특수값. "나머지는 알아서 계산"</td><td>실무에서 거의 항상 사용</td></tr>
+      <tr><td>order</td><td><code>'C'</code>=마지막 축부터 채움, <code>'F'</code>=첫 축부터</td><td><code>'C'</code></td></tr>
+    </table></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">r = np.arange(12)
+print(r.reshape(3, 4))
+print(r.reshape(3, -1).shape)     <span class="c"># -1 → 4로 자동 계산</span>
+print(r.reshape(2, 2, 3).shape)
+
+<span class="c"># 실무: 이미지 배치를 완전연결층 입력으로 펴기</span>
+batch = np.zeros((32, 28, 28))
+print(batch.reshape(len(batch), -1).shape)</pre>
+    <div class="out">[[ 0  1  2  3]
+ [ 4  5  6  7]
+ [ 8  9 10 11]]
+(3, 4)
+(2, 2, 3)
+(32, 784)</div>
+    <div class="warn"><code>reshape</code>은 <b>메모리 순서를 바꾸지 않습니다.</b> <code>(2,3)</code>을 <code>(3,2)</code>로 reshape한 결과는 전치(<code>.T</code>)와 <b>다릅니다</b>. 축의 의미를 바꾸려면 <code>transpose</code>를 쓰세요.</div>
+  </div>
+
+  <div class="fn" data-key="ravel flatten 평탄화">
+    <div class="fn-h"><h3>ravel() · flatten()</h3></div>
+    <p>둘 다 1차원으로 폅니다. 차이는 딱 하나 — <code>ravel</code>은 <b>뷰</b>(가능하면), <code>flatten</code>은 <b>항상 복사</b>입니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">m = np.arange(6).reshape(2, 3)
+print(m.ravel())              <span class="c"># 행 우선</span>
+print(m.ravel(order='F'))     <span class="c"># 열 우선</span>
+
+fl = m.flatten(); fl[0] = 99
+print(m[0, 0])                <span class="c"># 원본 안전</span>
+
+rv = m.ravel();  rv[0] = 99
+print(m[0, 0])                <span class="c"># 원본 오염</span></pre>
+    <div class="out">[0 1 2 3 4 5]
+[0 3 1 4 2 5]
+0
+99</div>
+    <div class="tip">읽기 전용이면 <code>ravel()</code>(빠름), 수정할 거면 <code>flatten()</code>. <code>reshape(-1)</code>도 <code>ravel()</code>과 사실상 같습니다.</div>
+  </div>
+
+  <div class="fn" data-key="transpose .T swapaxes moveaxis 전치">
+    <div class="fn-h"><span class="rank">#20</span><h3>np.transpose() · .T · swapaxes · moveaxis</h3><span class="tag view">뷰</span></div>
+    <p>축의 순서를 바꿉니다. 이미지 포맷 변환(HWC ↔ CHW)에서 매일 씁니다.</p>
+    <div class="viz"><svg viewBox="0 0 360 194" style="max-width:360px" xmlns="http://www.w3.org/2000/svg" role="img"><defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" class="ahp"/></marker></defs><g transform="translate(14,61.0)"><rect class="c c-hl" x="0" y="0" width="40" height="34" rx="4"/><text class="ct ct-hl" x="20.0" y="21.5">0</text><rect class="c c-acc" x="44" y="0" width="40" height="34" rx="4"/><text class="ct ct-acc" x="64.0" y="21.5">1</text><rect class="c c-acc2" x="88" y="0" width="40" height="34" rx="4"/><text class="ct ct-acc2" x="108.0" y="21.5">2</text><rect class="c c-base" x="0" y="38" width="40" height="34" rx="4"/><text class="ct ct-base" x="20.0" y="59.5">3</text><rect class="c c-base" x="44" y="38" width="40" height="34" rx="4"/><text class="ct ct-base" x="64.0" y="59.5">4</text><rect class="c c-base" x="88" y="38" width="40" height="34" rx="4"/><text class="ct ct-base" x="108.0" y="59.5">5</text><text class="gd" x="64.0" y="90" text-anchor="middle">(2, 3)</text></g><line class="ar" x1="166" y1="108.0" x2="224" y2="108.0" marker-end="url(#ah)"/><text class="al" x="195.0" y="100.0" text-anchor="middle">.T</text><g transform="translate(248,42.0)"><rect class="c c-hl" x="0" y="0" width="40" height="34" rx="4"/><text class="ct ct-hl" x="20.0" y="21.5">0</text><rect class="c c-base" x="44" y="0" width="40" height="34" rx="4"/><text class="ct ct-base" x="64.0" y="21.5">3</text><rect class="c c-acc" x="0" y="38" width="40" height="34" rx="4"/><text class="ct ct-acc" x="20.0" y="59.5">1</text><rect class="c c-base" x="44" y="38" width="40" height="34" rx="4"/><text class="ct ct-base" x="64.0" y="59.5">4</text><rect class="c c-acc2" x="0" y="76" width="40" height="34" rx="4"/><text class="ct ct-acc2" x="20.0" y="97.5">2</text><rect class="c c-base" x="44" y="76" width="40" height="34" rx="4"/><text class="ct ct-base" x="64.0" y="97.5">5</text><text class="gd" x="42.0" y="128" text-anchor="middle">(3, 2) · 뷰</text></g></svg></div>
+    <h4>시그니처</h4>
+    <div class="sig">np.transpose(a, axes=None)      <span class="c"># axes: 새 축 순서 튜플</span>
+np.swapaxes(a, axis1, axis2)    <span class="c"># 두 축만 교환</span>
+np.moveaxis(a, source, destination)</div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">t = np.arange(6).reshape(2, 3)
+print(t.T)
+
+x = np.arange(24).reshape(2, 3, 4)
+print(np.transpose(x, (1, 0, 2)).shape)   <span class="c"># 0번과 1번 축 교환</span>
+
+<span class="c"># 실무: (H, W, C) 이미지 → (C, H, W) 텐서</span>
+img = np.zeros((224, 224, 3))
+print(np.transpose(img, (2, 0, 1)).shape)
+print(np.moveaxis(img, -1, 0).shape)      <span class="c"># 같은 결과, 의도가 더 명확</span></pre>
+    <div class="out">[[0 3]
+ [1 4]
+ [2 5]]
+(3, 2, 4)
+(3, 224, 224)
+(3, 224, 224)</div>
+    <div class="warn">전치는 뷰라서 메모리가 <b>비연속</b>이 됩니다. 이후 <code>reshape</code>이 실패하거나 성능이 떨어질 수 있습니다. 필요하면 <code>np.ascontiguousarray(x)</code>로 정리하세요.</div>
+  </div>
+
+  <div class="fn" data-key="expand_dims squeeze newaxis 차원추가">
+    <div class="fn-h"><h3>expand_dims() · squeeze() · np.newaxis</h3><span class="tag view">뷰</span></div>
+    <p>길이 1인 축을 넣고 뺍니다. 브로드캐스팅을 의도대로 유도하는 열쇠입니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig">np.expand_dims(a, axis)     <span class="c"># 해당 위치에 길이 1 축 삽입</span>
+np.squeeze(a, axis=None)    <span class="c"># 길이 1 축 제거</span>
+a[:, np.newaxis]            <span class="c"># newaxis는 None의 별칭</span></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">e = np.array([1, 2, 3])
+print(e.shape, np.expand_dims(e, 0).shape, e[:, np.newaxis].shape)
+print(np.squeeze(np.zeros((1, 3, 1))).shape)
+
+<span class="c"># 실무: 모든 쌍의 거리 행렬 — 반복문 없이</span>
+P = np.array([[0., 0.], [3., 4.]])          <span class="c"># (2,2)</span>
+Q = np.array([[0., 0.], [1., 1.], [3., 4.]]) <span class="c"># (3,2)</span>
+D = np.linalg.norm(P[:, None, :] - Q[None, :, :], axis=-1)
+print(D)</pre>
+    <div class="out">(3,) (1, 3) (3, 1)
+(3,)
+[[0.         1.41421356 5.        ]
+ [5.         3.60555128 0.        ]]</div>
+    <div class="tip"><code>arr[:, None]</code>은 실무에서 가장 많이 보는 축 추가 관용구입니다. <code>(N,)</code>을 <code>(N,1)</code>로 만들어 <code>(1,M)</code>과 브로드캐스팅하면 <code>(N,M)</code> 전체 조합 행렬이 한 줄로 나옵니다.</div>
+  </div>
+</section>
+
+<!-- ============ D. 결합/분할 ============ -->
+<section id="d">
+  <div class="sec-h"><span class="key">D</span><h2>결합 · 분할 · 반복</h2><span class="cnt">13 functions</span></div>
+  <p class="sec-note">배치를 모으고, 학습/검증으로 쪼개고, 패딩을 넣는 작업입니다. 대부분 <b>새 메모리를 할당</b>하므로 반복문 안에서 쓰면 성능이 크게 나빠집니다.</p>
+
+  <div class="fn" data-key="concatenate 연결 결합">
+    <div class="fn-h"><span class="rank">#13</span><h3>np.concatenate()</h3><span class="tag copy">복사</span></div>
+    <p>기존 축을 따라 배열들을 이어 붙입니다. 새 축을 만들지 않는다는 점이 <code>stack</code>과의 결정적 차이입니다.</p>
+    <div class="viz wide"><svg viewBox="0 0 426 156" style="max-width:426px" xmlns="http://www.w3.org/2000/svg" role="img"><defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" class="ahp"/></marker></defs><g transform="translate(14,42.0)"><rect class="c c-base" x="0" y="0" width="40" height="34" rx="4"/><text class="ct ct-base" x="20.0" y="21.5">1</text><rect class="c c-base" x="44" y="0" width="40" height="34" rx="4"/><text class="ct ct-base" x="64.0" y="21.5">2</text><rect class="c c-base" x="0" y="38" width="40" height="34" rx="4"/><text class="ct ct-base" x="20.0" y="59.5">3</text><rect class="c c-base" x="44" y="38" width="40" height="34" rx="4"/><text class="ct ct-base" x="64.0" y="59.5">4</text><text class="gd" x="42.0" y="90" text-anchor="middle">p</text></g><g transform="translate(118,42.0)"><rect class="c c-acc" x="0" y="0" width="40" height="34" rx="4"/><text class="ct ct-acc" x="20.0" y="21.5">5</text><rect class="c c-acc" x="0" y="38" width="40" height="34" rx="4"/><text class="ct ct-acc" x="20.0" y="59.5">6</text><text class="gd" x="20.0" y="90" text-anchor="middle">q.T</text></g><line class="ar" x1="182" y1="89.0" x2="246" y2="89.0" marker-end="url(#ah)"/><text class="al" x="214.0" y="81.0" text-anchor="middle">axis=1</text><g transform="translate(270,42.0)"><rect class="c c-base" x="0" y="0" width="40" height="34" rx="4"/><text class="ct ct-base" x="20.0" y="21.5">1</text><rect class="c c-base" x="44" y="0" width="40" height="34" rx="4"/><text class="ct ct-base" x="64.0" y="21.5">2</text><rect class="c c-acc" x="88" y="0" width="40" height="34" rx="4"/><text class="ct ct-acc" x="108.0" y="21.5">5</text><rect class="c c-base" x="0" y="38" width="40" height="34" rx="4"/><text class="ct ct-base" x="20.0" y="59.5">3</text><rect class="c c-base" x="44" y="38" width="40" height="34" rx="4"/><text class="ct ct-base" x="64.0" y="59.5">4</text><rect class="c c-acc" x="88" y="38" width="40" height="34" rx="4"/><text class="ct ct-acc" x="108.0" y="59.5">6</text><text class="gd" x="64.0" y="90" text-anchor="middle">(2, 3)</text></g></svg></div>
+    <h4>시그니처</h4>
+    <div class="sig">np.concatenate((a1, a2, ...), axis=0, out=None, dtype=None, casting="same_kind")</div>
+    <h4>파라미터</h4>
+    <div class="tbl-wrap"><table>
+      <tr><th>파라미터</th><th>설명</th><th>기본값</th></tr>
+      <tr><td>arrays <span class="req">필수</span></td><td>배열들의 <b>시퀀스</b>(튜플/리스트). 이어붙일 축을 뺀 나머지 shape이 모두 같아야 함</td><td>—</td></tr>
+      <tr><td>axis</td><td>이어붙일 축. <code>None</code>이면 모두 1D로 편 뒤 연결</td><td><code>0</code></td></tr>
+      <tr><td>out</td><td>결과를 쓸 기존 배열(할당 회피)</td><td><code>None</code></td></tr>
+    </table></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">p = np.array([[1, 2], [3, 4]])
+q = np.array([[5, 6]])
+
+print(np.concatenate([p, q], axis=0))     <span class="c"># 아래로 붙이기 (2,2)+(1,2) → (3,2)</span>
+print(np.concatenate([p, q.T], axis=1))   <span class="c"># 옆으로 붙이기 (2,2)+(2,1) → (2,3)</span></pre>
+    <div class="out">[[1 2]
+ [3 4]
+ [5 6]]
+[[1 2 5]
+ [3 4 6]]</div>
+    <div class="warn"><b>반복문 안에서 concatenate 금지.</b> 매 반복마다 전체를 새로 복사해 O(n²)가 됩니다. 리스트에 모았다가 마지막에 한 번만 붙이세요.
+<br><code>chunks = []</code> → <code>chunks.append(x)</code> → <code>result = np.concatenate(chunks)</code></div>
+  </div>
+
+  <div class="fn" data-key="vstack hstack stack dstack column_stack 쌓기">
+    <div class="fn-h"><span class="rank">#24</span><h3>np.stack() · vstack · hstack · dstack</h3><span class="tag copy">복사</span></div>
+    <p><code>stack</code>은 <b>새 축</b>을 만들어 쌓고, <code>vstack/hstack</code>은 기존 축으로 붙이는 편의 함수입니다.</p>
+    <div class="viz wide"><svg viewBox="0 0 430 194" style="max-width:430px" xmlns="http://www.w3.org/2000/svg" role="img"><defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" class="ahp"/></marker></defs><g transform="translate(14,61.0)"><rect class="c c-base" x="0" y="0" width="40" height="34" rx="4"/><text class="ct ct-base" x="20.0" y="21.5">1</text><rect class="c c-base" x="44" y="0" width="40" height="34" rx="4"/><text class="ct ct-base" x="64.0" y="21.5">2</text><rect class="c c-base" x="0" y="38" width="40" height="34" rx="4"/><text class="ct ct-base" x="20.0" y="59.5">3</text><rect class="c c-base" x="44" y="38" width="40" height="34" rx="4"/><text class="ct ct-base" x="64.0" y="59.5">4</text><text class="gd" x="42.0" y="90" text-anchor="middle">p (2,2)</text></g><g transform="translate(120,80.0)"><rect class="c c-acc" x="0" y="0" width="40" height="34" rx="4"/><text class="ct ct-acc" x="20.0" y="21.5">5</text><rect class="c c-acc" x="44" y="0" width="40" height="34" rx="4"/><text class="ct ct-acc" x="64.0" y="21.5">6</text><text class="gd" x="42.0" y="52" text-anchor="middle">q (1,2)</text></g><line class="ar" x1="228" y1="108.0" x2="294" y2="108.0" marker-end="url(#ah)"/><text class="al" x="261.0" y="100.0" text-anchor="middle">vstack</text><g transform="translate(318,42.0)"><rect class="c c-base" x="0" y="0" width="40" height="34" rx="4"/><text class="ct ct-base" x="20.0" y="21.5">1</text><rect class="c c-base" x="44" y="0" width="40" height="34" rx="4"/><text class="ct ct-base" x="64.0" y="21.5">2</text><rect class="c c-base" x="0" y="38" width="40" height="34" rx="4"/><text class="ct ct-base" x="20.0" y="59.5">3</text><rect class="c c-base" x="44" y="38" width="40" height="34" rx="4"/><text class="ct ct-base" x="64.0" y="59.5">4</text><rect class="c c-acc" x="0" y="76" width="40" height="34" rx="4"/><text class="ct ct-acc" x="20.0" y="97.5">5</text><rect class="c c-acc" x="44" y="76" width="40" height="34" rx="4"/><text class="ct ct-acc" x="64.0" y="97.5">6</text><text class="gd" x="42.0" y="128" text-anchor="middle">(3, 2)</text></g></svg></div>
+    <h4>구분표</h4>
+    <div class="tbl-wrap"><table>
+      <tr><th>함수</th><th>동작</th><th>(2,2) 두 개 → 결과</th><th>주 용도</th></tr>
+      <tr><td>np.stack(arrs, axis)</td><td><b>새 축</b> 추가</td><td><code>(2,2,2)</code></td><td>배치 만들기</td></tr>
+      <tr><td>np.vstack(arrs)</td><td>axis=0 연결 (세로)</td><td><code>(4,2)</code></td><td>행 추가</td></tr>
+      <tr><td>np.hstack(arrs)</td><td>axis=1 연결 (가로) · 1D는 axis=0</td><td><code>(2,4)</code></td><td>피처 열 추가</td></tr>
+      <tr><td>np.dstack(arrs)</td><td>axis=2 연결 (깊이)</td><td><code>(2,2,2)</code></td><td>채널 합치기</td></tr>
+      <tr><td>np.column_stack(arrs)</td><td>1D들을 열로 세워 붙임</td><td><code>(2,2)</code></td><td>1D 피처 → 행렬</td></tr>
+    </table></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">p = np.array([[1, 2], [3, 4]])
+q = np.array([[5, 6]])
+print(np.vstack([p, q]))
+print(np.hstack([p, p]))
+
+print(np.stack([np.array([1, 2]), np.array([3, 4])], axis=0).shape)
+print(np.stack([np.array([1, 2]), np.array([3, 4])], axis=1))   <span class="c"># axis로 짜는 방향이 바뀐다</span></pre>
+    <div class="out">[[1 2]
+ [3 4]
+ [5 6]]
+[[1 2 1 2]
+ [3 4 3 4]]
+(2, 2)
+[[1 3]
+ [2 4]]</div>
+    <div class="tip">이미지 32장 <code>(28,28)</code>을 배치로 만들 때는 <code>np.stack(images)</code> → <code>(32,28,28)</code>. <code>vstack</code>을 쓰면 <code>(896,28)</code>이 되어 버립니다.</div>
+  </div>
+
+  <div class="fn" data-key="split array_split hsplit vsplit 분할">
+    <div class="fn-h"><h3>np.split() · array_split() · hsplit / vsplit</h3><span class="tag view">뷰</span></div>
+    <p>배열을 여러 조각으로 나눕니다. <code>split</code>은 균등 분할이 불가능하면 에러, <code>array_split</code>은 알아서 나눕니다.</p>
+    <div class="viz wide"><svg viewBox="0 0 847 118" style="max-width:847px" xmlns="http://www.w3.org/2000/svg" role="img"><defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" class="ahp"/></marker></defs><g transform="translate(14,42.0)"><rect class="c c-base" x="0" y="0" width="32" height="34" rx="4"/><text class="ct ct-base" x="16.0" y="21.5">0</text><rect class="c c-base" x="36" y="0" width="32" height="34" rx="4"/><text class="ct ct-base" x="52.0" y="21.5">1</text><rect class="c c-base" x="72" y="0" width="32" height="34" rx="4"/><text class="ct ct-base" x="88.0" y="21.5">2</text><rect class="c c-base" x="108" y="0" width="32" height="34" rx="4"/><text class="ct ct-base" x="124.0" y="21.5">3</text><rect class="c c-base" x="144" y="0" width="32" height="34" rx="4"/><text class="ct ct-base" x="160.0" y="21.5">4</text><rect class="c c-base" x="180" y="0" width="32" height="34" rx="4"/><text class="ct ct-base" x="196.0" y="21.5">5</text><rect class="c c-base" x="216" y="0" width="32" height="34" rx="4"/><text class="ct ct-base" x="232.0" y="21.5">6</text><rect class="c c-base" x="252" y="0" width="32" height="34" rx="4"/><text class="ct ct-base" x="268.0" y="21.5">7</text><rect class="c c-base" x="288" y="0" width="32" height="34" rx="4"/><text class="ct ct-base" x="304.0" y="21.5">8</text><text class="gd" x="160.0" y="52" text-anchor="middle">arange(9)</text></g><line class="ar" x1="358" y1="70.0" x2="443" y2="70.0" marker-end="url(#ah)"/><text class="al" x="400.5" y="62.0" text-anchor="middle">split(·, 3)</text><g transform="translate(467,53.0)"><rect class="c c-hl" x="0" y="0" width="32" height="34" rx="4"/><text class="ct ct-hl" x="16.0" y="21.5">0</text><rect class="c c-hl" x="36" y="0" width="32" height="34" rx="4"/><text class="ct ct-hl" x="52.0" y="21.5">1</text><rect class="c c-hl" x="72" y="0" width="32" height="34" rx="4"/><text class="ct ct-hl" x="88.0" y="21.5">2</text></g><g transform="translate(591,53.0)"><rect class="c c-acc" x="0" y="0" width="32" height="34" rx="4"/><text class="ct ct-acc" x="16.0" y="21.5">3</text><rect class="c c-acc" x="36" y="0" width="32" height="34" rx="4"/><text class="ct ct-acc" x="52.0" y="21.5">4</text><rect class="c c-acc" x="72" y="0" width="32" height="34" rx="4"/><text class="ct ct-acc" x="88.0" y="21.5">5</text></g><g transform="translate(715,53.0)"><rect class="c c-acc2" x="0" y="0" width="32" height="34" rx="4"/><text class="ct ct-acc2" x="16.0" y="21.5">6</text><rect class="c c-acc2" x="36" y="0" width="32" height="34" rx="4"/><text class="ct ct-acc2" x="52.0" y="21.5">7</text><rect class="c c-acc2" x="72" y="0" width="32" height="34" rx="4"/><text class="ct ct-acc2" x="88.0" y="21.5">8</text></g></svg></div>
+    <h4>시그니처</h4>
+    <div class="sig">np.split(ary, indices_or_sections, axis=0)
+np.array_split(ary, indices_or_sections, axis=0)   <span class="c"># 불균등 허용</span></div>
+    <h4>파라미터</h4>
+    <div class="tbl-wrap"><table>
+      <tr><th>파라미터</th><th>설명</th></tr>
+      <tr><td>indices_or_sections <span class="req">필수</span></td><td><b>정수</b>면 그 개수로 균등 분할. <b>리스트</b>면 그 인덱스들을 경계로 잘라냄 (<code>[2,5]</code> → 0:2, 2:5, 5:)</td></tr>
+      <tr><td>axis</td><td>자를 축. 기본 <code>0</code></td></tr>
+    </table></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">print(np.split(np.arange(9), 3))
+print(np.array_split(np.arange(10), 3))    <span class="c"># 10은 3으로 안 나뉘지만 OK</span>
+print(np.hsplit(np.arange(12).reshape(3, 4), 2)[0])
+
+<span class="c"># 실무: 학습/검증/테스트 분할</span>
+data = np.arange(100)
+train, val, test = np.split(data, [70, 85])
+print(train.shape, val.shape, test.shape)</pre>
+    <div class="out">[array([0, 1, 2]), array([3, 4, 5]), array([6, 7, 8])]
+[array([0, 1, 2, 3]), array([4, 5, 6]), array([7, 8, 9])]
+[[0 1]
+ [4 5]
+ [8 9]]
+(70,) (15,) (15,)</div>
+  </div>
+
+  <div class="fn" data-key="tile repeat 반복">
+    <div class="fn-h"><h3>np.tile() · np.repeat()</h3><span class="tag copy">복사</span></div>
+    <p>둘 다 반복이지만 단위가 다릅니다. <code>repeat</code>은 <b>원소별</b>로, <code>tile</code>은 <b>배열 전체를 블록으로</b> 반복합니다.</p>
+    <div class="viz wide"><svg viewBox="0 0 796 118" style="max-width:796px" xmlns="http://www.w3.org/2000/svg" role="img"><defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" class="ahp"/></marker></defs><g transform="translate(14,42.0)"><rect class="c c-base" x="0" y="0" width="40" height="34" rx="4"/><text class="ct ct-base" x="20.0" y="21.5">1</text><rect class="c c-base" x="44" y="0" width="40" height="34" rx="4"/><text class="ct ct-base" x="64.0" y="21.5">2</text><text class="gd" x="42.0" y="52" text-anchor="middle">원본</text></g><line class="ar" x1="122" y1="70.0" x2="192" y2="70.0" marker-end="url(#ah)"/><text class="al" x="157.0" y="62.0" text-anchor="middle">repeat(3)</text><g transform="translate(216,42.0)"><rect class="c c-hl" x="0" y="0" width="40" height="34" rx="4"/><text class="ct ct-hl" x="20.0" y="21.5">1</text><rect class="c c-hl" x="44" y="0" width="40" height="34" rx="4"/><text class="ct ct-hl" x="64.0" y="21.5">1</text><rect class="c c-hl" x="88" y="0" width="40" height="34" rx="4"/><text class="ct ct-hl" x="108.0" y="21.5">1</text><rect class="c c-acc" x="132" y="0" width="40" height="34" rx="4"/><text class="ct ct-acc" x="152.0" y="21.5">2</text><rect class="c c-acc" x="176" y="0" width="40" height="34" rx="4"/><text class="ct ct-acc" x="196.0" y="21.5">2</text><rect class="c c-acc" x="220" y="0" width="40" height="34" rx="4"/><text class="ct ct-acc" x="240.0" y="21.5">2</text><text class="gd" x="130.0" y="52" text-anchor="middle">원소 단위 반복</text></g><g transform="translate(508,42.0)"><rect class="c c-hl" x="0" y="0" width="40" height="34" rx="4"/><text class="ct ct-hl" x="20.0" y="21.5">1</text><rect class="c c-acc" x="44" y="0" width="40" height="34" rx="4"/><text class="ct ct-acc" x="64.0" y="21.5">2</text><rect class="c c-hl" x="88" y="0" width="40" height="34" rx="4"/><text class="ct ct-hl" x="108.0" y="21.5">1</text><rect class="c c-acc" x="132" y="0" width="40" height="34" rx="4"/><text class="ct ct-acc" x="152.0" y="21.5">2</text><rect class="c c-hl" x="176" y="0" width="40" height="34" rx="4"/><text class="ct ct-hl" x="196.0" y="21.5">1</text><rect class="c c-acc" x="220" y="0" width="40" height="34" rx="4"/><text class="ct ct-acc" x="240.0" y="21.5">2</text><text class="gd" x="130.0" y="52" text-anchor="middle">tile(3) · 블록 단위 반복</text></g></svg></div>
+    <h4>시그니처</h4>
+    <div class="sig">np.repeat(a, repeats, axis=None)   <span class="c"># axis 생략 시 1D로 펴서 반복</span>
+np.tile(A, reps)                   <span class="c"># reps는 정수 또는 축별 튜플</span></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">print(np.tile(np.array([1, 2]), 3))
+print(np.tile(np.array([1, 2]), (2, 2)))     <span class="c"># 세로 2번, 가로 2번</span>
+print(np.repeat(np.array([1, 2]), 3))
+print(np.repeat(np.array([[1, 2], [3, 4]]), 2, axis=0))   <span class="c"># 행을 각각 2번</span></pre>
+    <div class="out">[1 2 1 2 1 2]
+[[1 2 1 2]
+ [1 2 1 2]]
+[1 1 1 2 2 2]
+[[1 2]
+ [1 2]
+ [3 4]
+ [3 4]]</div>
+    <div class="tip">브로드캐스팅으로 해결되는 일에 <code>tile</code>을 쓰지 마세요. <code>np.tile(v, (n,1)) + m</code> 대신 <code>v + m</code>이면 충분하고 메모리도 안 씁니다.</div>
+  </div>
+
+  <div class="fn" data-key="pad 패딩">
+    <div class="fn-h"><h3>np.pad()</h3><span class="tag copy">복사</span></div>
+    <p>배열 가장자리를 채웁니다. CNN 패딩, 시계열 윈도우 정렬, 이미지 테두리 처리에 씁니다.</p>
+    <div class="viz"><svg viewBox="0 0 404 232" style="max-width:404px" xmlns="http://www.w3.org/2000/svg" role="img"><defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" class="ahp"/></marker></defs><g transform="translate(14,80.0)"><rect class="c c-base" x="0" y="0" width="40" height="34" rx="4"/><text class="ct ct-base" x="20.0" y="21.5">1</text><rect class="c c-base" x="44" y="0" width="40" height="34" rx="4"/><text class="ct ct-base" x="64.0" y="21.5">2</text><rect class="c c-base" x="0" y="38" width="40" height="34" rx="4"/><text class="ct ct-base" x="20.0" y="59.5">3</text><rect class="c c-base" x="44" y="38" width="40" height="34" rx="4"/><text class="ct ct-base" x="64.0" y="59.5">4</text><text class="gd" x="42.0" y="90" text-anchor="middle">(2, 2)</text></g><line class="ar" x1="122" y1="127.0" x2="180" y2="127.0" marker-end="url(#ah)"/><text class="al" x="151.0" y="119.0" text-anchor="middle">pad(1)</text><g transform="translate(204,42.0)"><rect class="c c-ghost" x="0" y="0" width="40" height="34" rx="4"/><text class="ct ct-ghost" x="20.0" y="21.5">0</text><rect class="c c-ghost" x="44" y="0" width="40" height="34" rx="4"/><text class="ct ct-ghost" x="64.0" y="21.5">0</text><rect class="c c-ghost" x="88" y="0" width="40" height="34" rx="4"/><text class="ct ct-ghost" x="108.0" y="21.5">0</text><rect class="c c-ghost" x="132" y="0" width="40" height="34" rx="4"/><text class="ct ct-ghost" x="152.0" y="21.5">0</text><rect class="c c-ghost" x="0" y="38" width="40" height="34" rx="4"/><text class="ct ct-ghost" x="20.0" y="59.5">0</text><rect class="c c-base" x="44" y="38" width="40" height="34" rx="4"/><text class="ct ct-base" x="64.0" y="59.5">1</text><rect class="c c-base" x="88" y="38" width="40" height="34" rx="4"/><text class="ct ct-base" x="108.0" y="59.5">2</text><rect class="c c-ghost" x="132" y="38" width="40" height="34" rx="4"/><text class="ct ct-ghost" x="152.0" y="59.5">0</text><rect class="c c-ghost" x="0" y="76" width="40" height="34" rx="4"/><text class="ct ct-ghost" x="20.0" y="97.5">0</text><rect class="c c-base" x="44" y="76" width="40" height="34" rx="4"/><text class="ct ct-base" x="64.0" y="97.5">3</text><rect class="c c-base" x="88" y="76" width="40" height="34" rx="4"/><text class="ct ct-base" x="108.0" y="97.5">4</text><rect class="c c-ghost" x="132" y="76" width="40" height="34" rx="4"/><text class="ct ct-ghost" x="152.0" y="97.5">0</text><rect class="c c-ghost" x="0" y="114" width="40" height="34" rx="4"/><text class="ct ct-ghost" x="20.0" y="135.5">0</text><rect class="c c-ghost" x="44" y="114" width="40" height="34" rx="4"/><text class="ct ct-ghost" x="64.0" y="135.5">0</text><rect class="c c-ghost" x="88" y="114" width="40" height="34" rx="4"/><text class="ct ct-ghost" x="108.0" y="135.5">0</text><rect class="c c-ghost" x="132" y="114" width="40" height="34" rx="4"/><text class="ct ct-ghost" x="152.0" y="135.5">0</text><text class="gd" x="86.0" y="166" text-anchor="middle">(4, 4)</text></g></svg></div>
+    <h4>시그니처</h4>
+    <div class="sig">np.pad(array, pad_width, mode='constant', **kwargs)</div>
+    <h4>파라미터</h4>
+    <div class="tbl-wrap"><table>
+      <tr><th>파라미터</th><th>설명</th><th>옵션</th></tr>
+      <tr><td>pad_width <span class="req">필수</span></td><td>정수(모든 축 동일), <code>(before, after)</code>, 또는 축별 튜플의 리스트</td><td><code>1</code>, <code>(2,1)</code>, <code>[(0,0),(1,1)]</code></td></tr>
+      <tr><td>mode</td><td>채우는 방식</td><td><code>'constant'</code>(기본), <code>'edge'</code>, <code>'reflect'</code>, <code>'symmetric'</code>, <code>'wrap'</code>, <code>'mean'</code></td></tr>
+      <tr><td>constant_values</td><td>constant 모드에서 채울 값</td><td><code>0</code></td></tr>
+    </table></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">print(np.pad(np.array([[1, 2], [3, 4]]), 1, mode='constant', constant_values=0))
+print(np.pad(np.array([1, 2, 3]), (2, 1), mode='edge'))   <span class="c"># 끝값 복제</span>
+
+<span class="c"># 실무: 배치는 그대로 두고 H·W만 패딩</span>
+imgs = np.zeros((8, 30, 30, 3))
+print(np.pad(imgs, [(0,0), (1,1), (1,1), (0,0)]).shape)</pre>
+    <div class="out">[[0 0 0 0]
+ [0 1 2 0]
+ [0 3 4 0]
+ [0 0 0 0]]
+[1 1 1 2 3 3]
+(8, 32, 32, 3)</div>
+  </div>
+
+  <div class="fn" data-key="append insert delete resize">
+    <div class="fn-h"><h3>append · insert · delete <span class="dim">— 되도록 피하세요</span></h3></div>
+    <div class="tbl-wrap"><table>
+      <tr><th>함수</th><th>동작</th><th>주의</th></tr>
+      <tr><td>np.append(arr, values, axis)</td><td>끝에 붙인 <b>새 배열</b> 반환</td><td>파이썬 list.append와 달리 제자리 추가가 아님. 매번 전체 복사</td></tr>
+      <tr><td>np.insert(arr, idx, values, axis)</td><td>지정 위치에 삽입</td><td>전체 복사</td></tr>
+      <tr><td>np.delete(arr, idx, axis)</td><td>지정 인덱스 제거</td><td>전체 복사. 마스크(<code>arr[keep]</code>)가 더 빠를 때가 많음</td></tr>
+      <tr><td>np.resize(a, shape)</td><td>부족하면 값을 반복해 채움</td><td><code>ndarray.resize</code>(메소드)와 동작이 다름</td></tr>
+    </table></div>
+    <div class="warn">누적이 필요하면 파이썬 리스트에 모아 마지막에 <code>np.array()</code>/<code>np.concatenate()</code>로 한 번에 바꾸는 것이 정석입니다. 크기를 미리 안다면 <code>np.empty</code>로 버퍼를 잡고 인덱스로 채우는 게 가장 빠릅니다.</div>
+  </div>
+</section>
+
+<!-- ============ E. 인덱싱 ============ -->
+<section id="e">
+  <div class="sec-h"><span class="key">E</span><h2>인덱싱과 선택</h2><span class="cnt">12 techniques</span></div>
+  <p class="sec-note">NumPy의 진짜 표현력은 여기 있습니다. <code>for</code>문으로 쓰던 필터링·조건 치환이 한 줄이 됩니다.</p>
+
+  <div class="fn" data-key="슬라이싱 slicing 인덱싱 basic">
+    <div class="fn-h"><h3>기본 슬라이싱 <span class="dim">a[start:stop:step]</span></h3><span class="tag view">뷰</span></div>
+    <p>축마다 콤마로 구분해 지정합니다. <b>stop은 제외</b>, 음수 인덱스는 뒤에서부터, <code>step</code>이 음수면 역순입니다.</p>
+    <div class="viz wide"><svg viewBox="0 0 519 232" style="max-width:519px" xmlns="http://www.w3.org/2000/svg" role="img"><defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" class="ahp"/></marker></defs><g transform="translate(14,42.0)"><rect class="c c-base" x="0" y="0" width="40" height="34" rx="4"/><text class="ct ct-base" x="20.0" y="21.5">0</text><rect class="c c-base" x="44" y="0" width="40" height="34" rx="4"/><text class="ct ct-base" x="64.0" y="21.5">1</text><rect class="c c-base" x="88" y="0" width="40" height="34" rx="4"/><text class="ct ct-base" x="108.0" y="21.5">2</text><rect class="c c-base" x="132" y="0" width="40" height="34" rx="4"/><text class="ct ct-base" x="152.0" y="21.5">3</text><rect class="c c-base" x="176" y="0" width="40" height="34" rx="4"/><text class="ct ct-base" x="196.0" y="21.5">4</text><rect class="c c-base" x="0" y="38" width="40" height="34" rx="4"/><text class="ct ct-base" x="20.0" y="59.5">5</text><rect class="c c-base" x="44" y="38" width="40" height="34" rx="4"/><text class="ct ct-base" x="64.0" y="59.5">6</text><rect class="c c-hl" x="88" y="38" width="40" height="34" rx="4"/><text class="ct ct-hl" x="108.0" y="59.5">7</text><rect class="c c-hl" x="132" y="38" width="40" height="34" rx="4"/><text class="ct ct-hl" x="152.0" y="59.5">8</text><rect class="c c-hl" x="176" y="38" width="40" height="34" rx="4"/><text class="ct ct-hl" x="196.0" y="59.5">9</text><rect class="c c-base" x="0" y="76" width="40" height="34" rx="4"/><text class="ct ct-base" x="20.0" y="97.5">10</text><rect class="c c-base" x="44" y="76" width="40" height="34" rx="4"/><text class="ct ct-base" x="64.0" y="97.5">11</text><rect class="c c-hl" x="88" y="76" width="40" height="34" rx="4"/><text class="ct ct-hl" x="108.0" y="97.5">12</text><rect class="c c-hl" x="132" y="76" width="40" height="34" rx="4"/><text class="ct ct-hl" x="152.0" y="97.5">13</text><rect class="c c-hl" x="176" y="76" width="40" height="34" rx="4"/><text class="ct ct-hl" x="196.0" y="97.5">14</text><rect class="c c-base" x="0" y="114" width="40" height="34" rx="4"/><text class="ct ct-base" x="20.0" y="135.5">15</text><rect class="c c-base" x="44" y="114" width="40" height="34" rx="4"/><text class="ct ct-base" x="64.0" y="135.5">16</text><rect class="c c-base" x="88" y="114" width="40" height="34" rx="4"/><text class="ct ct-base" x="108.0" y="135.5">17</text><rect class="c c-base" x="132" y="114" width="40" height="34" rx="4"/><text class="ct ct-base" x="152.0" y="135.5">18</text><rect class="c c-base" x="176" y="114" width="40" height="34" rx="4"/><text class="ct ct-base" x="196.0" y="135.5">19</text><text class="gd" x="108.0" y="166" text-anchor="middle">a  (4, 5)</text></g><line class="ar" x1="254" y1="127.0" x2="339" y2="127.0" marker-end="url(#ah)"/><text class="al" x="296.5" y="119.0" text-anchor="middle">a[1:3, 2:5]</text><g transform="translate(363,80.0)"><rect class="c c-hl" x="0" y="0" width="40" height="34" rx="4"/><text class="ct ct-hl" x="20.0" y="21.5">7</text><rect class="c c-hl" x="44" y="0" width="40" height="34" rx="4"/><text class="ct ct-hl" x="64.0" y="21.5">8</text><rect class="c c-hl" x="88" y="0" width="40" height="34" rx="4"/><text class="ct ct-hl" x="108.0" y="21.5">9</text><rect class="c c-hl" x="0" y="38" width="40" height="34" rx="4"/><text class="ct ct-hl" x="20.0" y="59.5">12</text><rect class="c c-hl" x="44" y="38" width="40" height="34" rx="4"/><text class="ct ct-hl" x="64.0" y="59.5">13</text><rect class="c c-hl" x="88" y="38" width="40" height="34" rx="4"/><text class="ct ct-hl" x="108.0" y="59.5">14</text><text class="gd" x="64.0" y="90" text-anchor="middle">(2, 3) · 뷰(view)</text></g></svg></div>
+    <h4>패턴 사전</h4>
+    <div class="tbl-wrap"><table>
+      <tr><th>표현</th><th>의미</th></tr>
+      <tr><td>a[1, 2]</td><td>1행 2열의 스칼라 원소</td></tr>
+      <tr><td>a[1]</td><td>1행 전체 (= <code>a[1, :]</code>)</td></tr>
+      <tr><td>a[:, 1]</td><td>1열 전체 → <b>1D</b>로 반환</td></tr>
+      <tr><td>a[:, 1:2]</td><td>1열 → <b>2D</b> 유지 (열 형태 보존이 필요할 때)</td></tr>
+      <tr><td>a[1:3, 2:5]</td><td>부분 블록</td></tr>
+      <tr><td>a[::2]</td><td>한 칸씩 건너뛰기</td></tr>
+      <tr><td>a[::-1]</td><td>역순 (복사 없이!)</td></tr>
+      <tr><td>a[..., 0]</td><td>앞 축은 전부, 마지막 축의 0번 — 차원 수와 무관하게 동작</td></tr>
+      <tr><td>a[-1]</td><td>마지막 행</td></tr>
+    </table></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">a = np.arange(20).reshape(4, 5)
+print(a[1, 2], a[1], a[:, 1])
+print(a[1:3, 2:5])
+print(a[::2, ::-1])      <span class="c"># 행은 건너뛰고, 열은 뒤집기</span></pre>
+    <div class="out">7 [5 6 7 8 9] [ 1  6 11 16]
+[[ 7  8  9]
+ [12 13 14]]
+[[ 4  3  2  1  0]
+ [14 13 12 11 10]]</div>
+    <div class="note"><code>a[0][1]</code>과 <code>a[0, 1]</code>은 결과가 같지만 전자는 중간 배열을 한 번 더 만듭니다. 항상 콤마 형태를 쓰세요.</div>
+  </div>
+
+  <div class="fn" data-key="불리언 boolean mask 마스킹 필터">
+    <div class="fn-h"><h3>불리언 인덱싱 <span class="dim">a[조건]</span></h3><span class="tag copy">복사</span></div>
+    <p>조건식이 만든 True/False 배열로 원소를 골라냅니다. pandas의 필터링과 같은 원리입니다.</p>
+    <div class="viz wide"><svg viewBox="0 0 814 118" style="max-width:814px" xmlns="http://www.w3.org/2000/svg" role="img"><defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" class="ahp"/></marker></defs><g transform="translate(14,42.0)"><rect class="c c-base" x="0" y="0" width="40" height="34" rx="4"/><text class="ct ct-base" x="20.0" y="21.5">1</text><rect class="c c-base" x="44" y="0" width="40" height="34" rx="4"/><text class="ct ct-base" x="64.0" y="21.5">-2</text><rect class="c c-base" x="88" y="0" width="40" height="34" rx="4"/><text class="ct ct-base" x="108.0" y="21.5">3</text><rect class="c c-base" x="132" y="0" width="40" height="34" rx="4"/><text class="ct ct-base" x="152.0" y="21.5">-4</text><rect class="c c-base" x="176" y="0" width="40" height="34" rx="4"/><text class="ct ct-base" x="196.0" y="21.5">5</text><text class="gd" x="108.0" y="52" text-anchor="middle">b</text></g><line class="ar" x1="254" y1="70.0" x2="312" y2="70.0" marker-end="url(#ah)"/><text class="al" x="283.0" y="62.0" text-anchor="middle">b &gt; 0</text><g transform="translate(336,42.0)"><rect class="c c-hl" x="0" y="0" width="40" height="34" rx="4"/><text class="ct ct-hl" x="20.0" y="21.5">T</text><rect class="c c-ghost" x="44" y="0" width="40" height="34" rx="4"/><text class="ct ct-ghost" x="64.0" y="21.5">F</text><rect class="c c-hl" x="88" y="0" width="40" height="34" rx="4"/><text class="ct ct-hl" x="108.0" y="21.5">T</text><rect class="c c-ghost" x="132" y="0" width="40" height="34" rx="4"/><text class="ct ct-ghost" x="152.0" y="21.5">F</text><rect class="c c-hl" x="176" y="0" width="40" height="34" rx="4"/><text class="ct ct-hl" x="196.0" y="21.5">T</text><text class="gd" x="108.0" y="52" text-anchor="middle">불리언 마스크</text></g><line class="ar" x1="576" y1="70.0" x2="634" y2="70.0" marker-end="url(#ah)"/><text class="al" x="605.0" y="62.0" text-anchor="middle">b[mask]</text><g transform="translate(658,42.0)"><rect class="c c-hl" x="0" y="0" width="40" height="34" rx="4"/><text class="ct ct-hl" x="20.0" y="21.5">1</text><rect class="c c-hl" x="44" y="0" width="40" height="34" rx="4"/><text class="ct ct-hl" x="64.0" y="21.5">3</text><rect class="c c-hl" x="88" y="0" width="40" height="34" rx="4"/><text class="ct ct-hl" x="108.0" y="21.5">5</text><text class="gd" x="64.0" y="52" text-anchor="middle">(3,)</text></g></svg></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">b = np.array([1, -2, 3, -4, 5])
+print(b > 0)              <span class="c"># 불리언 배열</span>
+print(b[b > 0])           <span class="c"># 선택 → 항상 1D 복사본</span>
+print(b[(b > 0) & (b < 5)])   <span class="c"># 괄호 필수, and/or 대신 &amp; | ~</span>
+
+b2 = b.copy()
+b2[b2 < 0] = 0            <span class="c"># 조건부 제자리 치환</span>
+print(b2)</pre>
+    <div class="out">[ True False  True False  True]
+[1 3 5]
+[1 3]
+[1 0 3 0 5]</div>
+    <div class="warn">파이썬의 <code>and</code>/<code>or</code>/<code>not</code>은 배열에 쓸 수 없습니다(<code>ValueError: truth value ... is ambiguous</code>). 반드시 <code>&amp;</code>, <code>|</code>, <code>~</code>를 쓰고, 연산자 우선순위 때문에 <b>각 조건을 괄호로 감싸야</b> 합니다.</div>
+  </div>
+
+  <div class="fn" data-key="팬시인덱싱 fancy indexing 정수배열">
+    <div class="fn-h"><h3>팬시(정수 배열) 인덱싱</h3><span class="tag copy">복사</span></div>
+    <p>인덱스 배열을 넘겨 원하는 순서로 뽑습니다. 셔플, 리샘플링, 룩업 테이블의 기본기입니다.</p>
+    <div class="viz wide"><svg viewBox="0 0 512 118" style="max-width:512px" xmlns="http://www.w3.org/2000/svg" role="img"><defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" class="ahp"/></marker></defs><g transform="translate(14,42.0)"><rect class="c c-hl" x="0" y="0" width="40" height="34" rx="4"/><text class="ct ct-hl" x="20.0" y="21.5">10</text><rect class="c c-acc" x="44" y="0" width="40" height="34" rx="4"/><text class="ct ct-acc" x="64.0" y="21.5">20</text><rect class="c c-base" x="88" y="0" width="40" height="34" rx="4"/><text class="ct ct-base" x="108.0" y="21.5">30</text><rect class="c c-acc2" x="132" y="0" width="40" height="34" rx="4"/><text class="ct ct-acc2" x="152.0" y="21.5">40</text><rect class="c c-base" x="176" y="0" width="40" height="34" rx="4"/><text class="ct ct-base" x="196.0" y="21.5">50</text><text class="gd" x="108.0" y="52" text-anchor="middle">c</text></g><line class="ar" x1="254" y1="70.0" x2="332" y2="70.0" marker-end="url(#ah)"/><text class="al" x="293.0" y="62.0" text-anchor="middle">c[[0,3,1]]</text><g transform="translate(356,42.0)"><rect class="c c-hl" x="0" y="0" width="40" height="34" rx="4"/><text class="ct ct-hl" x="20.0" y="21.5">10</text><rect class="c c-acc2" x="44" y="0" width="40" height="34" rx="4"/><text class="ct ct-acc2" x="64.0" y="21.5">40</text><rect class="c c-acc" x="88" y="0" width="40" height="34" rx="4"/><text class="ct ct-acc" x="108.0" y="21.5">20</text><text class="gd" x="64.0" y="52" text-anchor="middle">복사본(copy)</text></g></svg></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">c = np.arange(10, 60, 10)
+print(c, c[[0, 3, 1]])          <span class="c"># 원하는 순서로, 중복도 가능</span>
+
+d = np.arange(20).reshape(4, 5)
+print(d[[0, 2], [1, 3]])        <span class="c"># (0,1)과 (2,3) 두 점 — 쌍으로 짝지어짐</span>
+print(d[np.array([1, 3]), :])   <span class="c"># 1행과 3행 전체</span>
+
+<span class="c"># 실무: 라벨 배열로 클래스명 룩업</span>
+names = np.array(['cat', 'dog', 'bird'])
+print(names[np.array([2, 0, 1, 0])])</pre>
+    <div class="out">[10 20 30 40 50] [10 40 20]
+[ 1 13]
+[[ 5  6  7  8  9]
+ [15 16 17 18 19]]
+['bird' 'cat' 'dog' 'cat']</div>
+    <div class="warn"><code>d[[0,2], [1,3]]</code>은 "0·2행과 1·3열의 교차 블록"이 <b>아닙니다</b>. 좌표가 쌍으로 묶여 두 개의 점만 나옵니다. 블록을 원하면 <code>d[np.ix_([0,2],[1,3])]</code>를 쓰세요.</div>
+  </div>
+
+  <div class="fn" data-key="np.where where 조건">
+    <div class="fn-h"><span class="rank">#14</span><h3>np.where()</h3></div>
+    <p>두 얼굴을 가진 함수입니다. 인자가 <b>3개면 조건부 선택</b>(삼항 연산자), <b>1개면 True인 위치의 인덱스</b>를 반환합니다.</p>
+    <div class="viz wide"><svg viewBox="0 0 555 118" style="max-width:555px" xmlns="http://www.w3.org/2000/svg" role="img"><defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" class="ahp"/></marker></defs><g transform="translate(14,42.0)"><rect class="c c-base" x="0" y="0" width="40" height="34" rx="4"/><text class="ct ct-base" x="20.0" y="21.5">1</text><rect class="c c-warn" x="44" y="0" width="40" height="34" rx="4"/><text class="ct ct-warn" x="64.0" y="21.5">-2</text><rect class="c c-base" x="88" y="0" width="40" height="34" rx="4"/><text class="ct ct-base" x="108.0" y="21.5">3</text><rect class="c c-warn" x="132" y="0" width="40" height="34" rx="4"/><text class="ct ct-warn" x="152.0" y="21.5">-4</text><text class="gd" x="86.0" y="52" text-anchor="middle">w</text></g><line class="ar" x1="210" y1="70.0" x2="331" y2="70.0" marker-end="url(#ah)"/><text class="al" x="270.5" y="62.0" text-anchor="middle">where(w&gt;0, w, 0)</text><g transform="translate(355,42.0)"><rect class="c c-base" x="0" y="0" width="40" height="34" rx="4"/><text class="ct ct-base" x="20.0" y="21.5">1</text><rect class="c c-acc" x="44" y="0" width="40" height="34" rx="4"/><text class="ct ct-acc" x="64.0" y="21.5">0</text><rect class="c c-base" x="88" y="0" width="40" height="34" rx="4"/><text class="ct ct-base" x="108.0" y="21.5">3</text><rect class="c c-acc" x="132" y="0" width="40" height="34" rx="4"/><text class="ct ct-acc" x="152.0" y="21.5">0</text><text class="gd" x="86.0" y="52" text-anchor="middle">조건 참→w, 거짓→0</text></g></svg></div>
+    <h4>시그니처</h4>
+    <div class="sig">np.where(condition, x, y)   <span class="c"># 조건이 참이면 x, 거짓이면 y (브로드캐스팅됨)</span>
+np.where(condition)         <span class="c"># 참인 위치의 인덱스 튜플 = np.nonzero(condition)</span></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">w = np.array([1, -2, 3, -4])
+print(np.where(w > 0, w, 0))          <span class="c"># 음수를 0으로 (ReLU)</span>
+print(np.where(w > 0))                <span class="c"># 인덱스만</span>
+print(np.where(np.array([[1, 5], [7, 2]]) &gt; 3, 'big', 'small'))
+
+<span class="c"># 실무: 0으로 나누기 회피</span>
+num, den = np.array([1., 2., 3.]), np.array([2., 0., 4.])
+print(np.where(den != 0, num / np.where(den == 0, 1, den), np.nan))</pre>
+    <div class="out">[1 0 3 0]
+(array([0, 2]),)
+[['small' 'big']
+ ['big' 'small']]
+[0.5  nan 0.75]</div>
+    <div class="warn"><code>np.where(den != 0, num/den, 0)</code>처럼 쓰면 <b>세 인자가 모두 먼저 계산</b>되므로 0으로 나누는 경고가 그대로 발생합니다. 위 예제처럼 분모를 미리 안전하게 바꾸거나 <code>np.errstate</code>로 감싸세요.</div>
+  </div>
+
+  <div class="fn" data-key="clip take nonzero flatnonzero count_nonzero compress">
+    <div class="fn-h"><h3>clip · take · nonzero · count_nonzero</h3></div>
+    <div class="tbl-wrap"><table>
+      <tr><th>함수</th><th>설명</th><th>시그니처</th></tr>
+      <tr><td>np.clip(a, min, max)</td><td>범위 밖 값을 경계로 잘라냄. 이상치 처리·그래디언트 클리핑</td><td><code>np.clip(a, a_min, a_max, out=None)</code></td></tr>
+      <tr><td>np.take(a, indices, axis)</td><td>축을 지정한 팬시 인덱싱. <code>mode='clip'/'wrap'</code>으로 범위 초과 처리 가능</td><td><code>np.take(a, indices, axis=None, mode='raise')</code></td></tr>
+      <tr><td>np.nonzero(a)</td><td>0이 아닌 원소의 <b>축별 인덱스 튜플</b></td><td><code>np.nonzero(a)</code></td></tr>
+      <tr><td>np.flatnonzero(a)</td><td>1D로 편 뒤의 인덱스 (1차원일 때 더 편함)</td><td><code>np.flatnonzero(a)</code></td></tr>
+      <tr><td>np.count_nonzero(a)</td><td>0이 아닌 개수. <b>조건 개수 세기의 최단 코드</b></td><td><code>np.count_nonzero(a, axis=None)</code></td></tr>
+      <tr><td>np.extract(cond, a)</td><td><code>a[cond]</code>와 동일</td><td><code>np.extract(condition, arr)</code></td></tr>
+      <tr><td>np.ix_(r, c)</td><td>행·열 인덱스로 <b>블록</b> 선택용 오픈 그리드 생성</td><td><code>a[np.ix_([0,2],[1,3])]</code></td></tr>
+    </table></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">print(np.clip(np.array([-5, 0, 5, 20]), 0, 10))
+print(np.take(np.array([10, 20, 30, 40]), [0, 2]))
+print(np.nonzero(np.array([0, 3, 0, 7])))
+print(np.flatnonzero(np.array([0, 3, 0, 7])))
+print(np.count_nonzero(np.array([[0, 1], [2, 0]])))
+
+scores = np.array([88, 45, 92, 61])
+print(np.count_nonzero(scores &gt;= 60), "명 합격")   <span class="c"># 조건 카운트</span></pre>
+    <div class="out">[ 0  0  5 10]
+[10 30]
+(array([1, 3]),)
+[1 3]
+2
+3 명 합격</div>
+  </div>
+</section>
+
+<!-- ============ F. 수학 ============ -->
+<section id="f">
+  <div class="sec-h"><span class="key">F</span><h2>수학 연산</h2><span class="cnt">30+ ufuncs</span></div>
+  <p class="sec-note">NumPy의 수학 함수는 대부분 <b>ufunc</b>(universal function)입니다. 원소별로 동작하고, 브로드캐스팅을 지원하며, C로 구현돼 반복문보다 수십 배 빠릅니다. 모두 <code>out=</code>, <code>where=</code> 인자를 공통으로 받습니다.</p>
+
+  <div class="fn" data-key="사칙연산 add subtract multiply divide power mod">
+    <div class="fn-h"><h3>사칙연산 <span class="dim">+ - * / // % **</span></h3><span class="tag uf">ufunc</span></div>
+    <p>연산자를 그냥 쓰면 됩니다. <code>a + b</code>는 <code>np.add(a, b)</code>와 동일합니다.</p>
+    <div class="tbl-wrap"><table>
+      <tr><th>연산자</th><th>함수</th><th>비고</th></tr>
+      <tr><td>+ - * /</td><td>add, subtract, multiply, divide</td><td>모두 <b>원소별</b>. <code>*</code>는 행렬곱이 아님</td></tr>
+      <tr><td>//</td><td>floor_divide</td><td>내림 나눗셈</td></tr>
+      <tr><td>%</td><td>mod / remainder</td><td>결과 부호가 <b>제수</b>를 따름 (C와 다름)</td></tr>
+      <tr><td>**</td><td>power</td><td>정수 배열에 음수 지수는 에러</td></tr>
+      <tr><td>@</td><td>matmul</td><td>행렬곱 (F섹션 하단 참고)</td></tr>
+      <tr><td>+= -= *=</td><td>—</td><td><b>제자리 연산</b>. 메모리 할당 없음, 원본 변경</td></tr>
+    </table></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">A = np.array([[1, 2], [3, 4]])
+B = np.array([[5, 6], [7, 8]])
+print(A * B)          <span class="c"># 원소별 곱 (아다마르곱)</span>
+print(A @ B)          <span class="c"># 행렬곱</span>
+print(np.mod(np.array([7, -7]), 3))   <span class="c"># 부호 주의</span></pre>
+    <div class="out">[[ 5 12]
+ [21 32]]
+[[19 22]
+ [43 50]]
+[1 2]</div>
+    <div class="tip">대용량 배열에서는 <code>a = a + 1</code>(새 배열 할당) 대신 <code>a += 1</code>(제자리)을 쓰면 메모리와 시간을 아낍니다. 다만 뷰를 통해 원본이 바뀔 수 있으니 주의하세요.</div>
+  </div>
+
+  <div class="fn" data-key="sqrt exp log abs sign round floor ceil 수학함수">
+    <div class="fn-h"><span class="rank">#15 #18 #19</span><h3>단항 수학 ufunc</h3><span class="tag uf">ufunc</span></div>
+    <div class="tbl-wrap"><table>
+      <tr><th>함수</th><th>설명</th><th>주의점</th></tr>
+      <tr><td>np.sqrt(x)</td><td>제곱근</td><td>음수는 <code>nan</code> + RuntimeWarning</td></tr>
+      <tr><td>np.exp(x) / expm1</td><td>e<sup>x</sup> / e<sup>x</sup>−1</td><td>큰 값은 <code>inf</code>. softmax는 최댓값을 빼고 계산</td></tr>
+      <tr><td>np.log / log2 / log10 / log1p</td><td>로그들</td><td>0은 <code>-inf</code>, 음수는 <code>nan</code>. 작은 값엔 <code>log1p</code></td></tr>
+      <tr><td>np.abs(x)</td><td>절댓값</td><td><code>np.absolute</code>의 별칭</td></tr>
+      <tr><td>np.sign(x)</td><td>부호 (-1, 0, 1)</td><td></td></tr>
+      <tr><td>np.power(x, p)</td><td>거듭제곱</td><td><code>x ** p</code>와 동일</td></tr>
+      <tr><td>np.round(x, n)</td><td>반올림</td><td><b>은행가 반올림</b>: 0.5는 짝수 쪽으로</td></tr>
+      <tr><td>np.floor / ceil / trunc</td><td>내림 / 올림 / 0방향 절삭</td><td>결과는 실수 dtype 유지</td></tr>
+      <tr><td>np.sin / cos / tan / arctan2</td><td>삼각함수 (라디안)</td><td><code>arctan2(y,x)</code>는 사분면을 구분</td></tr>
+      <tr><td>np.maximum / minimum</td><td>두 배열의 <b>원소별</b> 최대/최소</td><td><code>np.max</code>(집계)와 혼동 주의</td></tr>
+    </table></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">x = np.array([1.0, 4.0, 9.0])
+print(np.sqrt(x), np.exp(np.array([0.0, 1.0])))
+print(np.round(np.array([1.45, 2.55, -1.5]), 1))
+print(np.floor(np.array([1.7, -1.7])), np.ceil(np.array([1.2, -1.2])))
+
+<span class="c"># 실무: 수치적으로 안전한 softmax</span>
+z = np.array([1.0, 2.0, 3.0])
+e = np.exp(z - z.max())      <span class="c"># 최댓값을 빼야 오버플로가 없다</span>
+print(e / e.sum())</pre>
+    <div class="out">[1. 2. 3.] [1.         2.71828183]
+[ 1.4  2.6 -1.5]
+[ 1. -2.] [ 2. -1.]
+[0.09003057 0.24472847 0.66524096]</div>
+    <div class="warn"><code>np.round(1.45, 1)</code>이 <code>1.4</code>인 이유는 은행가 반올림 + 이진 부동소수점 표현 때문입니다. 금액 계산처럼 정확한 반올림이 필요하면 <code>decimal</code> 모듈이나 정수 연산을 쓰세요.</div>
+  </div>
+
+  <div class="fn" data-key="cumsum cumprod diff gradient 누적">
+    <div class="fn-h"><h3>np.cumsum() · cumprod() · diff() · gradient()</h3></div>
+    <p>순서를 가진 데이터의 누적과 변화량. 시계열 분석에서 짝을 이뤄 등장합니다.</p>
+    <div class="viz wide"><svg viewBox="0 0 648 118" style="max-width:648px" xmlns="http://www.w3.org/2000/svg" role="img"><defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" class="ahp"/></marker></defs><g transform="translate(14,42.0)"><rect class="c c-base" x="0" y="0" width="40" height="34" rx="4"/><text class="ct ct-base" x="20.0" y="21.5">1</text><rect class="c c-base" x="44" y="0" width="40" height="34" rx="4"/><text class="ct ct-base" x="64.0" y="21.5">2</text><rect class="c c-base" x="88" y="0" width="40" height="34" rx="4"/><text class="ct ct-base" x="108.0" y="21.5">3</text><rect class="c c-base" x="132" y="0" width="40" height="34" rx="4"/><text class="ct ct-base" x="152.0" y="21.5">4</text><text class="gd" x="86.0" y="52" text-anchor="middle">y</text></g><line class="ar" x1="210" y1="70.0" x2="268" y2="70.0" marker-end="url(#ah)"/><text class="al" x="239.0" y="62.0" text-anchor="middle">cumsum</text><g transform="translate(292,42.0)"><rect class="c c-acc" x="0" y="0" width="40" height="34" rx="4"/><text class="ct ct-acc" x="20.0" y="21.5">1</text><rect class="c c-acc" x="44" y="0" width="40" height="34" rx="4"/><text class="ct ct-acc" x="64.0" y="21.5">3</text><rect class="c c-acc" x="88" y="0" width="40" height="34" rx="4"/><text class="ct ct-acc" x="108.0" y="21.5">6</text><rect class="c c-acc" x="132" y="0" width="40" height="34" rx="4"/><text class="ct ct-acc" x="152.0" y="21.5">10</text><text class="gd" x="86.0" y="52" text-anchor="middle">누적합</text></g><g transform="translate(492,42.0)"><rect class="c c-acc2" x="0" y="0" width="40" height="34" rx="4"/><text class="ct ct-acc2" x="20.0" y="21.5">1</text><rect class="c c-acc2" x="44" y="0" width="40" height="34" rx="4"/><text class="ct ct-acc2" x="64.0" y="21.5">1</text><rect class="c c-acc2" x="88" y="0" width="40" height="34" rx="4"/><text class="ct ct-acc2" x="108.0" y="21.5">1</text><text class="gd" x="64.0" y="52" text-anchor="middle">diff(y) · 이웃 차분</text></g></svg></div>
+    <h4>시그니처</h4>
+    <div class="sig">np.cumsum(a, axis=None, dtype=None, out=None)
+np.diff(a, n=1, axis=-1)          <span class="c"># n=차분 횟수, 길이가 n만큼 줄어듦</span>
+np.gradient(f, *varargs, axis=None, edge_order=1)</div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">y = np.array([1, 2, 3, 4])
+print(np.cumsum(y), np.cumprod(y), np.diff(y))
+print(np.cumsum(np.arange(6).reshape(2, 3), axis=1))   <span class="c"># 행 방향 누적</span>
+
+<span class="c"># 실무: 수익률 → 누적 수익 곡선</span>
+returns = np.array([0.01, -0.02, 0.03])
+print(np.cumprod(1 + returns))</pre>
+    <div class="out">[ 1  3  6 10] [ 1  2  6 24] [1 1 1]
+[[ 0  1  3]
+ [ 3  7 12]]
+[1.01     0.9898   1.019494]</div>
+    <div class="tip"><code>diff</code>는 길이가 1 줄어듭니다. 원본과 길이를 맞추려면 <code>np.diff(y, prepend=y[0])</code>. <code>gradient</code>는 중앙차분이라 길이가 유지되고 미분에 더 적합합니다.</div>
+  </div>
+
+  <div class="fn" data-key="dot matmul inner outer 행렬곱">
+    <div class="fn-h"><span class="rank">#09</span><h3>np.dot() · @ (matmul) · outer()</h3></div>
+    <p>선형대수의 심장. <code>*</code>는 원소별 곱이고, 행렬곱은 <code>@</code> 또는 <code>np.matmul</code>입니다.</p>
+    <div class="viz wide"><svg viewBox="0 0 700 205" style="max-width:700px" xmlns="http://www.w3.org/2000/svg" role="img"><defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" class="ahp"/></marker></defs><rect class="c c-hl" x="20" y="60" width="40" height="34" rx="4"/><text class="ct ct-hl" x="40.0" y="81.5">1</text><rect class="c c-hl" x="64" y="60" width="40" height="34" rx="4"/><text class="ct ct-hl" x="84.0" y="81.5">2</text><rect class="c c-base" x="20" y="98" width="40" height="34" rx="4"/><text class="ct ct-base" x="40.0" y="119.5">3</text><rect class="c c-base" x="64" y="98" width="40" height="34" rx="4"/><text class="ct ct-base" x="84.0" y="119.5">4</text><text class="gt" x="20" y="50">A (2,2)</text><text class="al" x="120" y="118">@</text><rect class="c c-acc" x="150" y="60" width="40" height="34" rx="4"/><text class="ct ct-acc" x="170.0" y="81.5">5</text><rect class="c c-base" x="194" y="60" width="40" height="34" rx="4"/><text class="ct ct-base" x="214.0" y="81.5">6</text><rect class="c c-acc" x="150" y="98" width="40" height="34" rx="4"/><text class="ct ct-acc" x="170.0" y="119.5">7</text><rect class="c c-base" x="194" y="98" width="40" height="34" rx="4"/><text class="ct ct-base" x="214.0" y="119.5">8</text><text class="gt" x="150" y="50">B (2,2)</text><line class="ar" x1="261" y1="105" x2="309" y2="105" marker-end="url(#ah)"/><rect class="c c-warn" x="330" y="60" width="40" height="34" rx="4"/><text class="ct ct-warn" x="350.0" y="81.5">19</text><rect class="c c-base" x="374" y="60" width="40" height="34" rx="4"/><text class="ct ct-base" x="394.0" y="81.5">22</text><rect class="c c-base" x="330" y="98" width="40" height="34" rx="4"/><text class="ct ct-base" x="350.0" y="119.5">43</text><rect class="c c-base" x="374" y="98" width="40" height="34" rx="4"/><text class="ct ct-base" x="394.0" y="119.5">50</text><text class="gt" x="330" y="50">A @ B</text><text class="gd" x="20" y="185">C[0,0] = 1×5 + 2×7 = 19  ·  A의 i행과 B의 j열을 곱해 더한다 (열 수 = 행 수 여야 함)</text></svg></div>
+    <h4>구분표</h4>
+    <div class="tbl-wrap"><table>
+      <tr><th>표현</th><th>1D × 1D</th><th>2D × 2D</th><th>3D 이상 (배치)</th></tr>
+      <tr><td>np.dot(a, b)</td><td>내적(스칼라)</td><td>행렬곱</td><td>복잡한 축 규칙 — <b>권장하지 않음</b></td></tr>
+      <tr><td>a @ b</td><td>내적(스칼라)</td><td>행렬곱</td><td><b>마지막 2축만</b> 행렬곱, 앞은 배치로 브로드캐스팅</td></tr>
+      <tr><td>np.inner(a, b)</td><td>내적</td><td>마지막 축끼리 내적</td><td>—</td></tr>
+      <tr><td>np.outer(a, b)</td><td>외적 → (n, m) 행렬</td><td>1D로 펴서 계산</td><td>—</td></tr>
+    </table></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">A = np.array([[1, 2], [3, 4]])
+B = np.array([[5, 6], [7, 8]])
+print(A @ B)
+print(np.dot(np.array([1, 2, 3]), np.array([4, 5, 6])))   <span class="c"># 1*4+2*5+3*6</span>
+print(np.outer(np.array([1, 2]), np.array([3, 4])))
+
+<span class="c"># 배치 행렬곱: (2,2,3) @ (3,4) → (2,2,4)</span>
+batch = np.arange(2 * 2 * 3).reshape(2, 2, 3)
+print((batch @ np.ones((3, 4))).shape)</pre>
+    <div class="out">[[19 22]
+ [43 50]]
+32
+[[3 4]
+ [6 8]]
+(2, 2, 4)</div>
+    <div class="tip">3차원 이상이면 무조건 <code>@</code>를 쓰세요. <code>np.dot</code>은 배치 축 처리 규칙이 직관과 달라 조용한 버그의 단골입니다.</div>
+  </div>
+
+  <div class="fn" data-key="einsum 아인슈타인">
+    <div class="fn-h"><h3>np.einsum()</h3></div>
+    <p>축 이름을 문자로 적어 전치·합·내적·배치 곱을 <b>한 문법으로</b> 표현합니다. 익히면 복잡한 텐서 연산이 한 줄로 끝납니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig">np.einsum(subscripts, *operands, optimize=False)
+<span class="c"># 'ij,jk->ik' : 입력 축 이름들 -> 출력 축 이름. 사라진 문자는 합산된다</span></div>
+    <h4>문법 사전</h4>
+    <div class="tbl-wrap"><table>
+      <tr><th>표현식</th><th>의미</th><th>동등한 코드</th></tr>
+      <tr><td>'ij-&gt;ji'</td><td>전치</td><td><code>a.T</code></td></tr>
+      <tr><td>'ij-&gt;'</td><td>전체 합</td><td><code>a.sum()</code></td></tr>
+      <tr><td>'ij-&gt;j'</td><td>열별 합 (i가 사라짐)</td><td><code>a.sum(axis=0)</code></td></tr>
+      <tr><td>'ij,jk-&gt;ik'</td><td>행렬곱</td><td><code>a @ b</code></td></tr>
+      <tr><td>'i,i-&gt;'</td><td>내적</td><td><code>np.dot(a,b)</code></td></tr>
+      <tr><td>'i,j-&gt;ij'</td><td>외적</td><td><code>np.outer(a,b)</code></td></tr>
+      <tr><td>'bij,bjk-&gt;bik'</td><td>배치 행렬곱</td><td><code>a @ b</code></td></tr>
+      <tr><td>'ii-&gt;i'</td><td>대각 원소 추출</td><td><code>np.diag(a)</code></td></tr>
+    </table></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">E = np.arange(6).reshape(2, 3)
+print(np.einsum('ij->ji', E))
+print(np.einsum('ij->j', E))
+print(np.einsum('ij,jk->ik', np.array([[1, 2], [3, 4]]), np.eye(2, dtype=int)))</pre>
+    <div class="out">[[0 3]
+ [1 4]
+ [2 5]]
+[3 5 7]
+[[1 2]
+ [3 4]]</div>
+    <div class="tip">연산이 여러 개 겹치면 <code>optimize=True</code>를 주세요. 곱셈 순서를 자동으로 최적화해 큰 텐서에서 수 배 빨라집니다.</div>
+  </div>
+</section>
+
+<!-- ============ G. 통계 ============ -->
+<section id="g">
+  <div class="sec-h"><span class="key">G</span><h2>통계 · 집계</h2><span class="cnt">20 functions</span></div>
+  <p class="sec-note">모두 <code>axis</code>와 <code>keepdims</code>를 공통으로 받습니다. 함수형(<code>np.sum(a)</code>)과 메소드형(<code>a.sum()</code>) 둘 다 됩니다.</p>
+
+  <div class="fn" data-key="sum mean 합계 평균">
+    <div class="fn-h"><span class="rank">#06 #07</span><h3>np.sum() · np.mean() · np.average()</h3></div>
+    <h4>시그니처</h4>
+    <div class="sig">np.sum(a, axis=None, dtype=None, out=None, keepdims=False, initial=0, where=True)
+np.mean(a, axis=None, dtype=None, out=None, keepdims=False)
+np.average(a, axis=None, weights=None, returned=False)   <span class="c"># 가중 평균</span></div>
+    <h4>파라미터</h4>
+    <div class="tbl-wrap"><table>
+      <tr><th>파라미터</th><th>설명</th><th>기본값</th></tr>
+      <tr><td>axis</td><td>집계할 축. <code>None</code>이면 전체, 튜플로 여러 축 동시 지정 가능</td><td><code>None</code></td></tr>
+      <tr><td>keepdims</td><td>집계한 축을 길이 1로 남김 → 브로드캐스팅에 필수</td><td><code>False</code></td></tr>
+      <tr><td>dtype</td><td>누적에 쓸 타입. <b>float32 대량 합산 시 float64 지정 권장</b></td><td><code>None</code></td></tr>
+      <tr><td>where</td><td>집계에 포함할 원소 마스크</td><td><code>True</code></td></tr>
+      <tr><td>weights <span style="font-family:var(--sans);font-size:11px">(average)</span></td><td>가중치 배열</td><td><code>None</code></td></tr>
+    </table></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">s = np.array([[1, 2, 3], [4, 5, 6]])
+print(np.sum(s), np.sum(s, axis=0), np.sum(s, axis=1))
+print(np.mean(s, axis=0), np.mean(s, axis=1))
+print(np.sum(s, axis=1, keepdims=True))
+print(np.average(np.array([1, 2, 3]), weights=np.array([1, 1, 2])))</pre>
+    <div class="out">21 [5 7 9] [ 6 15]
+[2.5 3.5 4.5] [2. 5.]
+[[ 6]
+ [15]]
+2.25</div>
+    <div class="warn">float32 배열 수백만 개를 <code>sum()</code>하면 누적 오차가 눈에 띄게 쌓입니다. <code>a.sum(dtype=np.float64)</code>로 누적 타입만 올리면 해결됩니다.</div>
+  </div>
+
+  <div class="fn" data-key="std var median percentile quantile 표준편차">
+    <div class="fn-h"><span class="rank">#21</span><h3>np.std() · var() · median() · percentile()</h3></div>
+    <h4>시그니처</h4>
+    <div class="sig">np.std(a, axis=None, dtype=None, ddof=0, keepdims=False)
+np.var(a, axis=None, ddof=0, keepdims=False)
+np.median(a, axis=None, keepdims=False)
+np.percentile(a, q, axis=None, method='linear')   <span class="c"># q는 0~100</span>
+np.quantile(a, q, axis=None, method='linear')     <span class="c"># q는 0~1</span></div>
+    <h4>파라미터</h4>
+    <div class="tbl-wrap"><table>
+      <tr><th>파라미터</th><th>설명</th><th>기본값</th></tr>
+      <tr><td>ddof</td><td>자유도 보정. <b>0=모집단 표준편차, 1=표본 표준편차</b></td><td><code>0</code></td></tr>
+      <tr><td>q</td><td>백분위수. 리스트로 여러 개 동시 계산 가능</td><td>—</td></tr>
+      <tr><td>method</td><td>보간 방식 (<code>'linear'</code>, <code>'nearest'</code>, <code>'lower'</code> …)</td><td><code>'linear'</code></td></tr>
+    </table></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">v = np.array([1, 2, 3, 4])
+print(np.std(v), np.std(v, ddof=1))    <span class="c"># 모집단 vs 표본</span>
+print(np.var(v))
+print(np.median(np.array([1, 3, 2, 4])))
+print(np.percentile(np.array([1, 2, 3, 4, 5]), 75))
+
+<span class="c"># 실무: IQR로 이상치 경계 구하기</span>
+q1, q3 = np.percentile(np.array([1, 2, 3, 4, 100]), [25, 75])
+print(q1, q3, "이상치 상한:", q3 + 1.5 * (q3 - q1))</pre>
+    <div class="out">1.118033988749895 1.2909944487358056
+1.25
+2.5
+4.0
+2.0 4.0 이상치 상한: 7.0</div>
+    <div class="warn">NumPy의 <code>std</code> 기본값은 <code>ddof=0</code>(모집단)이지만 pandas의 <code>.std()</code> 기본값은 <code>ddof=1</code>(표본)입니다. 두 결과가 다르다고 당황하지 마세요.</div>
+  </div>
+
+  <div class="fn" data-key="min max argmin argmax ptp 최댓값">
+    <div class="fn-h"><span class="rank">#11 #16</span><h3>np.min/max() · argmin/argmax() · ptp()</h3></div>
+    <p><code>min/max</code>는 <b>값</b>을, <code>argmin/argmax</code>는 <b>위치</b>를 돌려줍니다. 분류 모델의 예측 라벨은 대부분 <code>argmax</code>로 뽑습니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">s = np.array([[1, 2, 3], [4, 5, 6]])
+print(np.min(s), np.max(s))
+print(np.argmin(s), np.argmax(s))          <span class="c"># 평탄화 기준 인덱스</span>
+print(np.argmax(s, axis=0))                <span class="c"># 축 지정 시 축 기준 인덱스</span>
+print(np.ptp(np.array([3, 9, 1])))         <span class="c"># peak-to-peak = max - min</span>
+
+<span class="c"># 실무: 소프트맥스 확률 → 예측 클래스</span>
+probs = np.array([[0.1, 0.7, 0.2], [0.6, 0.1, 0.3]])
+print(np.argmax(probs, axis=1))</pre>
+    <div class="out">1 6
+0 5
+[1 1 1]
+8
+[1 0]</div>
+    <div class="warn">NumPy 2.0부터 <b><code>ndarray.ptp()</code> 메소드가 삭제</b>됐습니다. <code>np.ptp(arr)</code> 함수 형태만 쓰세요. 또 다차원 배열에서 <code>argmax</code>에 axis를 안 주면 평탄화 인덱스가 나옵니다. 2D 좌표가 필요하면 <code>np.unravel_index(np.argmax(a), a.shape)</code>.</div>
+  </div>
+
+  <div class="fn" data-key="nan nansum nanmean isnan 결측치">
+    <div class="fn-h"><h3>nan 계열 <span class="dim">nansum · nanmean · nanstd · nanmax</span></h3></div>
+    <p><code>nan</code>이 하나라도 섞이면 일반 집계 결과는 전부 <code>nan</code>이 됩니다. nan 계열은 결측치를 <b>무시</b>하고 계산합니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">n = np.array([1.0, np.nan, 3.0])
+print(np.sum(n), np.nansum(n), np.nanmean(n))
+print(np.isnan(n), np.isnan(n).sum(), "개 결측")
+print(n[~np.isnan(n)])            <span class="c"># 결측 제거</span>
+
+filled = np.where(np.isnan(n), np.nanmean(n), n)   <span class="c"># 평균 대치</span>
+print(filled)</pre>
+    <div class="out">nan 4.0 2.0
+[False  True False] 1 개 결측
+[1. 3.]
+[1. 2. 3.]</div>
+    <div class="warn"><code>nan == nan</code>은 <b>False</b>입니다. 절대 <code>arr == np.nan</code>으로 검사하지 마세요. 반드시 <code>np.isnan()</code>을 씁니다. 그리고 <code>np.nan</code>은 float 전용이라 정수 배열에는 넣을 수 없습니다.</div>
+  </div>
+
+  <div class="fn" data-key="corrcoef cov histogram bincount 상관계수">
+    <div class="fn-h"><h3>corrcoef · cov · histogram · bincount</h3></div>
+    <div class="tbl-wrap"><table>
+      <tr><th>함수</th><th>설명</th><th>반환</th></tr>
+      <tr><td>np.corrcoef(x, y)</td><td>피어슨 상관계수 행렬</td><td>대칭 행렬, 대각은 1</td></tr>
+      <tr><td>np.cov(m, rowvar=True, ddof=None)</td><td>공분산 행렬. <code>rowvar=False</code>면 <b>열</b>이 변수</td><td>(변수수, 변수수)</td></tr>
+      <tr><td>np.histogram(a, bins=10, range=None)</td><td>도수분포</td><td><code>(counts, bin_edges)</code> — edges가 1개 더 많음</td></tr>
+      <tr><td>np.bincount(x, weights, minlength)</td><td>음이 아닌 정수의 빈도. 라벨 분포 확인에 최적</td><td>길이 max(x)+1</td></tr>
+      <tr><td>np.digitize(x, bins)</td><td>각 값이 속한 구간 번호</td><td>구간 인덱스</td></tr>
+    </table></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">h, edges = np.histogram(np.array([1, 2, 2, 3, 8]), bins=4)
+print(h, edges)
+print(np.bincount(np.array([1, 1, 3, 3, 3])))   <span class="c"># 0이 0개, 1이 2개, 2가 0개, 3이 3개</span>
+
+x = np.array([1., 2., 3., 4.])
+print(np.corrcoef(x, np.array([2., 4., 6., 9.])))</pre>
+    <div class="out">[3 1 0 1] [1.   2.75 4.5  6.25 8.  ]
+[0 2 0 3]
+[[1.         0.99437671]
+ [0.99437671 1.        ]]</div>
+  </div>
+</section>
+
+<!-- ============ H. 논리 ============ -->
+<section id="h">
+  <div class="sec-h"><span class="key">H</span><h2>논리 · 비교</h2><span class="cnt">12 functions</span></div>
+
+  <div class="fn" data-key="all any isclose allclose array_equal isin 비교">
+    <div class="fn-h"><h3>all · any · allclose · array_equal · isin</h3></div>
+    <div class="tbl-wrap"><table>
+      <tr><th>함수</th><th>설명</th><th>실무 용도</th></tr>
+      <tr><td>np.all(a, axis)</td><td>모두 True인가</td><td>검증(assert), 조건 전수 확인</td></tr>
+      <tr><td>np.any(a, axis)</td><td>하나라도 True인가</td><td>이상치 존재 여부</td></tr>
+      <tr><td>np.isclose(a, b, rtol, atol)</td><td>원소별 근사 비교</td><td>실수 비교의 <b>기본</b></td></tr>
+      <tr><td>np.allclose(a, b)</td><td>전체가 근사적으로 같은가 (스칼라 bool)</td><td>테스트 코드</td></tr>
+      <tr><td>np.array_equal(a, b)</td><td>shape과 값이 정확히 같은가</td><td>정수·불리언 비교</td></tr>
+      <tr><td>np.isin(a, test)</td><td>각 원소가 test에 있는가</td><td>라벨 필터링 (SQL의 IN)</td></tr>
+      <tr><td>np.isnan / isinf / isfinite</td><td>특수값 판정</td><td>데이터 검증</td></tr>
+      <tr><td>np.logical_and/or/not/xor</td><td>불리언 연산 함수형</td><td>3개 이상 조건을 <code>reduce</code>로 묶을 때</td></tr>
+    </table></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">lg = np.array([[True, False], [True, True]])
+print(np.all(lg), np.any(lg), np.all(lg, axis=1))
+print(np.allclose(np.array([1.0, 2.0]), np.array([1.0, 2.0 + 1e-9])))
+print(np.array_equal(np.array([1, 2]), np.array([1, 2])))
+print(np.isin(np.array([1, 5, 9]), np.array([1, 9])))
+
+<span class="c"># 실무: 관심 클래스만 남기기</span>
+labels = np.array([0, 3, 1, 5, 3])
+print(labels[np.isin(labels, [1, 3])])</pre>
+    <div class="out">False True [False  True]
+True
+True
+[ True False  True]
+[3 1 3]</div>
+    <div class="warn"><code>np.in1d</code>는 NumPy 2.0에서 <b>삭제</b>됐습니다. <code>np.isin</code>을 쓰세요. 그리고 <code>if arr:</code>처럼 배열을 진리값으로 쓰면 에러가 납니다 — <code>if arr.any():</code> 또는 <code>if arr.size:</code>로 의도를 명시하세요.</div>
+  </div>
+</section>
+
+<!-- ============ I. 정렬 ============ -->
+<section id="i">
+  <div class="sec-h"><span class="key">I</span><h2>정렬 · 탐색</h2><span class="cnt">10 functions</span></div>
+
+  <div class="fn" data-key="sort argsort lexsort 정렬">
+    <div class="fn-h"><span class="rank">#23</span><h3>np.sort() · np.argsort() · np.lexsort()</h3></div>
+    <p><code>sort</code>는 정렬된 <b>값</b>을, <code>argsort</code>는 정렬 순서의 <b>인덱스</b>를 돌려줍니다. 다른 배열을 같은 순서로 재배열하려면 반드시 <code>argsort</code>가 필요합니다.</p>
+    <div class="viz wide"><svg viewBox="0 0 638 118" style="max-width:638px" xmlns="http://www.w3.org/2000/svg" role="img"><defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" class="ahp"/></marker></defs><g transform="translate(14,42.0)"><rect class="c c-base" x="0" y="0" width="40" height="34" rx="4"/><text class="ct ct-base" x="20.0" y="21.5">3</text><rect class="c c-base" x="44" y="0" width="40" height="34" rx="4"/><text class="ct ct-base" x="64.0" y="21.5">1</text><rect class="c c-base" x="88" y="0" width="40" height="34" rx="4"/><text class="ct ct-base" x="108.0" y="21.5">2</text><text class="gd" x="64.0" y="52" text-anchor="middle">u</text></g><line class="ar" x1="166" y1="70.0" x2="224" y2="70.0" marker-end="url(#ah)"/><text class="al" x="195.0" y="62.0" text-anchor="middle">argsort</text><g transform="translate(248,42.0)"><rect class="c c-acc" x="0" y="0" width="40" height="34" rx="4"/><text class="ct ct-acc" x="20.0" y="21.5">1</text><rect class="c c-acc" x="44" y="0" width="40" height="34" rx="4"/><text class="ct ct-acc" x="64.0" y="21.5">2</text><rect class="c c-acc" x="88" y="0" width="40" height="34" rx="4"/><text class="ct ct-acc" x="108.0" y="21.5">0</text><text class="gd" x="64.0" y="52" text-anchor="middle">정렬 순서의 인덱스</text></g><line class="ar" x1="400" y1="70.0" x2="458" y2="70.0" marker-end="url(#ah)"/><text class="al" x="429.0" y="62.0" text-anchor="middle">u[idx]</text><g transform="translate(482,42.0)"><rect class="c c-hl" x="0" y="0" width="40" height="34" rx="4"/><text class="ct ct-hl" x="20.0" y="21.5">1</text><rect class="c c-hl" x="44" y="0" width="40" height="34" rx="4"/><text class="ct ct-hl" x="64.0" y="21.5">2</text><rect class="c c-hl" x="88" y="0" width="40" height="34" rx="4"/><text class="ct ct-hl" x="108.0" y="21.5">3</text><text class="gd" x="64.0" y="52" text-anchor="middle">정렬 결과</text></g></svg></div>
+    <h4>시그니처</h4>
+    <div class="sig">np.sort(a, axis=-1, kind=None, order=None)
+np.argsort(a, axis=-1, kind=None, stable=None)
+np.lexsort(keys, axis=-1)     <span class="c"># keys의 마지막 항목이 1차 정렬 기준</span>
+a.sort()                      <span class="c"># 메소드는 제자리 정렬 (반환값 None)</span></div>
+    <h4>파라미터</h4>
+    <div class="tbl-wrap"><table>
+      <tr><th>파라미터</th><th>설명</th><th>기본값 / 옵션</th></tr>
+      <tr><td>axis</td><td>정렬할 축. <code>None</code>이면 평탄화 후 정렬</td><td><code>-1</code> (마지막 축)</td></tr>
+      <tr><td>kind</td><td>알고리즘</td><td><code>'quicksort'</code>(기본) / <code>'stable'</code>, <code>'mergesort'</code>, <code>'heapsort'</code></td></tr>
+      <tr><td>order</td><td>구조화 배열에서 정렬 기준 필드명</td><td><code>None</code></td></tr>
+    </table></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">u = np.array([3, 1, 2])
+print(np.sort(u), np.argsort(u))
+
+grid = np.array([[3, 1], [2, 9]])
+print(np.sort(grid, axis=0))     <span class="c"># 열 단위 정렬</span>
+print(np.sort(grid, axis=1))     <span class="c"># 행 단위 정렬</span>
+
+<span class="c"># 실무: 점수 내림차순으로 이름 정렬</span>
+names = np.array(['b', 'a', 'c'])
+scores = np.array([2, 3, 1])
+print(names[np.argsort(scores)[::-1]])
+
+<span class="c"># 다중 키 정렬: 1순위 0열, 2순위 1열</span>
+data = np.array([[2, 9], [1, 5], [2, 3]])
+print(data[np.lexsort((data[:, 1], data[:, 0]))])</pre>
+    <div class="out">[1 2 3] [1 2 0]
+[[2 1]
+ [3 9]]
+[[1 3]
+ [2 9]]
+['a' 'b' 'c']
+[[1 5]
+ [2 3]
+ [2 9]]</div>
+    <div class="warn"><code>np.lexsort</code>는 <b>마지막 키가 1차 기준</b>입니다. 순서를 거꾸로 넣기 쉬우니 주의하세요. 그리고 내림차순 정렬 옵션은 없습니다 — <code>[::-1]</code>로 뒤집거나 <code>argsort(-scores)</code>를 씁니다.</div>
+  </div>
+
+  <div class="fn" data-key="partition argpartition searchsorted topk">
+    <div class="fn-h"><h3>np.partition() · argpartition() · searchsorted()</h3></div>
+    <p>전체 정렬이 필요 없을 때 쓰는 도구들. Top-K 추출은 <code>argsort</code>보다 <code>argpartition</code>이 훨씬 빠릅니다(O(n) vs O(n log n)).</p>
+    <h4>시그니처</h4>
+    <div class="sig">np.partition(a, kth, axis=-1)      <span class="c"># kth번째 원소만 제자리에 오도록 부분 정렬</span>
+np.argpartition(a, kth, axis=-1)
+np.searchsorted(a, v, side='left', sorter=None)   <span class="c"># 정렬된 a에서 v의 삽입 위치</span></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">print(np.partition(np.array([7, 2, 9, 1, 5]), 2))   <span class="c"># 2번 인덱스만 정확한 자리</span>
+print(np.argpartition(np.array([7, 2, 9, 1, 5]), -2)[-2:])  <span class="c"># 상위 2개의 인덱스</span>
+print(np.searchsorted(np.array([1, 3, 5, 7]), 4))   <span class="c"># 4는 인덱스 2에 삽입</span>
+
+<span class="c"># 실무: 100만 개 중 상위 5개만 빠르게</span>
+big = np.random.default_rng(0).random(1_000_000)
+top5 = np.argpartition(big, -5)[-5:]
+print(np.sort(big[top5])[::-1])</pre>
+    <div class="out">[1 2 5 7 9]
+[0 2]
+2
+[0.99999988 0.99999677 0.9999955  0.99999454 0.99999314]</div>
+    <div class="tip"><code>searchsorted</code>는 구간 분류(binning)와 정렬된 시계열의 시점 조회에 유용합니다. <code>side='right'</code>는 같은 값이 있을 때 뒤쪽 위치를 반환합니다.</div>
+  </div>
+
+  <div class="fn" data-key="flip roll rot90 뒤집기">
+    <div class="fn-h"><h3>np.flip() · np.roll() · np.rot90()</h3></div>
+    <div class="tbl-wrap"><table>
+      <tr><th>함수</th><th>설명</th><th>비고</th></tr>
+      <tr><td>np.flip(a, axis=None)</td><td>축을 따라 뒤집기</td><td>뷰 반환. <code>a[::-1]</code>과 동일</td></tr>
+      <tr><td>np.roll(a, shift, axis)</td><td>순환 이동 (밀려난 값이 반대편으로)</td><td>시계열 lag 만들기</td></tr>
+      <tr><td>np.rot90(m, k=1, axes=(0,1))</td><td>90도 회전 k번</td><td>이미지 증강</td></tr>
+    </table></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">print(np.flip(np.array([1, 2, 3])), np.roll(np.array([1, 2, 3, 4]), 1))
+print(np.flip(np.arange(6).reshape(2, 3), axis=0))</pre>
+    <div class="out">[3 2 1] [4 1 2 3]
+[[3 4 5]
+ [0 1 2]]</div>
+  </div>
+</section>
+
+<!-- ============ J. 집합 ============ -->
+<section id="j">
+  <div class="sec-h"><span class="key">J</span><h2>집합 · 고유값</h2><span class="cnt">6 functions</span></div>
+
+  <div class="fn" data-key="unique 고유값 중복제거">
+    <div class="fn-h"><span class="rank">#22</span><h3>np.unique()</h3></div>
+    <p>중복을 제거하고 <b>정렬된</b> 고유값을 반환합니다. 반환 옵션 세 가지를 함께 익히면 라벨 분석이 한 줄로 끝납니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig">np.unique(ar, return_index=False, return_inverse=False,
+          return_counts=False, axis=None, *, equal_nan=True)</div>
+    <h4>파라미터</h4>
+    <div class="tbl-wrap"><table>
+      <tr><th>파라미터</th><th>설명</th><th>활용</th></tr>
+      <tr><td>return_counts</td><td>각 고유값의 등장 횟수</td><td><b>클래스 분포 확인</b></td></tr>
+      <tr><td>return_index</td><td>각 고유값이 <b>처음 나타난</b> 원본 인덱스</td><td>대표 샘플 추출</td></tr>
+      <tr><td>return_inverse</td><td>원본을 고유값 인덱스로 매핑한 배열</td><td><b>문자열 라벨 → 정수 인코딩</b></td></tr>
+      <tr><td>axis</td><td><code>0</code>이면 <b>행 단위</b> 중복 제거</td><td>중복 레코드 제거</td></tr>
+    </table></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">uq = np.array([3, 1, 3, 2, 1])
+print(np.unique(uq))
+
+vals, counts = np.unique(uq, return_counts=True)
+print(vals, counts)
+
+<span class="c"># 실무: 문자열 라벨을 정수로 인코딩</span>
+y = np.array(['dog', 'cat', 'dog', 'bird'])
+classes, encoded = np.unique(y, return_inverse=True)
+print(classes, encoded)
+
+<span class="c"># 실무: 중복 행 제거</span>
+rows = np.array([[1, 2], [3, 4], [1, 2]])
+print(np.unique(rows, axis=0))</pre>
+    <div class="out">[1 2 3]
+[1 2 3] [2 1 2]
+['bird' 'cat' 'dog'] [2 1 2 0]
+[[1 2]
+ [3 4]]</div>
+  </div>
+
+  <div class="fn" data-key="intersect1d union1d setdiff1d 집합연산">
+    <div class="fn-h"><h3>intersect1d · union1d · setdiff1d · setxor1d</h3></div>
+    <div class="tbl-wrap"><table>
+      <tr><th>함수</th><th>집합 연산</th><th>결과</th></tr>
+      <tr><td>np.intersect1d(a, b)</td><td>교집합 A ∩ B</td><td>정렬된 공통 원소</td></tr>
+      <tr><td>np.union1d(a, b)</td><td>합집합 A ∪ B</td><td>정렬된 전체 원소</td></tr>
+      <tr><td>np.setdiff1d(a, b)</td><td>차집합 A − B</td><td>a에만 있는 원소</td></tr>
+      <tr><td>np.setxor1d(a, b)</td><td>대칭차 A △ B</td><td>한쪽에만 있는 원소</td></tr>
+    </table></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">print(np.intersect1d(np.array([1, 2, 3]), np.array([2, 3, 4])))
+print(np.union1d(np.array([1, 2]), np.array([2, 5])))
+print(np.setdiff1d(np.array([1, 2, 3]), np.array([2])))
+
+<span class="c"># 실무: 학습셋에만 있고 테스트셋에 없는 ID 찾기</span>
+train_ids = np.array([101, 102, 103])
+test_ids = np.array([102, 104])
+print(np.setdiff1d(train_ids, test_ids))</pre>
+    <div class="out">[2 3]
+[1 2 5]
+[1 3]
+[101 103]</div>
+  </div>
+</section>
+
+<!-- ============ K. 선형대수 ============ -->
+<section id="k">
+  <div class="sec-h"><span class="key">K</span><h2>선형대수 <span style="font-family:var(--mono);font-size:15px;color:var(--ink3)">np.linalg</span></h2><span class="cnt">12 functions</span></div>
+  <p class="sec-note">최소제곱 회귀, PCA, 추천 시스템의 행렬 분해가 모두 이 모듈에 있습니다. 대부분 마지막 2축을 행렬로 보고 <b>배치 처리</b>를 지원합니다.</p>
+
+  <div class="fn" data-key="linalg inv solve det norm eig svd">
+    <div class="fn-h"><span class="rank">#25</span><h3>np.linalg 핵심 함수</h3></div>
+    <div class="tbl-wrap"><table>
+      <tr><th>함수</th><th>설명</th><th>반환</th></tr>
+      <tr><td>linalg.solve(A, b)</td><td>연립방정식 Ax = b. <b>역행렬보다 빠르고 정확</b></td><td>해 벡터 x</td></tr>
+      <tr><td>linalg.inv(A)</td><td>역행렬</td><td>(n,n) — 특이행렬이면 <code>LinAlgError</code></td></tr>
+      <tr><td>linalg.det(A)</td><td>행렬식</td><td>스칼라</td></tr>
+      <tr><td>linalg.norm(x, ord, axis)</td><td>노름. 기본은 L2</td><td>스칼라 또는 축별 벡터</td></tr>
+      <tr><td>linalg.eig(A)</td><td>고윳값·고유벡터</td><td><code>(w, v)</code> — 복소수일 수 있음</td></tr>
+      <tr><td>linalg.eigh(A)</td><td>대칭/에르미트 행렬 전용 (더 빠르고 실수 보장)</td><td><code>(w, v)</code></td></tr>
+      <tr><td>linalg.svd(A)</td><td>특이값 분해</td><td><code>(U, S, Vt)</code> — PCA·차원 축소</td></tr>
+      <tr><td>linalg.lstsq(A, b)</td><td>최소제곱 해</td><td>과결정 시스템의 회귀</td></tr>
+      <tr><td>linalg.pinv(A)</td><td>무어–펜로즈 유사역행렬</td><td>비정방·특이행렬</td></tr>
+      <tr><td>linalg.matrix_rank(A)</td><td>랭크</td><td>다중공선성 진단</td></tr>
+      <tr><td>linalg.qr / cholesky</td><td>QR · 촐레스키 분해</td><td>수치 안정 해법</td></tr>
+      <tr><td>np.trace / np.diag</td><td>대각합 / 대각 추출·생성</td><td>linalg 밖에 있음</td></tr>
+    </table></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">M = np.array([[4.0, 7.0], [2.0, 6.0]])
+print(np.linalg.inv(M))
+print(np.linalg.det(M))
+
+<span class="c"># 2x + y = 5,  x + 3y = 10  → 권장 방식</span>
+print(np.linalg.solve(np.array([[2., 1.], [1., 3.]]), np.array([5., 10.])))
+
+print(np.linalg.norm(np.array([3.0, 4.0])))     <span class="c"># 유클리드 거리</span>
+print(np.linalg.matrix_rank(np.array([[1, 2], [2, 4]])))   <span class="c"># 선형 종속 → 랭크 1</span>
+print(np.trace(np.array([[1, 2], [3, 4]])), np.diag(np.array([1, 2])))</pre>
+    <div class="out">[[ 0.6 -0.7]
+ [-0.2  0.4]]
+10.000000000000002
+[1. 3.]
+5.0
+1
+5 [[1 0]
+ [0 2]]</div>
+    <div class="warn"><code>inv(A) @ b</code> 대신 <b>항상 <code>solve(A, b)</code></b>를 쓰세요. 역행렬을 명시적으로 구하면 느리고 수치 오차가 커집니다. 행렬식이 <code>10.000000000000002</code>로 나오는 것에서 보듯 부동소수점 오차는 상시 존재합니다.</div>
+  </div>
+</section>
+
+<!-- ============ L. 난수 ============ -->
+<section id="l">
+  <div class="sec-h"><span class="key">L</span><h2>난수 <span style="font-family:var(--mono);font-size:15px;color:var(--ink3)">np.random</span></h2><span class="cnt">12 methods</span></div>
+  <p class="sec-note">NumPy 1.17부터 <b>Generator API</b>가 권장 방식입니다. <code>np.random.seed()</code>는 전역 상태를 건드려 라이브러리 간 간섭이 생기므로 신규 코드에서는 피하세요.</p>
+
+  <div class="fn" data-key="default_rng Generator random integers normal choice shuffle 난수">
+    <div class="fn-h"><span class="rank">#05</span><h3>np.random.default_rng() <span class="dim">— 권장 방식</span></h3></div>
+    <h4>시그니처</h4>
+    <div class="sig">rng = np.random.default_rng(seed=None)
+
+rng.random(size)                      <span class="c"># [0,1) 균등 실수</span>
+rng.integers(low, high=None, size=None, endpoint=False)   <span class="c"># 정수</span>
+rng.normal(loc=0.0, scale=1.0, size=None)                 <span class="c"># 정규분포</span>
+rng.uniform(low=0.0, high=1.0, size=None)
+rng.choice(a, size=None, replace=True, p=None)            <span class="c"># 샘플링</span>
+rng.shuffle(x)                        <span class="c"># 제자리 섞기</span>
+rng.permutation(x)                    <span class="c"># 섞은 사본 반환</span></div>
+    <h4>주요 분포</h4>
+    <div class="tbl-wrap"><table>
+      <tr><th>메소드</th><th>분포</th><th>주 파라미터</th></tr>
+      <tr><td>rng.random(size)</td><td>균등 [0, 1)</td><td>size</td></tr>
+      <tr><td>rng.integers(low, high, size)</td><td>균등 정수. <b>high 미포함</b> (<code>endpoint=True</code>로 변경)</td><td>low, high, endpoint</td></tr>
+      <tr><td>rng.normal(loc, scale, size)</td><td>정규분포</td><td>loc=평균, scale=표준편차</td></tr>
+      <tr><td>rng.choice(a, size, replace, p)</td><td>샘플링</td><td>replace=복원 여부, p=확률 가중치</td></tr>
+      <tr><td>rng.binomial / poisson / exponential</td><td>이항 / 푸아송 / 지수</td><td>각 분포 모수</td></tr>
+    </table></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">rng = np.random.default_rng(42)        <span class="c"># 시드 고정 → 재현 가능</span>
+print(rng.random(3))
+print(rng.integers(0, 10, size=5))
+print(rng.normal(0, 1, 3))
+print(rng.choice(np.array([10, 20, 30]), size=4, replace=True))
+
+p = np.arange(5); rng.shuffle(p); print(p)     <span class="c"># 제자리 섞기</span>
+
+<span class="c"># 실무: 학습/검증 인덱스 분할</span>
+idx = np.random.default_rng(0).permutation(10)
+train_idx, val_idx = idx[:8], idx[8:]
+print(train_idx, val_idx)</pre>
+    <div class="out">[0.77395605 0.43887844 0.85859792]
+[0 6 2 0 5]
+[ 0.1278404  -0.31624259 -0.01680116]
+[30 30 20 20]
+[1 0 2 4 3]
+[4 6 2 7 3 5 9 0] [8 1]</div>
+    <div class="tip">함수마다 <code>rng</code>를 인자로 받게 설계하면 테스트가 쉬워집니다. 전역 시드에 의존하는 코드는 다른 라이브러리가 시드를 건드리는 순간 재현성이 깨집니다.</div>
+  </div>
+
+  <div class="fn" data-key="np.random.seed rand randn randint 레거시">
+    <div class="fn-h"><h3>레거시 API <span class="dim">— 기존 코드 읽기용</span></h3></div>
+    <div class="tbl-wrap"><table>
+      <tr><th>레거시</th><th>Generator 대응</th></tr>
+      <tr><td>np.random.seed(0)</td><td><code>rng = np.random.default_rng(0)</code></td></tr>
+      <tr><td>np.random.rand(3, 2)</td><td><code>rng.random((3, 2))</code></td></tr>
+      <tr><td>np.random.randn(3)</td><td><code>rng.standard_normal(3)</code></td></tr>
+      <tr><td>np.random.randint(0, 10, 5)</td><td><code>rng.integers(0, 10, 5)</code></td></tr>
+      <tr><td>np.random.choice(...)</td><td><code>rng.choice(...)</code></td></tr>
+      <tr><td>np.random.shuffle(x)</td><td><code>rng.shuffle(x)</code></td></tr>
+    </table></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">np.random.seed(0)
+print(np.random.rand(3))
+print(np.random.randint(0, 10, 5))</pre>
+    <div class="out">[0.5488135  0.71518937 0.60276338]
+[3 7 9 3 5]</div>
+    <div class="note"><code>rand</code>/<code>randn</code>은 shape을 <b>가변 인자</b>로 받고(<code>rand(3,2)</code>), Generator 계열은 <b>튜플</b>로 받습니다(<code>rng.random((3,2))</code>). 마이그레이션할 때 가장 자주 걸리는 부분입니다.</div>
+  </div>
+</section>
+
+<!-- ============ M. 입출력 ============ -->
+<section id="m">
+  <div class="sec-h"><span class="key">M</span><h2>입출력</h2><span class="cnt">9 functions</span></div>
+
+  <div class="fn" data-key="save load savez savetxt loadtxt genfromtxt 저장">
+    <div class="fn-h"><h3>np.save / load / savez / savetxt / loadtxt</h3></div>
+    <div class="tbl-wrap"><table>
+      <tr><th>함수</th><th>포맷</th><th>특징</th></tr>
+      <tr><td>np.save(f, arr)</td><td>.npy (바이너리)</td><td>dtype·shape 보존. <b>가장 빠르고 정확</b></td></tr>
+      <tr><td>np.load(f)</td><td>.npy / .npz</td><td>npz는 dict처럼 접근. <code>mmap_mode='r'</code>로 지연 로딩</td></tr>
+      <tr><td>np.savez(f, a=..., b=...)</td><td>.npz</td><td>여러 배열을 이름으로 묶어 저장</td></tr>
+      <tr><td>np.savez_compressed</td><td>.npz (압축)</td><td>희소·반복 데이터에서 용량 대폭 감소</td></tr>
+      <tr><td>np.savetxt(f, arr, delimiter, fmt)</td><td>CSV/TXT</td><td>사람이 읽을 수 있음. 2D까지만</td></tr>
+      <tr><td>np.loadtxt(f, delimiter, skiprows)</td><td>CSV/TXT</td><td>결측치 있으면 실패</td></tr>
+      <tr><td>np.genfromtxt(f, missing_values, filling_values)</td><td>CSV/TXT</td><td>결측치 처리 가능, 대신 느림</td></tr>
+      <tr><td>np.memmap(f, dtype, mode, shape)</td><td>바이너리</td><td>RAM보다 큰 파일을 디스크에서 부분 접근</td></tr>
+    </table></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">np.save('/tmp/x.npy', np.arange(4))
+print(np.load('/tmp/x.npy'))
+
+np.savez('/tmp/xy.npz', a=np.arange(3), b=np.ones(2))
+z = np.load('/tmp/xy.npz')
+print(list(z.keys()), z['a'])
+
+np.savetxt('/tmp/x.csv', np.arange(6).reshape(2, 3), delimiter=',', fmt='%d')
+print(np.loadtxt('/tmp/x.csv', delimiter=','))</pre>
+    <div class="out">[0 1 2 3]
+['a', 'b'] [0 1 2]
+[[0. 1. 2.]
+ [3. 4. 5.]]</div>
+    <div class="warn"><code>np.load</code>에 <code>allow_pickle=True</code>를 주면 <b>임의 코드 실행</b>이 가능해집니다. 신뢰할 수 없는 .npy 파일에는 절대 쓰지 마세요. 기본값이 <code>False</code>인 이유입니다.</div>
+    <div class="tip">중간 산출물은 CSV보다 <code>.npy</code>가 낫습니다. 파싱 비용이 없고 dtype이 보존되며 파일 크기도 작습니다. 표 형태 데이터에 열 이름이 필요하면 그때는 pandas로 넘어갈 때입니다.</div>
+  </div>
+</section>
+
+<!-- ============ N. 레시피 ============ -->
+<section id="n">
+  <div class="sec-h"><span class="key">N</span><h2>실무 레시피</h2><span class="cnt">10 patterns</span></div>
+  <p class="sec-note">앞의 함수들을 조합해 자주 만드는 결과물입니다. 전부 반복문 없이 처리합니다.</p>
+
+  <div class="fn" data-key="원핫 one-hot 인코딩">
+    <div class="fn-h"><h3>① 원-핫 인코딩</h3></div>
+    <div class="viz wide"><svg viewBox="0 0 496 232" style="max-width:496px" xmlns="http://www.w3.org/2000/svg" role="img"><defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" class="ahp"/></marker></defs><g transform="translate(14,99.0)"><rect class="c c-base" x="0" y="0" width="40" height="34" rx="4"/><text class="ct ct-base" x="20.0" y="21.5">0</text><rect class="c c-base" x="44" y="0" width="40" height="34" rx="4"/><text class="ct ct-base" x="64.0" y="21.5">2</text><rect class="c c-base" x="88" y="0" width="40" height="34" rx="4"/><text class="ct ct-base" x="108.0" y="21.5">1</text><rect class="c c-base" x="132" y="0" width="40" height="34" rx="4"/><text class="ct ct-base" x="152.0" y="21.5">2</text><text class="gd" x="86.0" y="52" text-anchor="middle">labels</text></g><line class="ar" x1="210" y1="127.0" x2="316" y2="127.0" marker-end="url(#ah)"/><text class="al" x="263.0" y="119.0" text-anchor="middle">eye(3)[labels]</text><g transform="translate(340,42.0)"><rect class="c c-hl" x="0" y="0" width="40" height="34" rx="4"/><text class="ct ct-hl" x="20.0" y="21.5">1</text><rect class="c c-base" x="44" y="0" width="40" height="34" rx="4"/><text class="ct ct-base" x="64.0" y="21.5">0</text><rect class="c c-base" x="88" y="0" width="40" height="34" rx="4"/><text class="ct ct-base" x="108.0" y="21.5">0</text><rect class="c c-base" x="0" y="38" width="40" height="34" rx="4"/><text class="ct ct-base" x="20.0" y="59.5">0</text><rect class="c c-base" x="44" y="38" width="40" height="34" rx="4"/><text class="ct ct-base" x="64.0" y="59.5">0</text><rect class="c c-hl" x="88" y="38" width="40" height="34" rx="4"/><text class="ct ct-hl" x="108.0" y="59.5">1</text><rect class="c c-base" x="0" y="76" width="40" height="34" rx="4"/><text class="ct ct-base" x="20.0" y="97.5">0</text><rect class="c c-hl" x="44" y="76" width="40" height="34" rx="4"/><text class="ct ct-hl" x="64.0" y="97.5">1</text><rect class="c c-base" x="88" y="76" width="40" height="34" rx="4"/><text class="ct ct-base" x="108.0" y="97.5">0</text><rect class="c c-base" x="0" y="114" width="40" height="34" rx="4"/><text class="ct ct-base" x="20.0" y="135.5">0</text><rect class="c c-base" x="44" y="114" width="40" height="34" rx="4"/><text class="ct ct-base" x="64.0" y="135.5">0</text><rect class="c c-hl" x="88" y="114" width="40" height="34" rx="4"/><text class="ct ct-hl" x="108.0" y="135.5">1</text><text class="gd" x="64.0" y="166" text-anchor="middle">(4, 3) one-hot</text></g></svg></div>
+    <pre class="has-out">labels = np.array([0, 2, 1, 2])
+n_classes = 3
+print(np.eye(n_classes, dtype=int)[labels])</pre>
+    <div class="out">[[1 0 0]
+ [0 0 1]
+ [0 1 0]
+ [0 0 1]]</div>
+    <div class="note">단위행렬의 행을 라벨로 팬시 인덱싱하는 것뿐입니다. 클래스가 아주 많으면 <code>np.zeros((n, k))</code> 후 <code>out[np.arange(n), labels] = 1</code>이 메모리 효율이 좋습니다.</div>
+  </div>
+
+  <div class="fn" data-key="정규화 normalize 표준화 standardize minmax">
+    <div class="fn-h"><h3>② 정규화 · 표준화</h3></div>
+    <pre class="has-out">X = np.array([[1., 100.], [2., 300.], [3., 200.]])
+
+<span class="c"># Min-Max 스케일링 (열 단위)</span>
+print((X - X.min(0)) / (X.max(0) - X.min(0)))
+
+<span class="c"># Z-점수 표준화</span>
+print((X - X.mean(0)) / X.std(0))</pre>
+    <div class="out">[[0.  0. ]
+ [0.5 1. ]
+ [1.  0.5]]
+[[-1.22474487 -1.22474487]
+ [ 0.          1.22474487]
+ [ 1.22474487  0.        ]]</div>
+    <div class="warn">모든 값이 같은 열은 분모가 0이 되어 <code>nan</code>이 됩니다. 실무에서는 <code>denom = np.where(rng_ == 0, 1, rng_)</code>처럼 방어하세요. 그리고 <b>학습셋의 통계로 테스트셋을 변환</b>해야 합니다 — 테스트셋 통계를 쓰면 데이터 누수입니다.</div>
+  </div>
+
+  <div class="fn" data-key="이동평균 moving average convolve">
+    <div class="fn-h"><h3>③ 이동 평균</h3></div>
+    <pre class="has-out">v = np.array([1, 2, 3, 4, 5, 6], dtype=float)
+k = 3
+print(np.convolve(v, np.ones(k) / k, mode='valid'))
+
+<span class="c"># 누적합을 이용한 O(n) 버전 — 윈도우가 커도 빠름</span>
+cs = np.cumsum(np.insert(v, 0, 0))
+print((cs[k:] - cs[:-k]) / k)</pre>
+    <div class="out">[2. 3. 4. 5.]
+[2. 3. 4. 5.]</div>
+  </div>
+
+  <div class="fn" data-key="sliding_window_view 슬라이딩 윈도우">
+    <div class="fn-h"><h3>④ 슬라이딩 윈도우 <span class="dim">복사 없이</span></h3></div>
+    <pre class="has-out">from numpy.lib.stride_tricks import sliding_window_view
+
+x = np.arange(6)
+w = sliding_window_view(x, 3)
+print(w)
+print(w.mean(axis=1))     <span class="c"># 윈도우별 통계를 한 번에</span></pre>
+    <div class="out">[[0 1 2]
+ [1 2 3]
+ [2 3 4]
+ [3 4 5]]
+[1. 2. 3. 4.]</div>
+    <div class="tip">시계열 특징 추출, 이미지 패치 추출에 매우 유용합니다. 반환값은 <b>읽기 전용 뷰</b>라 메모리를 거의 쓰지 않습니다. 다만 여기에 <code>copy()</code>를 하면 원본의 (윈도우 크기)배 메모리가 필요하니 주의하세요.</div>
+  </div>
+
+  <div class="fn" data-key="결측치 처리 nan 대치">
+    <div class="fn-h"><h3>⑤ 결측치 탐지와 대치</h3></div>
+    <pre class="has-out">a = np.array([[1., np.nan, 3.], [4., 5., np.nan]])
+
+print(np.isnan(a).sum(), "개 결측")
+print(np.isnan(a).sum(axis=0), "열별 결측 수")
+
+col_mean = np.nanmean(a, axis=0)
+filled = np.where(np.isnan(a), col_mean, a)     <span class="c"># 열 평균으로 대치</span>
+print(filled)</pre>
+    <div class="out">2 개 결측
+[0 1 1] 열별 결측 수
+[[1. 5. 3.]
+ [4. 5. 3.]]</div>
+  </div>
+
+  <div class="fn" data-key="집계 groupby bincount 그룹별">
+    <div class="fn-h"><h3>⑥ 그룹별 집계 <span class="dim">(pandas 없이)</span></h3></div>
+    <pre class="has-out">groups = np.array([0, 1, 0, 1, 2])
+values = np.array([10., 20., 30., 40., 50.])
+
+counts = np.bincount(groups)
+sums = np.bincount(groups, weights=values)
+print(counts, sums, sums / counts)     <span class="c"># 개수, 합계, 평균</span>
+
+<span class="c"># np.add.at — 인덱스 중복이 있어도 누락 없이 누적</span>
+acc = np.zeros(3)
+np.add.at(acc, groups, values)
+print(acc)</pre>
+    <div class="out">[2 2 1] [40. 60. 50.] [20. 30. 50.]
+[40. 60. 50.]</div>
+    <div class="warn"><code>acc[groups] += values</code>는 <b>중복 인덱스에서 마지막 값만 반영</b>됩니다. 누적이 목적이면 반드시 <code>np.add.at</code>(느리지만 정확) 또는 <code>np.bincount(weights=...)</code>(빠름)를 쓰세요. 조용히 틀린 답을 내는 대표적 함정입니다.</div>
+  </div>
+
+  <div class="fn" data-key="IoU 박스 거리행렬">
+    <div class="fn-h"><h3>⑦ 전체 쌍 거리 행렬</h3></div>
+    <pre class="has-out">P = np.array([[0., 0.], [3., 4.]])          <span class="c"># (2, 2)</span>
+Q = np.array([[0., 0.], [1., 1.], [3., 4.]]) <span class="c"># (3, 2)</span>
+
+D = np.linalg.norm(P[:, None, :] - Q[None, :, :], axis=-1)
+print(D)
+print(D.argmin(axis=1))     <span class="c"># P의 각 점에서 가장 가까운 Q의 인덱스</span></pre>
+    <div class="out">[[0.         1.41421356 5.        ]
+ [5.         3.60555128 0.        ]]
+[0 2]</div>
+    <div class="note">이중 반복문 없이 <code>(2,1,2) - (1,3,2) → (2,3,2)</code> 브로드캐스팅으로 모든 쌍을 만든 뒤 마지막 축으로 노름을 계산합니다. N이 커지면 메모리가 N×M×D로 늘어나니, 대규모에서는 <code>(a²+b²-2ab)</code> 전개형이나 전용 라이브러리를 쓰세요.</div>
+  </div>
+
+  <div class="fn" data-key="구조화배열 structured array 레코드">
+    <div class="fn-h"><h3>⑧ 구조화 배열 <span class="dim">— 열마다 다른 타입</span></h3></div>
+    <pre class="has-out">dt = np.dtype([('name', 'U10'), ('score', 'f4')])
+rec = np.array([('kim', 90.5), ('lee', 78.0)], dtype=dt)
+
+print(rec['name'], rec['score'].mean())
+print(rec[rec['score'] &gt; 80])</pre>
+    <div class="out">['kim' 'lee'] 84.25
+[('kim', 90.5)]</div>
+    <div class="note">간단한 케이스에는 유용하지만, 열 이름이 많고 조인·그룹 연산이 필요하면 pandas가 훨씬 낫습니다. NumPy는 <b>동질적 수치 배열</b>에서 가장 강합니다.</div>
+  </div>
+</section>
+
+<!-- ============ O. 성능/함정 ============ -->
+<section id="o">
+  <div class="sec-h"><span class="key">O</span><h2>성능과 함정</h2></div>
+
+  <div class="fn" data-key="성능 벡터화 속도 vectorize">
+    <div class="fn-h"><h3>왜 벡터화인가</h3></div>
+    <p>같은 계산(원소 100만 개의 제곱합)을 방식만 바꿔 측정한 결과입니다. 반복문을 없애는 것만으로 <b>7배</b>, 전용 BLAS 함수를 쓰면 <b>80배</b>까지 벌어집니다.</p>
+    <div class="viz wide"><svg viewBox="0 0 700 246" style="max-width:700px" xmlns="http://www.w3.org/2000/svg" role="img"><defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" class="ahp"/></marker></defs><text class="rl2" x="16" y="38">파이썬 제너레이터 sum(x*x)</text><rect class="bar b3" x="16" y="44" width="112" height="20" rx="3"/><text class="rn" x="136" y="59">31.9 ms</text><text class="rl2" x="16" y="82">리스트 컴프리헨션</text><rect class="bar b3" x="16" y="88" width="470" height="20" rx="3"/><text class="rn" x="494" y="103">133.8 ms</text><text class="rl2" x="16" y="126">NumPy  (arr*arr).sum()</text><rect class="bar b1" x="16" y="132" width="16" height="20" rx="3"/><text class="rn" x="40" y="147">4.57 ms</text><text class="rl2" x="16" y="170">NumPy  np.dot(arr,arr)</text><rect class="bar b1" x="16" y="176" width="3" height="20" rx="3"/><text class="rn" x="27" y="191">0.4 ms</text><text class="gd" x="16" y="232">원소 100만 개 제곱합 · Python 3.12 / NumPy 2.4.4 · 값이 작을수록 빠름</text></svg></div>
+    <pre class="has-out">import timeit
+<span class="c"># py: sum(x*x for x in pyf)      → 31.9 ms</span>
+<span class="c"># py: [x*x for x in pyf]         → 133.8 ms</span>
+<span class="c"># np: (arr*arr).sum()            → 4.57 ms</span>
+<span class="c"># np: np.dot(arr, arr)           → 0.40 ms  ← BLAS 최적화</span></pre>
+    <div class="tip"><code>np.vectorize</code>는 <b>속도를 위한 도구가 아닙니다.</b> 내부적으로 파이썬 반복문을 돌기 때문에 편의 함수일 뿐입니다. 진짜 속도가 필요하면 ufunc 조합, 브로드캐스팅, 또는 Numba/Cython으로 가세요.</div>
+  </div>
+
+  <div class="fn" data-key="안티패턴 함정 실수">
+    <div class="fn-h"><h3>자주 만나는 함정 체크리스트</h3></div>
+    <div class="tbl-wrap"><table>
+      <tr><th>증상</th><th>원인</th><th>해결</th></tr>
+      <tr><td>원본 배열이 저절로 바뀐다</td><td>슬라이싱은 뷰</td><td><code>.copy()</code> 명시</td></tr>
+      <tr><td>ValueError: could not be broadcast</td><td>뒤쪽 축부터 비교하는 규칙</td><td><code>arr[:, None]</code>으로 축 명시</td></tr>
+      <tr><td>truth value is ambiguous</td><td>배열에 <code>and</code>/<code>if</code> 사용</td><td><code>&amp;</code>, <code>|</code>, <code>.any()</code>, <code>.all()</code></td></tr>
+      <tr><td>결과가 전부 nan</td><td>일반 집계는 nan 전파</td><td><code>nanmean</code> 등 nan 계열</td></tr>
+      <tr><td>정수가 음수로 뒤집힘</td><td>int8/int16 오버플로</td><td>넉넉한 dtype 또는 <code>astype</code></td></tr>
+      <tr><td>큰 값이 조용히 0이 됨</td><td><code>astype(int)</code>의 절삭</td><td><code>np.round().astype(int)</code></td></tr>
+      <tr><td>중복 인덱스 누적이 안 됨</td><td><code>a[idx] += v</code>는 마지막 값만</td><td><code>np.add.at</code> / <code>bincount</code></td></tr>
+      <tr><td>루프가 갈수록 느려짐</td><td>반복문 안의 <code>concatenate</code>/<code>append</code></td><td>리스트에 모아 한 번에</td></tr>
+      <tr><td>메모리가 갑자기 폭발</td><td>중간 배열이 여러 개 생성</td><td>제자리 연산 <code>+=</code>, <code>out=</code> 인자</td></tr>
+      <tr><td>float 비교가 항상 False</td><td>부동소수점 표현</td><td><code>np.isclose</code> / <code>allclose</code></td></tr>
+      <tr><td>reshape이 에러</td><td>전치 후 비연속 메모리</td><td><code>np.ascontiguousarray</code></td></tr>
+      <tr><td>RuntimeWarning: divide by zero</td><td>0 나눗셈·로그(0)</td><td><code>np.errstate</code>로 감싸거나 사전 치환</td></tr>
+    </table></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">with np.errstate(divide='ignore', invalid='ignore'):
+    r = np.array([1.0, 0.0]) / np.array([0.0, 0.0])
+print(r)</pre>
+    <div class="out">[inf nan]</div>
+  </div>
+</section>
+
+<!-- ============ P. 2.0 ============ -->
+<section id="p">
+  <div class="sec-h"><span class="key">P</span><h2>NumPy 2.0 변경점</h2></div>
+  <p class="sec-note">2024년 6월 2.0 릴리스에서 상당수의 별칭이 정리됐습니다. 오래된 코드나 튜토리얼을 그대로 실행하면 <code>AttributeError</code>가 나는 지점들입니다. 아래는 이 문서 작성 환경(2.4.4)에서 실제로 확인한 결과입니다.</p>
+
+  <div class="fn" data-key="numpy2 마이그레이션 deprecated 삭제">
+    <div class="fn-h"><h3>삭제 / 대체된 이름</h3></div>
+    <div class="tbl-wrap"><table>
+      <tr><th>1.x 코드</th><th>2.x</th><th>대체</th></tr>
+      <tr><td>np.float_ / np.complex_</td><td>삭제</td><td><code>np.float64</code> / <code>np.complex128</code></td></tr>
+      <tr><td>np.NaN / np.Inf / np.NAN</td><td>삭제</td><td><code>np.nan</code> / <code>np.inf</code> (소문자)</td></tr>
+      <tr><td>np.in1d</td><td>삭제</td><td><code>np.isin</code></td></tr>
+      <tr><td>np.trapz</td><td>삭제</td><td><code>np.trapezoid</code></td></tr>
+      <tr><td>np.alltrue / np.product / np.cumproduct</td><td>삭제</td><td><code>np.all</code> / <code>np.prod</code> / <code>np.cumprod</code></td></tr>
+      <tr><td>ndarray.ptp()</td><td>메소드 삭제</td><td><code>np.ptp(arr)</code> 함수형</td></tr>
+      <tr><td>np.row_stack</td><td>DeprecationWarning</td><td><code>np.vstack</code></td></tr>
+      <tr><td>np.array(x, copy=False)</td><td><b>의미 변경</b></td><td>복사 회피는 <code>np.asarray(x)</code>. <code>copy=False</code>는 이제 "복사 필요하면 에러"</td></tr>
+      <tr><td>np.unique의 return_inverse shape</td><td>2.0에서 변경 후 2.1에서 재조정</td><td>다차원 입력 시 반환 shape 확인 필요</td></tr>
+    </table></div>
+    <h4>스칼라 출력 표기도 바뀌었습니다</h4>
+    <pre class="has-out"><span class="c"># NumPy 1.x</span>
+print(np.float64(3.0))    <span class="c"># 3.0</span>
+<span class="c"># NumPy 2.x — repr에 타입이 드러남</span>
+repr(np.float64(3.0))     <span class="c"># 'np.float64(3.0)'</span></pre>
+    <div class="out">doctest나 로그 문자열 비교 테스트가 깨질 수 있습니다.
+str()은 그대로 '3.0'이므로 print() 출력은 대부분 영향받지 않습니다.</div>
+    <div class="note">마이그레이션 전에 <code>ruff</code>의 <code>NPY201</code> 규칙이나 공식 <code>numpy.lib.migration</code> 가이드를 돌려보면 대부분 자동으로 잡아냅니다.</div>
+  </div>
+</section>
+
+<!-- ============ Z. 색인 ============ -->
+<section id="z">
+  <div class="sec-h"><span class="key">Z</span><h2>전체 색인</h2><span class="cnt">quick reference</span></div>
+  <p class="sec-note">본문에서 다루지 않은 것까지 포함한 한 장 요약입니다. 인쇄해서 옆에 두고 쓰세요.</p>
+
+  <div class="fn">
+    <h4>생성</h4>
+    <div class="tbl-wrap"><table>
+      <tr><td>array</td><td>시퀀스 → 배열</td><td>asarray</td><td>ndarray면 그대로</td></tr>
+      <tr><td>zeros / ones / full</td><td>상수로 채움</td><td>empty</td><td>초기화 없음(빠름)</td></tr>
+      <tr><td>*_like</td><td>같은 shape·dtype</td><td>copy</td><td>깊은 복사</td></tr>
+      <tr><td>arange</td><td>step 기준 수열</td><td>linspace</td><td>개수 기준 수열</td></tr>
+      <tr><td>logspace / geomspace</td><td>로그·등비 수열</td><td>meshgrid</td><td>격자 좌표</td></tr>
+      <tr><td>eye / identity</td><td>단위행렬</td><td>diag / tri / triu / tril</td><td>대각·삼각행렬</td></tr>
+      <tr><td>fromiter / frombuffer</td><td>이터러블·바이트에서</td><td>fromfunction</td><td>인덱스 함수로 생성</td></tr>
+    </table></div>
+    <h4>형태</h4>
+    <div class="tbl-wrap"><table>
+      <tr><td>reshape</td><td>shape 변경(뷰)</td><td>ravel / flatten</td><td>1D로(뷰 / 복사)</td></tr>
+      <tr><td>transpose / .T</td><td>축 순서 변경</td><td>swapaxes / moveaxis</td><td>특정 축 이동</td></tr>
+      <tr><td>expand_dims / newaxis</td><td>축 추가</td><td>squeeze</td><td>길이 1 축 제거</td></tr>
+      <tr><td>atleast_1d/2d/3d</td><td>최소 차원 보장</td><td>ascontiguousarray</td><td>연속 메모리로</td></tr>
+      <tr><td>broadcast_to</td><td>지정 shape으로 확장(뷰)</td><td>broadcast_shapes</td><td>결과 shape 미리 계산</td></tr>
+    </table></div>
+    <h4>결합 · 분할</h4>
+    <div class="tbl-wrap"><table>
+      <tr><td>concatenate</td><td>기존 축으로 연결</td><td>stack</td><td>새 축으로 쌓기</td></tr>
+      <tr><td>vstack / hstack / dstack</td><td>축 고정 연결</td><td>column_stack</td><td>1D를 열로</td></tr>
+      <tr><td>split / array_split</td><td>분할(균등 / 불균등)</td><td>hsplit / vsplit</td><td>축 고정 분할</td></tr>
+      <tr><td>tile</td><td>블록 반복</td><td>repeat</td><td>원소 반복</td></tr>
+      <tr><td>pad</td><td>가장자리 채움</td><td>append / insert / delete</td><td>전체 복사 발생</td></tr>
+    </table></div>
+    <h4>선택</h4>
+    <div class="tbl-wrap"><table>
+      <tr><td>a[i:j:k]</td><td>기본 슬라이싱(뷰)</td><td>a[mask]</td><td>불리언 선택(복사)</td></tr>
+      <tr><td>a[[i,j]]</td><td>팬시 인덱싱(복사)</td><td>np.ix_</td><td>행×열 블록 선택</td></tr>
+      <tr><td>where</td><td>조건 선택 / 인덱스</td><td>clip</td><td>범위 제한</td></tr>
+      <tr><td>take / put</td><td>축 지정 선택 / 대입</td><td>compress / extract</td><td>조건 추출</td></tr>
+      <tr><td>nonzero / flatnonzero</td><td>참인 위치</td><td>count_nonzero</td><td>참인 개수</td></tr>
+      <tr><td>unravel_index</td><td>평탄 인덱스 → 좌표</td><td>ravel_multi_index</td><td>좌표 → 평탄 인덱스</td></tr>
+    </table></div>
+    <h4>수학</h4>
+    <div class="tbl-wrap"><table>
+      <tr><td>add sub mul div</td><td>원소별 사칙</td><td>dot / matmul / @</td><td>행렬곱</td></tr>
+      <tr><td>sqrt exp log</td><td>기본 초월함수</td><td>sin cos tan arctan2</td><td>삼각함수</td></tr>
+      <tr><td>abs sign power mod</td><td>기초 연산</td><td>round floor ceil trunc</td><td>반올림 계열</td></tr>
+      <tr><td>cumsum / cumprod</td><td>누적</td><td>diff / gradient</td><td>차분 / 미분</td></tr>
+      <tr><td>maximum / minimum</td><td>원소별 최대·최소</td><td>outer / inner / cross</td><td>외적·내적·외적곱</td></tr>
+      <tr><td>einsum</td><td>범용 텐서 축약</td><td>convolve / correlate</td><td>합성곱·상관</td></tr>
+      <tr><td>interp</td><td>1D 선형 보간</td><td>polyfit / polyval</td><td>다항식 적합·평가</td></tr>
+    </table></div>
+    <h4>통계</h4>
+    <div class="tbl-wrap"><table>
+      <tr><td>sum / prod</td><td>합·곱</td><td>mean / average</td><td>평균·가중평균</td></tr>
+      <tr><td>std / var</td><td>표준편차·분산(ddof)</td><td>median / percentile / quantile</td><td>분위수</td></tr>
+      <tr><td>min / max / ptp</td><td>최소·최대·범위</td><td>argmin / argmax</td><td>위치</td></tr>
+      <tr><td>nansum / nanmean / nanstd</td><td>결측 무시</td><td>isnan / isinf / isfinite</td><td>특수값 판정</td></tr>
+      <tr><td>corrcoef / cov</td><td>상관·공분산</td><td>histogram / bincount / digitize</td><td>도수 분포</td></tr>
+    </table></div>
+    <h4>정렬 · 집합 · 논리</h4>
+    <div class="tbl-wrap"><table>
+      <tr><td>sort / argsort / lexsort</td><td>정렬</td><td>partition / argpartition</td><td>Top-K</td></tr>
+      <tr><td>searchsorted</td><td>삽입 위치 탐색</td><td>flip / roll / rot90</td><td>재배치</td></tr>
+      <tr><td>unique</td><td>고유값(+counts/inverse)</td><td>intersect1d / union1d / setdiff1d</td><td>집합 연산</td></tr>
+      <tr><td>all / any</td><td>전체·부분 참</td><td>isclose / allclose / array_equal</td><td>비교</td></tr>
+      <tr><td>isin</td><td>포함 여부</td><td>logical_and / or / not / xor</td><td>불리언 연산</td></tr>
+    </table></div>
+    <h4>선형대수 · 난수 · IO</h4>
+    <div class="tbl-wrap"><table>
+      <tr><td>linalg.solve / inv / det</td><td>연립방정식·역행렬</td><td>linalg.eig / eigh / svd</td><td>분해</td></tr>
+      <tr><td>linalg.norm / matrix_rank</td><td>노름·랭크</td><td>linalg.lstsq / pinv / qr</td><td>최소제곱·유사역행렬</td></tr>
+      <tr><td>default_rng</td><td>Generator 생성</td><td>rng.random / integers / normal</td><td>샘플링</td></tr>
+      <tr><td>rng.choice / shuffle / permutation</td><td>선택·섞기</td><td>fft.fft / fft.ifft</td><td>푸리에 변환</td></tr>
+      <tr><td>save / load / savez</td><td>바이너리 IO</td><td>savetxt / loadtxt / genfromtxt</td><td>텍스트 IO</td></tr>
+      <tr><td>memmap</td><td>대용량 지연 로딩</td><td>set_printoptions</td><td>출력 형식 제어</td></tr>
+    </table></div>
+  </div>
+</section>
+
+</main>
+</div>
+
+<footer>
+  <p><b>검증 환경</b> — NumPy 2.4.4 / Python 3.12.3 / Linux x86-64. 문서에 수록된 예제는 모두 이 환경에서 실행해 출력값을 그대로 옮겼습니다. 난수 예제는 시드를 고정했으나, NumPy 버전에 따라 값이 달라질 수 있습니다.</p>
+  <p><b>참고</b> — <a href="https://numpy.org/doc/stable/">NumPy 공식 문서</a> · <a href="https://numpy.org/doc/stable/numpy_2_0_migration_guide.html">NumPy 2.0 마이그레이션 가이드</a> · 사용 빈도는 GitHub BigQuery 기반 공개 분석(kozikow 2016, Galea 2016)과 실무 큐레이션 자료를 교차 집계한 상대 지수입니다.</p>
+  <p class="copyright">&copy; 2026 AISHIFT. All rights reserved.</p>
+</footer>
+
+<script src="reference.js"></script>
+</body>
+</html>

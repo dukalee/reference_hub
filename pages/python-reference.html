@@ -1,0 +1,1579 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Python 실무 레퍼런스 — 메소드 A to Z</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="reference.css">
+</head>
+<body>
+
+<div class="bar">
+  <div class="bar-in">
+    <a class="home" href="../index.html">← 홈</a>
+    <div class="brand">Python<span>[::]</span>Reference</div>
+    <input id="q" type="search" placeholder="이름으로 찾기 — print, input, for, class, open …" aria-label="함수 검색">
+    <div id="qn" aria-live="polite"></div>
+  </div>
+</div>
+
+<header class="hero">
+  <h1>Python 메소드 사전</h1>
+</header>
+
+<div class="wrap">
+<nav class="toc" aria-label="목차">
+  <ol>
+    <li><a href="#rank"><span class="k">§</span>사용 빈도 랭킹</a></li>
+    <li><a href="#core"><span class="k">§</span>먼저 알아야 할 4가지</a></li>
+    <li><a href="#a"><span class="k">A</span>출력</a></li>
+    <li><a href="#b"><span class="k">B</span>입력</a></li>
+    <li><a href="#c"><span class="k">C</span>연산자</a></li>
+    <li><a href="#d"><span class="k">D</span>조건문</a></li>
+    <li><a href="#e"><span class="k">E</span>반복문</a></li>
+    <li><a href="#f"><span class="k">F</span>문자열</a></li>
+    <li><a href="#g"><span class="k">G</span>리스트</a></li>
+    <li><a href="#h"><span class="k">H</span>튜플</a></li>
+    <li><a href="#i"><span class="k">I</span>딕셔너리</a></li>
+    <li><a href="#j"><span class="k">J</span>세트</a></li>
+    <li><a href="#k"><span class="k">K</span>함수</a></li>
+    <li><a href="#l"><span class="k">L</span>예외 처리</a></li>
+    <li><a href="#m"><span class="k">M</span>파일 입출력</a></li>
+    <li><a href="#n"><span class="k">N</span>클래스·OOP</a></li>
+    <li><a href="#o"><span class="k">O</span>표준 모듈</a></li>
+    <li><a href="#z"><span class="k">Z</span>전체 색인</a></li>
+  </ol>
+</nav>
+
+<main>
+
+<!-- ============ 랭킹 ============ -->
+<section id="rank">
+  <div class="sec-h"><span class="key">§</span><h2>사용 빈도 랭킹 Top 25</h2></div>
+  <p class="sec-note">파이썬 기본 문법 어디서나 튀어나오는 25가지입니다. 이 문서의 카드에는 <span class="rank">#01</span> 같은 배지로 순위를 표시했습니다. 순위는 정밀 측정이 아니라 실무 큐레이션 기준의 상대 지수입니다.</p>
+  <div class="viz wide"><svg viewBox="0 0 700 704" style="max-width:700px" xmlns="http://www.w3.org/2000/svg" role="img"><defs><marker id="ah-rank" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" class="ahp"/></marker></defs><text class="rl" x="150" y="40" text-anchor="end">print()</text><rect class="bar b1" x="162" y="26" width="470" height="19" rx="3"/><text class="rn" x="642" y="40">100</text><text class="rl" x="150" y="66" text-anchor="end">for ... in</text><rect class="bar b1" x="162" y="52" width="451" height="19" rx="3"/><text class="rn" x="623" y="66">96</text><text class="rl" x="150" y="92" text-anchor="end">if / elif / else</text><rect class="bar b1" x="162" y="78" width="437" height="19" rx="3"/><text class="rn" x="609" y="92">93</text><text class="rl" x="150" y="118" text-anchor="end">f-string</text><rect class="bar b1" x="162" y="104" width="423" height="19" rx="3"/><text class="rn" x="595" y="118">90</text><text class="rl" x="150" y="144" text-anchor="end">len()</text><rect class="bar b1" x="162" y="130" width="414" height="19" rx="3"/><text class="rn" x="586" y="144">88</text><text class="rl" x="150" y="170" text-anchor="end">range()</text><rect class="bar b1" x="162" y="156" width="400" height="19" rx="3"/><text class="rn" x="572" y="170">85</text><text class="rl" x="150" y="196" text-anchor="end">input()</text><rect class="bar b1" x="162" y="182" width="390" height="19" rx="3"/><text class="rn" x="562" y="196">83</text><text class="rl" x="150" y="222" text-anchor="end">list.append()</text><rect class="bar b1" x="162" y="208" width="376" height="19" rx="3"/><text class="rn" x="548" y="222">80</text><text class="rl" x="150" y="248" text-anchor="end">dict {}</text><rect class="bar b2" x="162" y="234" width="367" height="19" rx="3"/><text class="rn" x="539" y="248">78</text><text class="rl" x="150" y="274" text-anchor="end">리스트 컴프리헨션</text><rect class="bar b2" x="162" y="260" width="357" height="19" rx="3"/><text class="rn" x="529" y="274">76</text><text class="rl" x="150" y="300" text-anchor="end">def</text><rect class="bar b2" x="162" y="286" width="348" height="19" rx="3"/><text class="rn" x="520" y="300">74</text><text class="rl" x="150" y="326" text-anchor="end">str.split/join</text><rect class="bar b2" x="162" y="312" width="338" height="19" rx="3"/><text class="rn" x="510" y="326">72</text><text class="rl" x="150" y="352" text-anchor="end">while</text><rect class="bar b2" x="162" y="338" width="329" height="19" rx="3"/><text class="rn" x="501" y="352">70</text><text class="rl" x="150" y="378" text-anchor="end">try/except</text><rect class="bar b2" x="162" y="364" width="320" height="19" rx="3"/><text class="rn" x="492" y="378">68</text><text class="rl" x="150" y="404" text-anchor="end">enumerate()</text><rect class="bar b2" x="162" y="390" width="310" height="19" rx="3"/><text class="rn" x="482" y="404">66</text><text class="rl" x="150" y="430" text-anchor="end">class</text><rect class="bar b2" x="162" y="416" width="301" height="19" rx="3"/><text class="rn" x="473" y="430">64</text><text class="rl" x="150" y="456" text-anchor="end">with ... as (open)</text><rect class="bar b2" x="162" y="442" width="291" height="19" rx="3"/><text class="rn" x="463" y="456">62</text><text class="rl" x="150" y="482" text-anchor="end">비교·논리 연산자</text><rect class="bar b2" x="162" y="468" width="282" height="19" rx="3"/><text class="rn" x="454" y="482">60</text><text class="rl" x="150" y="508" text-anchor="end">zip()</text><rect class="bar b2" x="162" y="494" width="273" height="19" rx="3"/><text class="rn" x="445" y="508">58</text><text class="rl" x="150" y="534" text-anchor="end">dict.get()</text><rect class="bar b2" x="162" y="520" width="263" height="19" rx="3"/><text class="rn" x="435" y="534">56</text><text class="rl" x="150" y="560" text-anchor="end">*args/**kwargs</text><rect class="bar b3" x="162" y="546" width="254" height="19" rx="3"/><text class="rn" x="426" y="560">54</text><text class="rl" x="150" y="586" text-anchor="end">튜플 언패킹</text><rect class="bar b3" x="162" y="572" width="244" height="19" rx="3"/><text class="rn" x="416" y="586">52</text><text class="rl" x="150" y="612" text-anchor="end">슬라이싱 [a:b:c]</text><rect class="bar b3" x="162" y="598" width="235" height="19" rx="3"/><text class="rn" x="407" y="612">50</text><text class="rl" x="150" y="638" text-anchor="end">set 연산</text><rect class="bar b3" x="162" y="624" width="226" height="19" rx="3"/><text class="rn" x="398" y="638">48</text><text class="rl" x="150" y="664" text-anchor="end">match/case</text><rect class="bar b3" x="162" y="650" width="216" height="19" rx="3"/><text class="rn" x="388" y="664">46</text><text class="gt" x="20" y="14">상대 사용 빈도 지수 (100 = 최상위)</text></svg></div>
+</section>
+
+<!-- ============ 핵심 개념 ============ -->
+<section id="core">
+  <div class="sec-h"><span class="key">§</span><h2>먼저 알아야 할 4가지</h2></div>
+  <p class="sec-note">개별 함수·문법을 외우기 전에 이 네 가지를 이해하면 파이썬에서 나는 버그의 상당수가 예측 가능해집니다.</p>
+
+  <div class="fn">
+    <div class="fn-h"><h3>① 가변(mutable)과 불변(immutable) — 변수는 상자가 아니라 이름표</h3></div>
+    <p>파이썬 변수는 값을 담는 상자가 아니라 객체에 붙은 <b>이름표(참조)</b>입니다. <code>b = a</code>는 값을 복사하는 게 아니라 <b>같은 객체</b>에 이름표 하나를 더 붙이는 것입니다. list·dict·set은 <b>가변</b>이라 한쪽에서 수정하면 다른 이름표로도 그 변화가 보이고, int·str·tuple·frozenset은 <b>불변</b>이라 이런 일이 없습니다.</p>
+    <div class="viz wide"><svg viewBox="0 0 660 170" style="max-width:660px" xmlns="http://www.w3.org/2000/svg" role="img"><defs><marker id="ah-core1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" class="ahp"/></marker></defs><rect class="c c-base" x="30" y="40" width="70" height="34" rx="4"/><text class="ct" x="65" y="61.5">a</text><rect class="c c-base" x="30" y="96" width="70" height="34" rx="4"/><text class="ct" x="65" y="117.5">b</text><rect class="c c-acc" x="260" y="60" width="180" height="46" rx="4"/><text class="ct ct-acc" x="350" y="87.5">[1, 2, 3]</text><line class="ar" x1="100" y1="57" x2="256" y2="78" marker-end="url(#ah-core1)"/><line class="ar" x1="100" y1="113" x2="256" y2="90" marker-end="url(#ah-core1)"/><text class="gt" x="30" y="20">a = [1, 2, 3]  ·  b = a  →  같은 리스트 객체를 함께 참조</text><text class="gd" x="260" y="138">b.append(4) 하면 a도 [1, 2, 3, 4]가 된다 — 복사본이 아니라 같은 객체이므로</text></svg></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">a = [<span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span>]
+b = a                 <span class="c"># 복사가 아니라 같은 객체를 가리킴</span>
+b.append(<span class="n">4</span>)
+<span class="k">print</span>(a, a <span class="k">is</span> b)      <span class="c"># a도 바뀐다</span>
+
+c = a.copy()           <span class="c"># 얕은 복사 → 새 리스트</span>
+c.append(<span class="n">99</span>)
+<span class="k">print</span>(a, c)</pre>
+    <div class="out">[1, 2, 3, 4] True
+[1, 2, 3, 4] [1, 2, 3, 4, 99]</div>
+    <div class="warn">함수 인자로 리스트·딕셔너리를 넘기면 함수 안에서 수정할 때 <b>호출자의 객체까지 바뀝니다</b>. 원본을 보존하려면 <code>list(x)</code>, <code>x.copy()</code>, 또는 중첩 구조라면 <code>copy.deepcopy(x)</code>로 명시적으로 복사하세요.</div>
+  </div>
+
+  <div class="fn">
+    <div class="fn-h"><h3>② Truthy / Falsy — if는 bool()로 변환해서 판단한다</h3></div>
+    <p><code>if x:</code>는 내부적으로 <code>bool(x)</code>를 계산합니다. <b>비어 있으면 False, 채워져 있으면 True</b>가 기본 규칙입니다. 명시적으로 <code>bool</code> 타입이 아니어도 조건문에 바로 쓸 수 있습니다.</p>
+    <div class="tbl-wrap"><table>
+      <tr><th>Falsy로 취급되는 값</th><th>Truthy로 취급되는 값</th></tr>
+      <tr><td><code>False</code>, <code>None</code>, <code>0</code>, <code>0.0</code></td><td>0이 아닌 모든 숫자</td></tr>
+      <tr><td><code>""</code>, <code>[]</code>, <code>{}</code>, <code>set()</code>, <code>()</code></td><td>원소가 하나라도 있는 컨테이너</td></tr>
+      <tr><td><code>__bool__</code>이 False를 반환하는 커스텀 객체</td><td>그 외 대부분의 객체 (기본값 True)</td></tr>
+    </table></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">items = []
+<span class="k">if</span> items:
+    <span class="k">print</span>(<span class="s">"has items"</span>)
+<span class="k">else</span>:
+    <span class="k">print</span>(<span class="s">"empty"</span>)
+
+name = <span class="s">""</span>
+<span class="k">print</span>(name <span class="k">or</span> <span class="s">"이름 없음"</span>)   <span class="c"># falsy면 오른쪽 값을 채택</span>
+<span class="k">print</span>(<span class="k">bool</span>([<span class="n">0</span>]), <span class="k">bool</span>(<span class="n">0</span>))     <span class="c"># [0]은 원소가 있으므로 True</span></pre>
+    <div class="out">empty
+이름 없음
+True False</div>
+    <div class="tip"><code>if len(items) == 0:</code>보다 <code>if not items:</code>가 더 파이썬다운(pythonic) 표현입니다. 다만 <code>0</code>과 <code>None</code>을 구분해야 하는 상황(설정값이 0일 수도 있는 경우)에서는 <code>if x is None:</code>처럼 명시적으로 비교하세요.</div>
+  </div>
+
+  <div class="fn">
+    <div class="fn-h"><h3>③ 이터러블과 이터레이터 — for는 내부적으로 어떻게 도는가</h3></div>
+    <p><b>이터러블</b>은 <code>for</code>로 순회할 수 있는 모든 것(list, dict, str, range …)이고, <b>이터레이터</b>는 <code>next()</code>로 하나씩 값을 꺼낼 수 있는 상태를 가진 객체입니다. list는 이터러블이지만 이터레이터는 아닙니다 — <code>iter(list)</code>를 호출해야 이터레이터가 나옵니다. <code>for</code>문은 이 변환과 <code>next()</code> 호출을 자동으로 반복합니다.</p>
+    <div class="viz"><svg viewBox="0 0 420 130" style="max-width:420px" xmlns="http://www.w3.org/2000/svg" role="img"><rect class="c c-ghost" x="10" y="10" width="400" height="110" rx="8"/><text class="gd" x="24" y="30">Iterable (for로 순회 가능)</text><rect class="c c-base" x="30" y="42" width="340" height="60" rx="6"/><text class="gd" x="44" y="60">Iterator (next() 가능, __next__ 보유)</text><rect class="c c-acc" x="50" y="68" width="150" height="28" rx="6"/><text class="ct ct-acc" x="125" y="87">list, dict, str …</text></svg></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">nums = [<span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span>]
+it = <span class="k">iter</span>(nums)        <span class="c"># 리스트 → 이터레이터</span>
+<span class="k">print</span>(<span class="k">next</span>(it), <span class="k">next</span>(it))
+<span class="k">print</span>(<span class="k">hasattr</span>(nums, <span class="s">'__next__'</span>), <span class="k">hasattr</span>(it, <span class="s">'__next__'</span>))
+
+<span class="c"># for 문은 사실 이렇게 동작한다</span>
+it2 = <span class="k">iter</span>(nums)
+<span class="k">while</span> <span class="k">True</span>:
+    <span class="k">try</span>:
+        v = <span class="k">next</span>(it2)
+    <span class="k">except</span> StopIteration:
+        <span class="k">break</span>
+    <span class="k">print</span>(v)</pre>
+    <div class="out">1 2
+False True
+1
+2
+3</div>
+    <div class="note">이터레이터는 <b>한 번 소진하면 다시 되감을 수 없습니다</b>. <code>list(it)</code>로 이미 다 꺼낸 이터레이터를 다시 순회하면 빈 결과가 나옵니다. 여러 번 순회해야 한다면 리스트로 변환해 보관하거나, 매번 새로 <code>iter()</code>를 호출하세요.</div>
+  </div>
+
+  <div class="fn">
+    <div class="fn-h"><h3>④ 이름 공간과 스코프 — LEGB 규칙</h3></div>
+    <p>변수 이름을 찾을 때 파이썬은 <b>Local → Enclosing → Global → Built-in</b> 순서로 바깥쪽을 탐색합니다. 함수 안에서 <code>=</code>로 대입하면 기본적으로 그 스코프에 <b>새 지역 변수</b>가 생기며, 바깥 변수를 수정하려면 <code>global</code> 또는 <code>nonlocal</code>을 명시해야 합니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">x = <span class="s">"전역"</span>
+
+<span class="k">def</span> outer():
+    x = <span class="s">"enclosing"</span>
+    <span class="k">def</span> inner():
+        x = <span class="s">"지역"</span>       <span class="c"># 새 지역 변수 (바깥 x와 무관)</span>
+        <span class="k">print</span>(<span class="s">"inner:"</span>, x)
+    inner()
+    <span class="k">print</span>(<span class="s">"outer:"</span>, x)
+
+outer()
+<span class="k">print</span>(<span class="s">"모듈:"</span>, x)
+
+count = <span class="n">0</span>
+<span class="k">def</span> bump():
+    <span class="k">global</span> count
+    count += <span class="n">1</span>
+bump(); bump()
+<span class="k">print</span>(count)</pre>
+    <div class="out">inner: 지역
+outer: enclosing
+모듈: 전역
+2</div>
+    <div class="warn">함수 안에서 바깥 변수에 <b>값을 읽기만</b> 하면 <code>global</code> 없이도 접근됩니다. 문제는 <b>대입하는 순간</b>입니다 — <code>count += 1</code>처럼 읽고 쓰는 연산은 "지역 변수 count가 정의되기 전에 참조됨"이라는 <code>UnboundLocalError</code>를 냅니다. 바깥 변수를 재할당하려면 반드시 <code>global</code>/<code>nonlocal</code>을 선언하세요.</div>
+  </div>
+</section>
+
+<!-- ============ A. 출력 ============ -->
+<section id="a">
+  <div class="sec-h"><span class="key">A</span><h2>출력</h2><span class="cnt">4 topics</span></div>
+  <p class="sec-note">표준 출력으로 값을 내보내는 문법입니다. 디버깅부터 로그, 사용자에게 보여줄 결과까지 전부 여기서 시작합니다.</p>
+
+  <div class="fn" data-key="print 출력 print()">
+    <div class="fn-h"><span class="rank">#01</span><h3>print()</h3></div>
+    <p>표준 출력으로 값을 내보냅니다. 파이썬에서 가장 많이 타이핑하는 함수입니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig">print(*objects, sep=' ', end='\n', file=sys.stdout, flush=False)</div>
+    <h4>파라미터</h4>
+    <div class="tbl-wrap"><table>
+      <tr><th>파라미터</th><th>설명</th><th>기본값</th></tr>
+      <tr><td>*objects</td><td>출력할 값(들). 여러 개면 sep로 이어붙임</td><td>—</td></tr>
+      <tr><td>sep</td><td>여러 값 사이 구분자</td><td><code>' '</code></td></tr>
+      <tr><td>end</td><td>맨 끝에 붙는 문자</td><td><code>'\n'</code></td></tr>
+      <tr><td>flush</td><td>버퍼를 즉시 비울지 여부 (진행률 표시 등에 필요)</td><td><code>False</code></td></tr>
+    </table></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out"><span class="k">print</span>(<span class="s">"a"</span>, <span class="s">"b"</span>, <span class="s">"c"</span>)
+<span class="k">print</span>(<span class="s">"a"</span>, <span class="s">"b"</span>, <span class="s">"c"</span>, sep=<span class="s">"-"</span>)
+<span class="k">print</span>(<span class="s">"진행 중"</span>, end=<span class="s">""</span>)
+<span class="k">print</span>(<span class="s">"..."</span>)
+<span class="k">print</span>(f<span class="s">"결과: {1 + 2}"</span>)</pre>
+    <div class="out">a b c
+a-b-c
+진행 중...
+결과: 3</div>
+  </div>
+
+  <div class="fn" data-key="f-string 포맷팅 fstring format">
+    <div class="fn-h"><span class="rank">#04</span><h3>f"{ }" (f-string)</h3><span class="tag new">3.6+</span></div>
+    <p>문자열 안에 표현식을 직접 끼워 넣는 포맷팅 구문입니다. <code>%</code> 포맷팅이나 <code>str.format()</code>보다 빠르고 읽기 쉬워 사실상 표준이 됐습니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig">f"...{expr}...{expr!r}...{expr:format_spec}..."</div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">name, age = <span class="s">"지민"</span>, <span class="n">27</span>
+<span class="k">print</span>(f<span class="s">"{name}는 {age}살입니다"</span>)
+<span class="k">print</span>(f<span class="s">"{3.14159:.2f}"</span>)           <span class="c"># 소수점 2자리</span>
+<span class="k">print</span>(f<span class="s">"{42:04d}"</span>)                <span class="c"># 0으로 4자리 채움</span>
+<span class="k">print</span>(f<span class="s">"{'hi':&gt;10}|"</span>)             <span class="c"># 오른쪽 정렬, 폭 10</span>
+x = <span class="n">5</span>
+<span class="k">print</span>(f<span class="s">"{x=}"</span>)                    <span class="c"># 3.8+: 변수명=값 동시 출력</span></pre>
+    <div class="out">지민는 27살입니다
+3.14
+0042
+        hi|
+x=5</div>
+    <div class="tip">중괄호 자체를 출력하려면 <code>{{</code>, <code>}}</code>로 이스케이프하세요. 포맷 스펙(<code>:.2f</code>, <code>:&gt;10</code> 등)은 <code>str.format()</code>과 동일한 미니 언어를 공유합니다.</div>
+  </div>
+
+  <div class="fn" data-key="format spec 포맷 스펙 정렬 자릿수 천단위">
+    <div class="fn-h"><h3>포맷 스펙 — 정렬·자릿수·천단위</h3></div>
+    <p>f-string/<code>format()</code>의 <code>:</code> 뒤에 오는 미니 언어로 정렬, 자릿수, 천단위 구분, 퍼센트 표시를 지정합니다.</p>
+    <div class="tbl-wrap"><table>
+      <tr><th>스펙</th><th>의미</th><th>예</th></tr>
+      <tr><td>.2f</td><td>소수점 이하 2자리</td><td><code>3.14</code></td></tr>
+      <tr><td>,</td><td>천단위 콤마 구분</td><td><code>1,234,567</code></td></tr>
+      <tr><td>&gt;10 / &lt;10 / ^10</td><td>오른쪽/왼쪽/가운데 정렬, 폭 10</td><td><code>"   hi"</code></td></tr>
+      <tr><td>0Nd</td><td>정수를 0으로 N자리 채움</td><td><code>0042</code></td></tr>
+      <tr><td>.1%</td><td>백분율(소수점 1자리)</td><td><code>85.0%</code></td></tr>
+    </table></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">value = <span class="n">1234567.891</span>
+<span class="k">print</span>(f<span class="s">"{value:,.2f}"</span>)
+<span class="k">print</span>(f<span class="s">"{value:&gt;15,.1f}"</span>)
+<span class="k">print</span>(f<span class="s">"{0.85:.1%}"</span>)</pre>
+    <div class="out">1,234,567.89
+    1,234,567.9
+85.0%</div>
+  </div>
+
+  <div class="fn" data-key="print sep unpacking 언패킹 출력 여러줄">
+    <div class="fn-h"><h3>여러 값을 한 번에 출력하기 (*리스트, sep)</h3></div>
+    <p><code>print(*iterable)</code>로 리스트·튜플을 언패킹해 넘기면 각 원소가 개별 인자로 출력됩니다. <code>sep="\n"</code>과 조합하면 줄바꿈 출력도 <code>for</code>문 없이 한 줄로 가능합니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">items = [<span class="s">"a"</span>, <span class="s">"b"</span>, <span class="s">"c"</span>]
+<span class="k">print</span>(*items, sep=<span class="s">"\n"</span>)
+<span class="k">print</span>(*items)</pre>
+    <div class="out">a
+b
+c
+a b c</div>
+  </div>
+</section>
+
+<!-- ============ B. 입력 ============ -->
+<section id="b">
+  <div class="sec-h"><span class="key">B</span><h2>입력</h2><span class="cnt">4 topics</span></div>
+  <p class="sec-note"><code>input()</code>은 항상 <b>문자열</b>을 반환합니다. 숫자로 쓰려면 반드시 형변환을 거쳐야 합니다.</p>
+
+  <div class="fn" data-key="input 입력 input()">
+    <div class="fn-h"><span class="rank">#07</span><h3>input()</h3></div>
+    <p>표준 입력에서 한 줄을 읽어 <b>문자열</b>로 반환합니다. 프롬프트 문자열을 인자로 주면 입력을 받기 전에 출력됩니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig">input(prompt='') -> str</div>
+    <h4>예시 코드</h4>
+    <pre class="has-out"><span class="c"># 실행 시 "이름을 입력하세요: " 뒤에 사용자가 "지민"을 입력했다고 가정</span>
+name = <span class="k">input</span>(<span class="s">"이름을 입력하세요: "</span>)
+<span class="k">print</span>(f<span class="s">"안녕하세요, {name}님"</span>)</pre>
+    <div class="out">이름을 입력하세요: 지민
+안녕하세요, 지민님</div>
+    <div class="note">개행 문자는 자동으로 제거된 상태로 반환됩니다. 앞뒤 공백까지 신경 써야 한다면 <code>input().strip()</code>을 습관화하세요.</div>
+  </div>
+
+  <div class="fn" data-key="input int float 형변환 입력값 변환">
+    <div class="fn-h"><h3>입력값 형변환 — int() / float()</h3></div>
+    <p><code>input()</code>의 결과는 항상 문자열이므로 숫자 연산을 하려면 <code>int()</code>·<code>float()</code>로 명시적으로 변환해야 합니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out"><span class="c"># "27" 입력 가정</span>
+age_str = <span class="k">input</span>(<span class="s">"나이: "</span>)
+age = <span class="k">int</span>(age_str)
+<span class="k">print</span>(age + <span class="n">1</span>, <span class="k">type</span>(age))</pre>
+    <div class="out">나이: 27
+28 &lt;class 'int'&gt;</div>
+    <div class="warn">숫자가 아닌 문자열을 <code>int()</code>에 넘기면 <code>ValueError</code>가 발생합니다. 사용자 입력을 다룰 때는 <code>try/except ValueError</code>로 감싸는 것이 안전합니다 — §L 참고.</div>
+  </div>
+
+  <div class="fn" data-key="input split 여러값 한줄입력 파싱">
+    <div class="fn-h"><h3>한 줄에 여러 값 입력받기 — split()</h3></div>
+    <p>공백으로 구분된 여러 값을 한 줄로 받을 때 <code>split()</code> 후 <code>map()</code>으로 한 번에 변환하는 것이 표준 관용구입니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out"><span class="c"># "3 5" 입력 가정</span>
+line = <span class="k">input</span>(<span class="s">"숫자 두 개를 공백으로 구분해 입력: "</span>)
+a, b = <span class="k">map</span>(<span class="k">int</span>, line.split())
+<span class="k">print</span>(a + b)</pre>
+    <div class="out">숫자 두 개를 공백으로 구분해 입력: 3 5
+8</div>
+  </div>
+
+  <div class="fn" data-key="sys.stdin 대량입력 빠른입력">
+    <div class="fn-h"><h3>sys.stdin — 여러 줄·대량 입력 읽기</h3></div>
+    <p>입력 줄 수가 많을 때 <code>input()</code>을 반복 호출하면 느려질 수 있어, <code>sys.stdin</code>에서 한 번에 읽어 나누는 방식을 씁니다. 여기서는 재현 가능하도록 <code>io.StringIO</code>로 표준입력을 흉내 냅니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out"><span class="k">import</span> sys, io
+
+<span class="c"># 데모용: 실제 실행 시엔 진짜 표준입력을 사용</span>
+sys.stdin = io.StringIO(<span class="s">"10 20 30 40\n"</span>)
+
+data = sys.stdin.read().split()
+nums = <span class="k">list</span>(<span class="k">map</span>(<span class="k">int</span>, data))
+<span class="k">print</span>(<span class="k">sum</span>(nums))</pre>
+    <div class="out">100</div>
+    <div class="tip">코딩테스트 등에서 입력 줄 수가 수만 줄을 넘어가면 <code>sys.stdin.readline()</code>이 <code>input()</code>보다 훨씬 빠릅니다. 다만 개행 문자(<code>\n</code>)가 남아있으니 <code>.strip()</code>이 필요할 수 있습니다.</div>
+  </div>
+</section>
+
+<!-- ============ C. 연산자 ============ -->
+<section id="c">
+  <div class="sec-h"><span class="key">C</span><h2>연산자</h2><span class="cnt">5 topics</span></div>
+  <p class="sec-note">값을 계산·비교·조합하는 기호들입니다.</p>
+
+  <div class="fn" data-key="산술연산자 arithmetic + - * / // % **">
+    <div class="fn-h"><h3>산술 연산자 (+ - * / // % **)</h3></div>
+    <p><code>/</code>는 항상 <b>실수(float)</b>를 반환하고, <code>//</code>는 <b>몫만 정수로 내림</b>합니다. <code>%</code>는 나머지, <code>**</code>는 거듭제곱입니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out"><span class="k">print</span>(<span class="n">7</span> + <span class="n">3</span>, <span class="n">7</span> - <span class="n">3</span>, <span class="n">7</span> * <span class="n">3</span>)
+<span class="k">print</span>(<span class="n">7</span> / <span class="n">3</span>)       <span class="c"># 실수 나눗셈 — 항상 float</span>
+<span class="k">print</span>(<span class="n">7</span> // <span class="n">3</span>)      <span class="c"># 몫 — 내림 정수</span>
+<span class="k">print</span>(<span class="n">7</span> % <span class="n">3</span>)       <span class="c"># 나머지</span>
+<span class="k">print</span>(<span class="n">2</span> ** <span class="n">10</span>)     <span class="c"># 거듭제곱</span>
+<span class="k">print</span>(-<span class="n">7</span> // <span class="n">2</span>)    <span class="c"># 음수는 0쪽이 아니라 음의 무한대 방향으로 내림</span></pre>
+    <div class="out">10 4 21
+2.3333333333333335
+2
+1
+1024
+-4</div>
+    <div class="warn"><code>-7 // 2</code>는 <code>-3</code>이 아니라 <code>-4</code>입니다. 파이썬의 <code>//</code>는 0을 향해 내림(truncate)하지 않고 <b>더 작은 정수 방향</b>으로 내림합니다. C/자바의 정수 나눗셈과 다르니 음수를 다룰 때 주의하세요.</div>
+  </div>
+
+  <div class="fn" data-key="비교연산자 논리연산자 comparison logical and or not">
+    <div class="fn-h"><span class="rank">#18</span><h3>비교·논리 연산자 (== &lt; and or not)</h3></div>
+    <p>비교 연산자는 <code>bool</code>을 반환하며 <b>체이닝</b>이 가능합니다(<code>1 &lt; 2 &lt; 3</code>). <code>and</code>/<code>or</code>는 C의 <code>&amp;&amp;</code>/<code>||</code>와 달리 <b>피연산자 값 자체</b>를 반환합니다(단축 평가).</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out"><span class="k">print</span>(<span class="n">3</span> &lt; <span class="n">5</span>, <span class="n">3</span> == <span class="n">3.0</span>, <span class="n">3</span> != <span class="n">4</span>)
+<span class="k">print</span>(<span class="n">1</span> &lt; <span class="n">2</span> &lt; <span class="n">3</span>)              <span class="c"># 체이닝 비교 — 1&lt;2 and 2&lt;3 과 동일</span>
+<span class="k">print</span>(<span class="k">True</span> <span class="k">and</span> <span class="k">False</span>, <span class="k">True</span> <span class="k">or</span> <span class="k">False</span>, <span class="k">not</span> <span class="k">True</span>)
+x = <span class="n">5</span>
+<span class="k">print</span>(<span class="n">0</span> &lt; x &lt; <span class="n">10</span> <span class="k">and</span> x % <span class="n">2</span> == <span class="n">1</span>)</pre>
+    <div class="out">True True True
+True
+False True False
+True</div>
+    <div class="tip"><code>a or default</code>는 <code>a</code>가 falsy일 때 <code>default</code>를 채택하는 흔한 관용구입니다(§core②). <code>a and b</code>는 <code>a</code>가 falsy면 <code>b</code>를 평가조차 하지 않는 <b>단축 평가</b>라, <code>x and x.value</code>처럼 <code>None</code> 체크 겸용으로도 쓰입니다.</div>
+  </div>
+
+  <div class="fn" data-key="비트연산자 bitwise and or xor shift">
+    <div class="fn-h"><h3>비트 연산자 (&amp; | ^ ~ &lt;&lt; &gt;&gt;)</h3></div>
+    <p>정수를 이진수로 다룰 때 쓰는 연산자입니다. 플래그 조합, 저수준 최적화 등 한정된 상황에서 등장합니다.</p>
+    <div class="tbl-wrap"><table>
+      <tr><th>연산자</th><th>의미</th></tr>
+      <tr><td>&amp;</td><td>AND — 둘 다 1인 비트만 1</td></tr>
+      <tr><td>|</td><td>OR — 하나라도 1이면 1</td></tr>
+      <tr><td>^</td><td>XOR — 서로 다르면 1</td></tr>
+      <tr><td>~</td><td>NOT — 비트 반전 (<code>~x == -x-1</code>)</td></tr>
+      <tr><td>&lt;&lt; / &gt;&gt;</td><td>왼쪽/오른쪽 시프트</td></tr>
+    </table></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">a, b = <span class="n">0b1010</span>, <span class="n">0b0110</span>   <span class="c"># 10, 6</span>
+<span class="k">print</span>(a &amp; b, a | b, a ^ b, ~a)
+<span class="k">print</span>(a &lt;&lt; <span class="n">2</span>, a &gt;&gt; <span class="n">1</span>)</pre>
+    <div class="out">2 14 12 -11
+40 5</div>
+  </div>
+
+  <div class="fn" data-key="대입연산자 왈러스 assignment walrus :=">
+    <div class="fn-h"><h3>대입 연산자와 왈러스(:=)</h3><span class="tag new">3.8+</span></div>
+    <p><code>+=</code>, <code>*=</code> 같은 복합 대입 연산자는 <code>x = x + 3</code>의 축약형입니다. <b>왈러스 연산자</b>(<code>:=</code>)는 표현식 안에서 값을 대입하면서 동시에 그 값을 반환합니다 — 조건 검사와 변수 저장을 한 번에 합니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">x = <span class="n">5</span>
+x += <span class="n">3</span>
+x *= <span class="n">2</span>
+<span class="k">print</span>(x)
+
+data = [<span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span>, <span class="n">4</span>, <span class="n">5</span>]
+<span class="k">if</span> (n := <span class="k">len</span>(data)) &gt; <span class="n">3</span>:
+    <span class="k">print</span>(f<span class="s">"길이가 {n}이라 3보다 큽니다"</span>)</pre>
+    <div class="out">16
+길이가 5이라 3보다 큽니다</div>
+  </div>
+
+  <div class="fn" data-key="삼항표현식 ternary conditional expression">
+    <div class="fn-h"><h3>삼항 표현식 (X if 조건 else Y)</h3></div>
+    <p>간단한 조건에 따라 값을 고를 때 <code>if</code> 블록 4줄 대신 한 줄로 표현합니다. 값을 만드는 <b>표현식</b>이지, <code>if</code>문을 대체하는 것은 아닙니다(복잡한 로직에는 부적합).</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">x = <span class="n">5</span>
+label = <span class="s">"짝수"</span> <span class="k">if</span> x % <span class="n">2</span> == <span class="n">0</span> <span class="k">else</span> <span class="s">"홀수"</span>
+<span class="k">print</span>(label)
+
+nums = [<span class="n">3</span>, -<span class="n">1</span>, <span class="n">7</span>]
+abs_vals = [n <span class="k">if</span> n &gt;= <span class="n">0</span> <span class="k">else</span> -n <span class="k">for</span> n <span class="k">in</span> nums]
+<span class="k">print</span>(abs_vals)</pre>
+    <div class="out">홀수
+[3, 1, 7]</div>
+    <div class="warn">삼항 표현식을 중첩(<code>a if c1 else b if c2 else c</code>)하면 순식간에 읽기 어려워집니다. 두 단계를 넘어서면 일반 <code>if/elif/else</code>로 풀어 쓰세요.</div>
+  </div>
+</section>
+
+<!-- ============ D. 조건문 ============ -->
+<section id="d">
+  <div class="sec-h"><span class="key">D</span><h2>조건문</h2><span class="cnt">2 topics</span></div>
+  <p class="sec-note">중괄호 대신 <b>들여쓰기</b>로 블록을 구분하는 파이썬의 분기 문법입니다.</p>
+
+  <div class="fn" data-key="if elif else 조건문">
+    <div class="fn-h"><span class="rank">#03</span><h3>if / elif / else</h3></div>
+    <p>조건은 위에서부터 순서대로 검사되며 <b>처음 참인 분기만</b> 실행됩니다. <code>elif</code>는 몇 개든 이어 붙일 수 있고, <code>else</code>는 어떤 조건도 참이 아닐 때 실행됩니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out"><span class="k">def</span> grade(score):
+    <span class="k">if</span> score &gt;= <span class="n">90</span>:
+        <span class="k">return</span> <span class="s">"A"</span>
+    <span class="k">elif</span> score &gt;= <span class="n">80</span>:
+        <span class="k">return</span> <span class="s">"B"</span>
+    <span class="k">elif</span> score &gt;= <span class="n">70</span>:
+        <span class="k">return</span> <span class="s">"C"</span>
+    <span class="k">else</span>:
+        <span class="k">return</span> <span class="s">"F"</span>
+
+<span class="k">for</span> s <span class="k">in</span> [<span class="n">95</span>, <span class="n">82</span>, <span class="n">60</span>]:
+    <span class="k">print</span>(s, grade(s))</pre>
+    <div class="out">95 A
+82 B
+60 F</div>
+    <div class="note">여러 <code>if</code>를 독립적으로 나열하면 <b>모든 조건이 검사</b>되지만, <code>elif</code> 사슬은 <b>먼저 참인 것 하나만</b> 실행하고 나머지는 건너뜁니다. 상호 배타적인 분기라면 반드시 <code>elif</code>를 쓰세요.</div>
+  </div>
+
+  <div class="fn" data-key="match case 구조적 패턴 매칭 pattern matching">
+    <div class="fn-h"><span class="rank">#25</span><h3>match / case (구조적 패턴 매칭)</h3><span class="tag new">3.10+</span></div>
+    <p>값의 <b>구조</b>에 따라 분기하는 문법입니다. 단순 값 비교뿐 아니라 리스트 형태까지 패턴으로 매칭할 수 있어 여러 개의 <code>if/elif</code> 사슬보다 명확할 때가 많습니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out"><span class="k">def</span> handle(cmd: <span class="k">str</span>) -&gt; <span class="k">str</span>:
+    <span class="k">match</span> cmd.split():
+        <span class="k">case</span> [<span class="s">"go"</span>, direction]:
+            <span class="k">return</span> f<span class="s">"이동: {direction}"</span>
+        <span class="k">case</span> [<span class="s">"look"</span>]:
+            <span class="k">return</span> <span class="s">"주변을 둘러본다"</span>
+        <span class="k">case</span> [<span class="s">"take"</span>, *items]:
+            <span class="k">return</span> f<span class="s">"습득: {', '.join(items)}"</span>
+        <span class="k">case</span> _:
+            <span class="k">return</span> <span class="s">"알 수 없는 명령"</span>
+
+<span class="k">print</span>(handle(<span class="s">"go north"</span>))
+<span class="k">print</span>(handle(<span class="s">"look"</span>))
+<span class="k">print</span>(handle(<span class="s">"take sword shield"</span>))
+<span class="k">print</span>(handle(<span class="s">"fly"</span>))</pre>
+    <div class="out">이동: north
+주변을 둘러본다
+습득: sword, shield
+알 수 없는 명령</div>
+    <div class="note"><code>case _:</code>는 어떤 값과도 매칭되는 와일드카드로, switch문의 <code>default</code>에 해당합니다. 없으면 매칭되는 case가 없을 때 아무 일도 없이 그냥 지나갑니다(에러 아님).</div>
+  </div>
+</section>
+
+<!-- ============ E. 반복문 ============ -->
+<section id="e">
+  <div class="sec-h"><span class="key">E</span><h2>반복문</h2><span class="cnt">5 topics</span></div>
+  <p class="sec-note">같은 동작을 여러 번 반복하는 문법입니다.</p>
+
+  <div class="fn" data-key="for 반복문 for...in">
+    <div class="fn-h"><span class="rank">#02</span><h3>for ... in ...:</h3></div>
+    <p>이터러블의 원소를 하나씩 꺼내며 실행합니다. C 스타일의 인덱스 증가 반복문과 달리, 파이썬의 <code>for</code>는 항상 <b>이터러블을 순회</b>합니다.</p>
+    <div class="viz"><svg viewBox="0 0 380 130" style="max-width:380px" xmlns="http://www.w3.org/2000/svg" role="img"><defs><marker id="ah-for" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" class="ahp"/></marker></defs><rect class="c c-base" x="20" y="16" width="120" height="36" rx="6"/><text class="ct" x="80" y="39">다음 원소 있음?</text><line class="ar" x1="140" y1="34" x2="220" y2="34" marker-end="url(#ah-for)"/><text class="al" x="180" y="26" text-anchor="middle">예</text><rect class="c c-acc" x="220" y="16" width="120" height="36" rx="6"/><text class="ct ct-acc" x="280" y="39">블록 실행</text><path class="ar" d="M280 52 C 280 90, 80 90, 80 52" fill="none" marker-end="url(#ah-for)"/><rect class="c c-ghost" x="20" y="96" width="120" height="30" rx="6"/><text class="gd" x="80" y="115" text-anchor="middle">아니오 → 종료(또는 else)</text></svg></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out"><span class="k">for</span> ch <span class="k">in</span> <span class="s">"abc"</span>:
+    <span class="k">print</span>(ch, end=<span class="s">" "</span>)
+<span class="k">print</span>()
+
+<span class="k">for</span> i <span class="k">in</span> <span class="k">range</span>(<span class="n">3</span>):
+    <span class="k">print</span>(i)
+<span class="k">else</span>:
+    <span class="k">print</span>(<span class="s">"정상 종료"</span>)   <span class="c"># break 없이 끝나면 실행</span>
+
+<span class="k">for</span> x <span class="k">in</span> [<span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span>]:
+    <span class="k">if</span> x == <span class="n">2</span>:
+        <span class="k">break</span>
+<span class="k">else</span>:
+    <span class="k">print</span>(<span class="s">"이건 안 찍힘"</span>)   <span class="c"># break로 빠져나오면 else 스킵</span></pre>
+    <div class="out">a b c
+0
+1
+2
+정상 종료</div>
+  </div>
+
+  <div class="fn" data-key="while break continue 반복 제어">
+    <div class="fn-h"><span class="rank">#13</span><h3>while / break / continue</h3></div>
+    <p><code>while</code>은 조건이 참인 동안 반복합니다. <code>break</code>는 반복문을 즉시 종료하고, <code>continue</code>는 이번 반복만 건너뛰고 다음으로 넘어갑니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">n = <span class="n">0</span>
+<span class="k">while</span> <span class="k">True</span>:
+    n += <span class="n">1</span>
+    <span class="k">if</span> n == <span class="n">3</span>:
+        <span class="k">continue</span>      <span class="c"># 3은 건너뜀</span>
+    <span class="k">if</span> n &gt; <span class="n">5</span>:
+        <span class="k">break</span>          <span class="c"># 5를 넘으면 종료</span>
+    <span class="k">print</span>(n)</pre>
+    <div class="out">1
+2
+4
+5</div>
+    <div class="warn"><code>while True:</code>에 <code>break</code>가 하나도 없으면 <b>무한 루프</b>입니다. 조건 변수(<code>n += 1</code> 같은)를 반드시 업데이트하고 있는지, 종료 조건에 실제로 도달 가능한지 확인하세요.</div>
+  </div>
+
+  <div class="fn" data-key="range 범위 range()">
+    <div class="fn-h"><span class="rank">#06</span><h3>range()</h3></div>
+    <p>정수 수열을 <b>지연 평가</b>로 표현하는 불변 시퀀스입니다. 리스트를 미리 만들지 않으므로 아무리 커도 메모리를 거의 쓰지 않습니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig">range(stop)
+range(start, stop, step=1)</div>
+    <h4>예시 코드</h4>
+    <pre class="has-out"><span class="k">print</span>(<span class="k">list</span>(<span class="k">range</span>(<span class="n">5</span>)))
+<span class="k">print</span>(<span class="k">list</span>(<span class="k">range</span>(<span class="n">2</span>, <span class="n">10</span>, <span class="n">2</span>)))
+<span class="k">print</span>(<span class="k">list</span>(<span class="k">range</span>(<span class="n">10</span>, <span class="n">0</span>, -<span class="n">3</span>)))
+r = <span class="k">range</span>(<span class="n">1_000_000_000_000</span>)
+<span class="k">print</span>(r[<span class="n">500</span>], <span class="k">len</span>(r))          <span class="c"># 인덱싱·len 모두 O(1)</span></pre>
+    <div class="out">[0, 1, 2, 3, 4]
+[2, 4, 6, 8]
+[10, 7, 4, 1]
+500 1000000000000</div>
+    <div class="tip"><code>range</code>는 <b>stop을 포함하지 않습니다</b>. <code>range(1, 6)</code>은 1부터 5까지입니다.</div>
+  </div>
+
+  <div class="fn" data-key="enumerate 인덱스와 순회 enumerate()">
+    <div class="fn-h"><span class="rank">#15</span><h3>enumerate()</h3></div>
+    <p>순회하면서 인덱스가 필요할 때 <code>range(len(x))</code> 대신 쓰는 관용구입니다. <code>(인덱스, 값)</code> 튜플을 하나씩 만드는 이터레이터를 반환합니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig">enumerate(iterable, start=0)</div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">fruits = [<span class="s">"apple"</span>, <span class="s">"banana"</span>, <span class="s">"cherry"</span>]
+<span class="k">for</span> i, name <span class="k">in</span> <span class="k">enumerate</span>(fruits):
+    <span class="k">print</span>(i, name)
+
+<span class="k">for</span> i, name <span class="k">in</span> <span class="k">enumerate</span>(fruits, start=<span class="n">1</span>):   <span class="c"># 1부터 시작</span>
+    <span class="k">print</span>(f<span class="s">"{i}. {name}"</span>)</pre>
+    <div class="out">0 apple
+1 banana
+2 cherry
+1. apple
+2. banana
+3. cherry</div>
+    <div class="warn"><code>for i in range(len(fruits)): print(i, fruits[i])</code>도 동작은 하지만 파이썬답지 않은(un-pythonic) 코드로 취급됩니다. 인덱스가 필요하면 거의 항상 <code>enumerate</code>가 정답입니다.</div>
+  </div>
+
+  <div class="fn" data-key="zip 병렬 순회 zip()">
+    <div class="fn-h"><span class="rank">#19</span><h3>zip()</h3></div>
+    <p>여러 이터러블을 <b>같은 인덱스끼리 묶어서</b> 튜플로 순회합니다. 가장 짧은 이터러블 길이에서 멈춥니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig">zip(*iterables, strict=False)</div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">names = [<span class="s">"Kim"</span>, <span class="s">"Lee"</span>, <span class="s">"Park"</span>]
+ages = [<span class="n">28</span>, <span class="n">34</span>, <span class="n">41</span>]
+<span class="k">for</span> n, a <span class="k">in</span> <span class="k">zip</span>(names, ages):
+    <span class="k">print</span>(n, a)
+
+<span class="k">print</span>(<span class="k">list</span>(<span class="k">zip</span>([<span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span>], [<span class="s">"a"</span>, <span class="s">"b"</span>])))   <span class="c"># 짧은 쪽에 맞춰 잘림</span></pre>
+    <div class="out">Kim 28
+Lee 34
+Park 41
+[(1, 'a'), (2, 'b')]</div>
+    <div class="tip">Python 3.10부터 <code>zip(a, b, strict=True)</code>를 쓰면 길이가 다를 때 조용히 잘리는 대신 <code>ValueError</code>를 던집니다. 길이가 반드시 같아야 하는 데이터라면 <code>strict=True</code>로 버그를 조기에 잡으세요.</div>
+  </div>
+</section>
+
+<!-- ============ F. 문자열 ============ -->
+<section id="f">
+  <div class="sec-h"><span class="key">F</span><h2>문자열</h2><span class="cnt">4 topics</span></div>
+  <p class="sec-note">str은 <b>불변</b>이므로 모든 메소드가 원본을 바꾸지 않고 새 문자열을 반환합니다.</p>
+
+  <div class="fn" data-key="문자열 기본 인덱싱 슬라이싱 불변 concat">
+    <div class="fn-h"><h3>문자열 기본 — 인덱싱·슬라이싱·불변성</h3></div>
+    <p>문자열은 문자의 <b>불변 시퀀스</b>입니다. 인덱싱·슬라이싱은 리스트와 동일한 문법을 쓰지만, 원소를 바꾸는 대입(<code>s[0] = 'x'</code>)은 불가능합니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">s = <span class="s">"python"</span>
+<span class="k">print</span>(s[<span class="n">0</span>], s[-<span class="n">1</span>], s[<span class="n">1</span>:<span class="n">4</span>])
+<span class="k">print</span>(s + <span class="s">"3.12"</span>)     <span class="c"># 이어붙이기 → 새 문자열</span>
+<span class="k">print</span>(<span class="s">"ab"</span> * <span class="n">3</span>)      <span class="c"># 반복</span></pre>
+    <div class="out">p n yth
+python3.12
+ababab</div>
+    <div class="warn"><code>s[0] = 'P'</code>는 <code>TypeError: 'str' object does not support item assignment</code>입니다. 일부만 바꾸려면 슬라이싱과 결합해 <code>s = 'P' + s[1:]</code>처럼 <b>새 문자열</b>을 만들어야 합니다.</div>
+  </div>
+
+  <div class="fn" data-key="str.split str.join 분리 결합">
+    <div class="fn-h"><span class="rank">#12</span><h3>str.split() · str.join()</h3></div>
+    <p>문자열 ↔ 리스트를 오가는 가장 흔한 한 쌍입니다. <code>split</code>은 쪼개고, <code>join</code>은 이어붙입니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig">str.split(sep=None, maxsplit=-1)
+sep.join(iterable_of_str)</div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">line = <span class="s">"  the  quick brown  fox "</span>
+<span class="k">print</span>(line.split())                 <span class="c"># 인자 없으면 공백 기준, 빈 조각 제거</span>
+<span class="k">print</span>(<span class="s">"a,b,,c"</span>.split(<span class="s">","</span>))          <span class="c"># 구분자 지정 시 빈 조각 유지</span>
+<span class="k">print</span>(<span class="s">"a-b-c"</span>.split(<span class="s">"-"</span>, maxsplit=<span class="n">1</span>))
+
+words = [<span class="s">"2024"</span>, <span class="s">"01"</span>, <span class="s">"15"</span>]
+<span class="k">print</span>(<span class="s">"-"</span>.join(words))</pre>
+    <div class="out">['the', 'quick', 'brown', 'fox']
+['a', 'b', '', 'c']
+['a', 'b-c']
+2024-01-15</div>
+    <div class="warn"><code>",".join([1, 2, 3])</code>처럼 문자열이 아닌 원소를 넣으면 <code>TypeError</code>입니다. <code>map(str, seq)</code>나 컴프리헨션으로 먼저 문자열화하세요.</div>
+  </div>
+
+  <div class="fn" data-key="strip replace 공백제거 치환">
+    <div class="fn-h"><h3>str.strip() · str.replace()</h3></div>
+    <p>공백/특정 문자를 제거하거나 부분 문자열을 치환합니다. 사용자 입력을 정제할 때 거의 항상 첫 단계입니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig">str.strip(chars=None)  <span class="c"># lstrip / rstrip도 동일 패턴</span>
+str.replace(old, new, count=-1)</div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">raw = <span class="s">"  hello world  \n"</span>
+<span class="k">print</span>(<span class="k">repr</span>(raw.strip()))
+<span class="k">print</span>(<span class="s">"###price###"</span>.strip(<span class="s">"#"</span>))
+<span class="k">print</span>(<span class="s">"hello world"</span>.replace(<span class="s">"o"</span>, <span class="s">"0"</span>))
+<span class="k">print</span>(<span class="s">"a.b.c.d"</span>.replace(<span class="s">"."</span>, <span class="s">"-"</span>, <span class="n">2</span>))   <span class="c"># 앞의 2개만 치환</span></pre>
+    <div class="out">'hello world'
+price
+hell0 w0rld
+a-b-c.d</div>
+  </div>
+
+  <div class="fn" data-key="upper lower startswith endswith 대소문자 검사">
+    <div class="fn-h"><h3>대소문자·검사 메소드</h3></div>
+    <div class="tbl-wrap"><table>
+      <tr><th>메소드</th><th>하는 일</th><th>예</th></tr>
+      <tr><td>.upper() / .lower()</td><td>대문자화 / 소문자화</td><td><code>"Hi".lower()</code> → <code>"hi"</code></td></tr>
+      <tr><td>.title() / .capitalize()</td><td>단어별 첫글자 대문자 / 문장 첫글자만</td><td><code>"hello world".title()</code> → <code>"Hello World"</code></td></tr>
+      <tr><td>.startswith(s) / .endswith(s)</td><td>접두/접미 검사 (튜플도 가능)</td><td><code>"a.py".endswith((".py", ".pyi"))</code></td></tr>
+      <tr><td>.isdigit() / .isalpha() / .isalnum()</td><td>구성 문자 종류 검사</td><td><code>"123".isdigit()</code> → <code>True</code></td></tr>
+      <tr><td>in 연산자</td><td>부분 문자열 포함 여부</td><td><code>"lo" in "hello"</code> → <code>True</code></td></tr>
+    </table></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">s = <span class="s">"Hello World"</span>
+<span class="k">print</span>(s.upper(), s.lower())
+<span class="k">print</span>(<span class="s">"report.PDF"</span>.lower().endswith((<span class="s">".pdf"</span>, <span class="s">".doc"</span>)))
+<span class="k">print</span>(<span class="s">"abc123"</span>.isalnum(), <span class="s">"abc 123"</span>.isalnum())
+<span class="k">print</span>(<span class="s">"py"</span> <span class="k">in</span> <span class="s">"python"</span>)</pre>
+    <div class="out">HELLO WORLD hello world
+True
+True False
+True</div>
+  </div>
+</section>
+
+<!-- ============ G. 리스트 ============ -->
+<section id="g">
+  <div class="sec-h"><span class="key">G</span><h2>리스트</h2><span class="cnt">5 topics</span></div>
+  <p class="sec-note">list는 <b>가변</b> 시퀀스입니다. 순서가 있고, 중복을 허용하며, 어떤 타입이든 섞어 담을 수 있습니다.</p>
+
+  <div class="fn" data-key="list.append 추가">
+    <div class="fn-h"><span class="rank">#08</span><h3>list.append()</h3><span class="tag uf">제자리</span></div>
+    <p>리스트 끝에 원소 하나를 추가합니다. 반복문으로 결과를 모을 때 가장 많이 쓰는 메소드입니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig">list.append(item)   <span class="c"># 반환값 없음(None), 제자리 수정</span></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">result = []
+<span class="k">for</span> x <span class="k">in</span> <span class="k">range</span>(<span class="n">5</span>):
+    <span class="k">if</span> x % <span class="n">2</span> == <span class="n">0</span>:
+        result.append(x * x)
+<span class="k">print</span>(result)</pre>
+    <div class="out">[0, 4, 16]</div>
+    <div class="warn"><code>result = result.append(x)</code>는 흔한 버그입니다. <code>append</code>는 <b>None을 반환</b>하므로 <code>result</code>가 <code>None</code>이 돼버립니다. 값을 대입하지 말고 그냥 <code>result.append(x)</code>만 호출하세요.</div>
+  </div>
+
+  <div class="fn" data-key="extend insert pop remove 리스트 변경">
+    <div class="fn-h"><h3>list.extend() · insert() · pop() · remove()</h3></div>
+    <p>리스트를 제자리에서 바꾸는 나머지 메소드들입니다. 헷갈리기 쉬운 <code>append</code> vs <code>extend</code>, <code>pop</code> vs <code>remove</code>의 차이를 정리합니다.</p>
+    <div class="tbl-wrap"><table>
+      <tr><th>메소드</th><th>동작</th><th>기준</th></tr>
+      <tr><td>extend(it)</td><td>이터러블의 원소들을 하나씩 풀어서 추가</td><td>내용</td></tr>
+      <tr><td>insert(i, x)</td><td>인덱스 i 위치에 x 삽입</td><td>위치</td></tr>
+      <tr><td>pop(i=-1)</td><td>인덱스의 원소를 <b>제거하고 반환</b>. 기본은 마지막</td><td>위치</td></tr>
+      <tr><td>remove(x)</td><td>값이 x인 <b>첫 번째</b> 원소를 제거 (없으면 ValueError)</td><td>값</td></tr>
+    </table></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">lst = [<span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span>]
+lst.extend([<span class="n">4</span>, <span class="n">5</span>])
+<span class="k">print</span>(lst)
+lst.insert(<span class="n">1</span>, <span class="n">99</span>)
+<span class="k">print</span>(lst)
+last = lst.pop()
+<span class="k">print</span>(last, lst)
+lst.remove(<span class="n">99</span>)
+<span class="k">print</span>(lst)</pre>
+    <div class="out">[1, 2, 3, 4, 5]
+[1, 99, 2, 3, 4, 5]
+5 [1, 99, 2, 3, 4]
+[1, 2, 3, 4]</div>
+  </div>
+
+  <div class="fn" data-key="슬라이싱 slice indexing a[start:stop:step]">
+    <div class="fn-h"><span class="rank">#23</span><h3>슬라이싱 a[start:stop:step]</h3><span class="tag copy">복사</span></div>
+    <p>범위를 지정해 부분 시퀀스를 꺼냅니다. 인덱싱과 달리 범위를 벗어나도 에러가 나지 않고, 항상 <b>새 리스트</b>를 반환합니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">a = [<span class="n">0</span>, <span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span>, <span class="n">4</span>, <span class="n">5</span>]
+<span class="k">print</span>(a[<span class="n">1</span>:<span class="n">4</span>])       <span class="c"># 인덱스 1,2,3</span>
+<span class="k">print</span>(a[:<span class="n">3</span>])        <span class="c"># 처음부터 3개</span>
+<span class="k">print</span>(a[-<span class="n">2</span>:])       <span class="c"># 뒤에서 2개</span>
+<span class="k">print</span>(a[::<span class="n">2</span>])       <span class="c"># 짝수 인덱스만</span>
+<span class="k">print</span>(a[::-<span class="n">1</span>])      <span class="c"># 뒤집기</span>
+b = a[:]             <span class="c"># 얕은 복사</span>
+b[<span class="n">0</span>] = <span class="n">99</span>
+<span class="k">print</span>(a, b)</pre>
+    <div class="out">[1, 2, 3]
+[0, 1, 2]
+[4, 5]
+[0, 2, 4]
+[5, 4, 3, 2, 1, 0]
+[0, 1, 2, 3, 4, 5] [99, 1, 2, 3, 4, 5]</div>
+    <div class="tip">문자열, 튜플에도 똑같이 동작합니다. 리스트 슬라이스에 대입하면 <code>a[1:3] = [10, 20, 30]</code>처럼 <b>길이가 달라도</b> 교체할 수 있습니다.</div>
+  </div>
+
+  <div class="fn" data-key="list.sort sorted 비교 정렬">
+    <div class="fn-h"><h3>list.sort() vs sorted()</h3></div>
+    <p><code>list.sort()</code>는 <b>제자리(in-place)</b> 정렬로 <code>None</code>을 반환하고, <code>sorted()</code>는 원본을 건드리지 않고 <b>새 리스트</b>를 반환합니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">nums = [<span class="n">3</span>, <span class="n">1</span>, <span class="n">2</span>]
+result = <span class="k">sorted</span>(nums)
+<span class="k">print</span>(nums, result)     <span class="c"># 원본 그대로</span>
+
+nums.sort()
+<span class="k">print</span>(nums)              <span class="c"># 원본이 바뀜</span>
+
+words = [<span class="s">"banana"</span>, <span class="s">"fig"</span>, <span class="s">"apple"</span>]
+<span class="k">print</span>(<span class="k">sorted</span>(words, key=<span class="k">len</span>, reverse=<span class="k">True</span>))</pre>
+    <div class="out">[3, 1, 2] [1, 2, 3]
+[1, 2, 3]
+['banana', 'apple', 'fig']</div>
+    <div class="warn"><code>x = nums.sort()</code>는 <code>append</code>와 같은 함정입니다 — <code>x</code>는 <code>None</code>이 됩니다. 정렬 결과를 새 변수에 받고 싶으면 반드시 <code>sorted()</code>를 쓰세요.</div>
+  </div>
+
+  <div class="fn" data-key="list comprehension 리스트 컴프리헨션">
+    <div class="fn-h"><span class="rank">#09</span><h3>리스트 컴프리헨션 [expr for x in it if cond]</h3></div>
+    <p><code>for</code>문으로 <code>append</code>를 반복하는 코드를 한 줄로 표현합니다. 읽는 순서는 "무엇을(expr) · 어디서(for) · 어떤 조건으로(if)"입니다.</p>
+    <div class="viz wide"><svg viewBox="0 0 660 130" style="max-width:660px" xmlns="http://www.w3.org/2000/svg" role="img"><defs><marker id="ah-listcomp" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" class="ahp"/></marker></defs><rect class="c c-base" x="20" y="40" width="120" height="40" rx="6"/><text class="ct" x="80" y="65">range(10)</text><line class="ar" x1="140" y1="60" x2="200" y2="60" marker-end="url(#ah-listcomp)"/><text class="al" x="170" y="52" text-anchor="middle">if x%2==0</text><rect class="c c-acc" x="200" y="40" width="120" height="40" rx="6"/><text class="ct ct-acc" x="260" y="65">짝수만 필터</text><line class="ar" x1="320" y1="60" x2="380" y2="60" marker-end="url(#ah-listcomp)"/><text class="al" x="350" y="52" text-anchor="middle">x*x</text><rect class="c c-acc2" x="380" y="40" width="120" height="40" rx="6"/><text class="ct ct-acc2" x="440" y="65">변환</text><line class="ar" x1="500" y1="60" x2="560" y2="60" marker-end="url(#ah-listcomp)"/><rect class="c c-hl" x="560" y="40" width="80" height="40" rx="6"/><text class="ct ct-hl" x="600" y="65">list</text><text class="gd" x="20" y="110">[x*x for x in range(10) if x % 2 == 0]  →  [0, 4, 16, 36, 64]</text></svg></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">squares = [x**<span class="n">2</span> <span class="k">for</span> x <span class="k">in</span> <span class="k">range</span>(<span class="n">5</span>)]
+<span class="k">print</span>(squares)
+
+evens_sq = [x**<span class="n">2</span> <span class="k">for</span> x <span class="k">in</span> <span class="k">range</span>(<span class="n">10</span>) <span class="k">if</span> x % <span class="n">2</span> == <span class="n">0</span>]
+<span class="k">print</span>(evens_sq)
+
+matrix = [[<span class="n">1</span>, <span class="n">2</span>], [<span class="n">3</span>, <span class="n">4</span>]]
+flat = [v <span class="k">for</span> row <span class="k">in</span> matrix <span class="k">for</span> v <span class="k">in</span> row]   <span class="c"># 중첩 for — 평탄화</span>
+<span class="k">print</span>(flat)</pre>
+    <div class="out">[0, 1, 4, 9, 16]
+[0, 4, 16, 36, 64]
+[1, 2, 3, 4]</div>
+    <div class="tip">소괄호로 감싸면(<code>(x for x in it)</code>) 리스트 대신 <b>제너레이터</b>가 만들어져 결과를 한 번에 메모리에 올리지 않습니다. 결과를 한 번만 순회한다면 <code>sum(x*x for x in it)</code>처럼 대괄호를 아예 생략할 수도 있습니다.</div>
+  </div>
+</section>
+
+<!-- ============ H. 튜플 ============ -->
+<section id="h">
+  <div class="sec-h"><span class="key">H</span><h2>튜플</h2><span class="cnt">3 topics</span></div>
+  <p class="sec-note">tuple은 <b>불변</b> 시퀀스입니다. 좌표, 함수의 다중 반환값처럼 "묶여서 의미를 갖는" 값에 자주 쓰입니다.</p>
+
+  <div class="fn" data-key="tuple 튜플 생성 불변">
+    <div class="fn-h"><h3>tuple() — 생성과 불변성</h3></div>
+    <p>소괄호(또는 콤마만으로도)로 만듭니다. 원소가 하나면 <b>콤마가 필수</b>입니다 — <code>(1)</code>은 그냥 정수 1이고, <code>(1,)</code>이 튜플입니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">t1 = (<span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span>)
+t2 = <span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span>          <span class="c"># 괄호 없이도 튜플</span>
+single = (<span class="n">1</span>,)          <span class="c"># 콤마 필수</span>
+<span class="k">print</span>(t1 == t2, <span class="k">type</span>(single))
+
+<span class="k">try</span>:
+    t1[<span class="n">0</span>] = <span class="n">99</span>
+<span class="k">except</span> TypeError <span class="k">as</span> e:
+    <span class="k">print</span>(<span class="s">"에러:"</span>, e)</pre>
+    <div class="out">True &lt;class 'tuple'&gt;
+에러: 'tuple' object does not support item assignment</div>
+  </div>
+
+  <div class="fn" data-key="tuple unpacking 언패킹 별표 star">
+    <div class="fn-h"><span class="rank">#21</span><h3>튜플 언패킹 (*rest)</h3></div>
+    <p>여러 변수에 한 번에 값을 나눠 담는 문법입니다. 함수의 다중 반환값을 받을 때, 딕셔너리를 순회할 때 어디서나 등장합니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">point = (<span class="n">3</span>, <span class="n">4</span>)
+x, y = point
+<span class="k">print</span>(x, y)
+
+first, *middle, last = [<span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span>, <span class="n">4</span>, <span class="n">5</span>]
+<span class="k">print</span>(first, middle, last)
+
+<span class="k">def</span> divmod_(a, b):
+    <span class="k">return</span> a // b, a % b     <span class="c"># 사실상 튜플 반환</span>
+q, r = divmod_(<span class="n">17</span>, <span class="n">5</span>)
+<span class="k">print</span>(q, r)
+
+a, b = <span class="n">1</span>, <span class="n">2</span>
+a, b = b, a                  <span class="c"># swap — 임시변수 불필요</span>
+<span class="k">print</span>(a, b)</pre>
+    <div class="out">3 4
+1 [2, 3, 4] 5
+3 2
+2 1</div>
+  </div>
+
+  <div class="fn" data-key="tuple list 불변 가변 비교 튜플 리스트">
+    <div class="fn-h"><h3>튜플 vs 리스트 — 언제 무엇을</h3></div>
+    <p>둘 다 순서 있는 시퀀스지만 튜플은 <b>불변</b>이라 딕셔너리 키·set 원소로 쓸 수 있고, 의도치 않은 수정으로부터 안전합니다. 리스트는 <b>가변</b>이라 계속 늘어나는 데이터를 담기에 적합합니다.</p>
+    <div class="viz"><svg viewBox="0 0 420 130" style="max-width:420px" xmlns="http://www.w3.org/2000/svg" role="img"><rect class="c c-acc" x="20" y="20" width="170" height="90" rx="8"/><text class="ct ct-acc" x="105" y="45">list [ ]</text><text class="gd" x="105" y="68" text-anchor="middle">가변 · append/pop 가능</text><text class="gd" x="105" y="88" text-anchor="middle">dict 키로 사용 불가</text><rect class="c c-base" x="230" y="20" width="170" height="90" rx="8"/><text class="ct" x="315" y="45">tuple ( )</text><text class="gd" x="315" y="68" text-anchor="middle">불변 · 생성 후 고정</text><text class="gd" x="315" y="88" text-anchor="middle">dict 키·set 원소 가능</text></svg></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">locations = {}
+locations[(<span class="n">37.5</span>, <span class="n">127.0</span>)] = <span class="s">"서울"</span>   <span class="c"># 튜플은 해시 가능 → dict 키 OK</span>
+<span class="k">print</span>(locations)
+
+<span class="k">try</span>:
+    d = {[<span class="n">1</span>, <span class="n">2</span>]: <span class="s">"실패"</span>}                <span class="c"># 리스트는 해시 불가능</span>
+<span class="k">except</span> TypeError <span class="k">as</span> e:
+    <span class="k">print</span>(<span class="s">"에러:"</span>, e)</pre>
+    <div class="out">{(37.5, 127.0): '서울'}
+에러: unhashable type: 'list'</div>
+    <div class="tip">"이 값들이 바뀌면 안 된다"는 의미를 코드로 표현하고 싶을 때 튜플을 고르세요. 단순히 "여러 개를 순서대로 모은다"는 의도라면 리스트가 더 자연스럽습니다.</div>
+  </div>
+</section>
+
+<!-- ============ I. 딕셔너리 ============ -->
+<section id="i">
+  <div class="sec-h"><span class="key">I</span><h2>딕셔너리</h2><span class="cnt">5 topics</span></div>
+  <p class="sec-note">dict는 키-값 쌍의 매핑입니다. 3.7+부터 <b>삽입 순서를 보장</b>합니다.</p>
+
+  <div class="fn" data-key="dict 딕셔너리 생성 {}">
+    <div class="fn-h"><span class="rank">#10</span><h3>dict {}</h3></div>
+    <p>키-값 쌍의 매핑입니다. 키는 <b>해시 가능(불변)</b>해야 하며(str, int, tuple 등), 값은 무엇이든 가능합니다.</p>
+    <div class="viz"><svg viewBox="0 0 420 140" style="max-width:420px" xmlns="http://www.w3.org/2000/svg" role="img"><defs><marker id="ah-dict" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" class="ahp"/></marker></defs><rect class="c c-base" x="20" y="50" width="90" height="34" rx="4"/><text class="ct" x="65" y="71.5">"age"</text><line class="ar" x1="110" y1="67" x2="180" y2="67" marker-end="url(#ah-dict)"/><text class="al" x="145" y="59" text-anchor="middle">hash()</text><rect class="c c-ghost" x="180" y="20" width="220" height="94" rx="6"/><text class="gd" x="192" y="36">해시 테이블 (버킷)</text><rect class="c c-acc" x="290" y="55" width="90" height="30" rx="4"/><text class="ct ct-acc" x="335" y="74.5">28</text><text class="gd" x="20" y="120" text-anchor="start">user["age"] → hash("age")로 버킷 위치를 바로 계산 → 평균 O(1)</text></svg></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">user = {<span class="s">"name"</span>: <span class="s">"지민"</span>, <span class="s">"age"</span>: <span class="n">27</span>}
+user[<span class="s">"email"</span>] = <span class="s">"jimin@example.com"</span>   <span class="c"># 새 키 추가</span>
+user[<span class="s">"age"</span>] = <span class="n">28</span>                       <span class="c"># 기존 키 갱신</span>
+<span class="k">print</span>(user)
+<span class="k">print</span>(<span class="k">len</span>(user), <span class="s">"email"</span> <span class="k">in</span> user)</pre>
+    <div class="out">{'name': '지민', 'age': 28, 'email': 'jimin@example.com'}
+3 True</div>
+    <div class="warn">키가 없는데 <code>user["phone"]</code>처럼 접근하면 <code>KeyError</code>입니다. 존재를 확신할 수 없으면 <code>.get()</code>이나 <code>in</code>으로 먼저 확인하세요.</div>
+  </div>
+
+  <div class="fn" data-key="dict.get 기본값 안전접근">
+    <div class="fn-h"><span class="rank">#20</span><h3>dict.get()</h3></div>
+    <p>키가 없어도 <code>KeyError</code> 대신 기본값을 반환합니다. 존재 여부가 불확실한 딕셔너리 접근의 표준 관용구입니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig">dict.get(key, default=None)</div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">config = {<span class="s">"debug"</span>: <span class="k">True</span>}
+<span class="k">print</span>(config.get(<span class="s">"debug"</span>))
+<span class="k">print</span>(config.get(<span class="s">"timeout"</span>))          <span class="c"># 없으면 None</span>
+<span class="k">print</span>(config.get(<span class="s">"timeout"</span>, <span class="n">30</span>))      <span class="c"># 기본값 지정</span>
+
+counts = {}
+counts[<span class="s">"a"</span>] = counts.get(<span class="s">"a"</span>, <span class="n">0</span>) + <span class="n">1</span>   <span class="c"># 카운팅 관용구</span>
+counts[<span class="s">"a"</span>] = counts.get(<span class="s">"a"</span>, <span class="n">0</span>) + <span class="n">1</span>
+<span class="k">print</span>(counts)</pre>
+    <div class="out">True
+None
+30
+{'a': 2}</div>
+  </div>
+
+  <div class="fn" data-key="dict.items keys values 순회">
+    <div class="fn-h"><h3>dict.items() · keys() · values()</h3><span class="tag view">동적 뷰</span></div>
+    <p>딕셔너리를 순회하는 세 가지 뷰입니다. 반환값은 리스트가 아니라 <b>동적 뷰</b>라서 원본이 바뀌면 즉시 반영됩니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">scores = {<span class="s">"kim"</span>: <span class="n">90</span>, <span class="s">"lee"</span>: <span class="n">85</span>, <span class="s">"park"</span>: <span class="n">78</span>}
+<span class="k">for</span> name, score <span class="k">in</span> scores.items():
+    <span class="k">print</span>(name, score)
+
+<span class="k">print</span>(<span class="k">list</span>(scores.keys()))
+<span class="k">print</span>(<span class="k">sum</span>(scores.values()) / <span class="k">len</span>(scores))</pre>
+    <div class="out">kim 90
+lee 85
+park 78
+['kim', 'lee', 'park']
+84.33333333333333</div>
+    <div class="tip">단순 <code>for k in scores:</code>만으로도 키를 순회할 수 있습니다(<code>.keys()</code> 생략 가능). 값만 필요하면 <code>.values()</code>를, 둘 다 필요하면 <code>.items()</code>를 명시적으로 쓰는 게 의도가 분명해집니다.</div>
+  </div>
+
+  <div class="fn" data-key="setdefault update 병합">
+    <div class="fn-h"><h3>dict.setdefault() · update()</h3></div>
+    <p><code>setdefault</code>는 "없으면 넣고, 있으면 그대로 두고 값을 반환"을 원자적으로 처리합니다. <code>update</code>는 다른 매핑의 내용을 병합합니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig">dict.setdefault(key, default=None)
+dict.update(other)</div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">groups = {}
+<span class="k">for</span> word <span class="k">in</span> [<span class="s">"ant"</span>, <span class="s">"bee"</span>, <span class="s">"ape"</span>, <span class="s">"bat"</span>]:
+    groups.setdefault(word[<span class="n">0</span>], []).append(word)
+<span class="k">print</span>(groups)
+
+d1 = {<span class="s">"a"</span>: <span class="n">1</span>, <span class="s">"b"</span>: <span class="n">2</span>}
+d1.update({<span class="s">"b"</span>: <span class="n">20</span>, <span class="s">"c"</span>: <span class="n">3</span>})
+<span class="k">print</span>(d1)
+
+merged = d1 | {<span class="s">"d"</span>: <span class="n">4</span>}   <span class="c"># 3.9+, 새 dict 반환</span>
+<span class="k">print</span>(merged)</pre>
+    <div class="out">{'a': ['ant', 'ape'], 'b': ['bee', 'bat']}
+{'a': 1, 'b': 20, 'c': 3}
+{'a': 1, 'b': 20, 'c': 3, 'd': 4}</div>
+    <div class="note">그룹핑 로직은 <code>collections.defaultdict</code>를 쓰면 <code>setdefault</code> 호출 없이 더 짧게 쓸 수 있습니다. §O 참고.</div>
+  </div>
+
+  <div class="fn" data-key="dict comprehension 딕셔너리 컴프리헨션">
+    <div class="fn-h"><h3>딕셔너리 컴프리헨션</h3></div>
+    <p>중괄호와 콜론으로 감싸면 dict가 만들어집니다. <code>{key_expr: value_expr for x in it if cond}</code> 형태입니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">squares = {x: x**<span class="n">2</span> <span class="k">for</span> x <span class="k">in</span> <span class="k">range</span>(<span class="n">5</span>)}
+<span class="k">print</span>(squares)
+
+words = [<span class="s">"apple"</span>, <span class="s">"banana"</span>, <span class="s">"avocado"</span>, <span class="s">"berry"</span>]
+lengths = {w: <span class="k">len</span>(w) <span class="k">for</span> w <span class="k">in</span> words <span class="k">if</span> w.startswith(<span class="s">"a"</span>)}
+<span class="k">print</span>(lengths)
+
+<span class="c"># 두 리스트를 dict로 결합</span>
+keys = [<span class="s">"a"</span>, <span class="s">"b"</span>, <span class="s">"c"</span>]
+vals = [<span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span>]
+combined = {k: v <span class="k">for</span> k, v <span class="k">in</span> <span class="k">zip</span>(keys, vals)}
+<span class="k">print</span>(combined)</pre>
+    <div class="out">{0: 0, 1: 1, 2: 4, 3: 9, 4: 16}
+{'apple': 5, 'avocado': 7}
+{'a': 1, 'b': 2, 'c': 3}</div>
+  </div>
+</section>
+
+<!-- ============ J. 세트 ============ -->
+<section id="j">
+  <div class="sec-h"><span class="key">J</span><h2>세트</h2><span class="cnt">3 topics</span></div>
+  <p class="sec-note">set은 중복 없는 컬렉션이며 순서가 없는 대신 <code>in</code> 검사가 리스트보다 훨씬 빠릅니다(평균 O(1)).</p>
+
+  <div class="fn" data-key="set 집합 연산 union intersection difference">
+    <div class="fn-h"><span class="rank">#24</span><h3>set 연산 (&amp; | - ^)</h3></div>
+    <p>수학 집합 연산자를 그대로 지원합니다. <code>in</code> 검사가 매우 빨라 중복 제거, 소속 여부 검사에 자주 쓰입니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">s1 = {<span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span>}
+s2 = {<span class="n">2</span>, <span class="n">3</span>, <span class="n">4</span>}
+<span class="k">print</span>(s1 &amp; s2)   <span class="c"># 교집합</span>
+<span class="k">print</span>(s1 | s2)   <span class="c"># 합집합</span>
+<span class="k">print</span>(s1 - s2)   <span class="c"># 차집합</span>
+<span class="k">print</span>(s1 ^ s2)   <span class="c"># 대칭차집합</span>
+
+big_list = <span class="k">list</span>(<span class="k">range</span>(<span class="n">1_000_000</span>))
+big_set = <span class="k">set</span>(big_list)
+<span class="k">print</span>(<span class="n">999_999</span> <span class="k">in</span> big_set, <span class="n">999_999</span> <span class="k">in</span> big_list)   <span class="c"># set이 압도적으로 빠름</span></pre>
+    <div class="out">{2, 3}
+{1, 2, 3, 4}
+{1}
+{1, 4}
+True True</div>
+  </div>
+
+  <div class="fn" data-key="set add remove discard 메소드">
+    <div class="fn-h"><h3>set.add() · remove() · discard()</h3></div>
+    <p>원소를 추가·제거합니다. <code>remove</code>는 없는 값을 지우려 하면 <code>KeyError</code>를 내지만, <code>discard</code>는 조용히 넘어갑니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">s = {<span class="s">"a"</span>, <span class="s">"b"</span>}
+s.add(<span class="s">"c"</span>)
+<span class="k">print</span>(s)
+s.discard(<span class="s">"z"</span>)   <span class="c"># 없어도 에러 없음</span>
+<span class="k">print</span>(s)
+
+<span class="k">try</span>:
+    s.remove(<span class="s">"z"</span>)
+<span class="k">except</span> KeyError <span class="k">as</span> e:
+    <span class="k">print</span>(<span class="s">"에러:"</span>, e)</pre>
+    <div class="out">{'a', 'b', 'c'}
+{'a', 'b', 'c'}
+에러: 'z'</div>
+  </div>
+
+  <div class="fn" data-key="set comprehension 세트 컴프리헨션 중복제거">
+    <div class="fn-h"><h3>세트 컴프리헨션 · 리스트 중복 제거</h3></div>
+    <p><code>{expr for x in it}</code>는 set을 만듭니다(콜론이 없으면 dict가 아니라 set). <code>set(list)</code>는 순서를 잃는 대신 중복을 즉시 제거하는 가장 빠른 방법입니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">words = [<span class="s">"apple"</span>, <span class="s">"banana"</span>, <span class="s">"avocado"</span>, <span class="s">"berry"</span>]
+first_letters = {w[<span class="n">0</span>] <span class="k">for</span> w <span class="k">in</span> words}
+<span class="k">print</span>(first_letters)
+
+nums = [<span class="n">1</span>, <span class="n">2</span>, <span class="n">2</span>, <span class="n">3</span>, <span class="n">1</span>, <span class="n">4</span>]
+<span class="k">print</span>(<span class="k">set</span>(nums))                 <span class="c"># 순서 보장 없음</span>
+<span class="k">print</span>(<span class="k">list</span>(<span class="k">dict.fromkeys</span>(nums)))   <span class="c"># 순서를 유지하며 중복 제거</span></pre>
+    <div class="out">{'a', 'b'}
+{1, 2, 3, 4}
+[1, 2, 3, 4]</div>
+    <div class="tip">중복만 없애면 되고 <b>원래 순서를 유지해야 한다</b>면 <code>set()</code> 대신 <code>dict.fromkeys(seq)</code>를 쓰세요. 3.7+ dict는 삽입 순서를 보장하므로 이 관용구가 성립합니다.</div>
+  </div>
+</section>
+
+<!-- ============ K. 함수 ============ -->
+<section id="k">
+  <div class="sec-h"><span class="key">K</span><h2>함수</h2><span class="cnt">4 topics</span></div>
+  <p class="sec-note">함수는 파이썬에서 <b>일급 객체</b>입니다 — 변수에 담고, 인자로 넘기고, 반환할 수 있습니다.</p>
+
+  <div class="fn" data-key="def 함수 정의 return default">
+    <div class="fn-h"><span class="rank">#11</span><h3>def (함수 정의)</h3></div>
+    <p>재사용 가능한 코드 블록을 정의합니다. 기본 인자, 키워드 인자, 반환값을 조합해 유연한 인터페이스를 만들 수 있습니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig">def name(pos, kw=default, *, kw_only) -> return_type:
+    ...</div>
+    <h4>예시 코드</h4>
+    <pre class="has-out"><span class="k">def</span> greet(name, greeting=<span class="s">"안녕"</span>):
+    <span class="k">return</span> f<span class="s">"{greeting}, {name}!"</span>
+
+<span class="k">print</span>(greet(<span class="s">"지민"</span>))
+<span class="k">print</span>(greet(<span class="s">"철수"</span>, greeting=<span class="s">"반가워"</span>))
+
+<span class="k">def</span> add(a: <span class="k">int</span>, b: <span class="k">int</span>) -&gt; <span class="k">int</span>:   <span class="c"># 타입힌트는 강제 아님, 문서화 목적</span>
+    <span class="k">return</span> a + b
+<span class="k">print</span>(add(<span class="n">2</span>, <span class="n">3</span>))</pre>
+    <div class="out">안녕, 지민!
+반가워, 철수!
+5</div>
+    <div class="warn"><b>가변 기본 인자</b>(<code>def f(x, items=[]):</code>)는 파이썬에서 가장 유명한 함정입니다. 기본값은 함수 정의 시점에 <b>단 한 번</b> 만들어지고 모든 호출이 같은 객체를 공유하므로, 가변 기본값은 <code>None</code>으로 두고 함수 안에서 매번 새로 만드세요.</div>
+  </div>
+
+  <div class="fn" data-key="args kwargs 가변인자 star double star">
+    <div class="fn-h"><span class="rank">#22</span><h3>*args, **kwargs</h3></div>
+    <p>개수가 정해지지 않은 위치 인자·키워드 인자를 받습니다. <code>*</code>는 튜플로, <code>**</code>는 딕셔너리로 묶입니다. 호출할 때 반대로 쓰면 <b>풀어서(unpack)</b> 전달됩니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out"><span class="k">def</span> summarize(*args, **kwargs):
+    <span class="k">print</span>(<span class="s">"args:"</span>, args)
+    <span class="k">print</span>(<span class="s">"kwargs:"</span>, kwargs)
+
+summarize(<span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span>, unit=<span class="s">"cm"</span>, scale=<span class="n">2</span>)
+
+<span class="k">def</span> add3(a, b, c):
+    <span class="k">return</span> a + b + c
+
+nums = [<span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span>]
+<span class="k">print</span>(add3(*nums))          <span class="c"># 리스트를 풀어서 위치 인자로</span>
+
+opts = {<span class="s">"a"</span>: <span class="n">10</span>, <span class="s">"b"</span>: <span class="n">20</span>, <span class="s">"c"</span>: <span class="n">30</span>}
+<span class="k">print</span>(add3(**opts))         <span class="c"># 딕셔너리를 풀어서 키워드 인자로</span></pre>
+    <div class="out">args: (1, 2, 3)
+kwargs: {'unit': 'cm', 'scale': 2}
+6
+60</div>
+  </div>
+
+  <div class="fn" data-key="lambda 익명함수">
+    <div class="fn-h"><h3>lambda</h3></div>
+    <p>이름 없는 한 줄짜리 함수입니다. <code>sorted</code>처럼 함수를 인자로 받는 곳에 즉석에서 넘길 때 주로 씁니다. 본문은 <b>표현식 하나</b>만 가능하며 <code>return</code>을 쓰지 않습니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig">lambda args: expression</div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">add = <span class="k">lambda</span> x, y: x + y
+<span class="k">print</span>(add(<span class="n">2</span>, <span class="n">3</span>))
+
+people = [(<span class="s">"Kim"</span>, <span class="n">34</span>), (<span class="s">"Lee"</span>, <span class="n">28</span>)]
+<span class="k">print</span>(<span class="k">sorted</span>(people, key=<span class="k">lambda</span> p: p[<span class="n">1</span>]))</pre>
+    <div class="out">5
+[('Lee', 28), ('Kim', 34)]</div>
+    <div class="tip">로직이 한 줄을 넘거나 재사용된다면 <code>lambda</code> 대신 <code>def</code>로 이름 있는 함수를 만드세요. 디버깅 시 트레이스백에 <code>&lt;lambda&gt;</code> 대신 실제 함수명이 찍혀 훨씬 추적하기 쉽습니다.</div>
+  </div>
+
+  <div class="fn" data-key="decorator closure nonlocal 데코레이터 클로저">
+    <div class="fn-h"><h3>클로저와 데코레이터</h3></div>
+    <p><b>클로저</b>는 자신을 만든 스코프의 변수를 "기억하는" 함수입니다. <b>데코레이터</b>는 함수를 받아 함수를 반환하는 클로저의 대표적 활용으로, 기존 함수를 수정하지 않고 동작을 감쌉니다.</p>
+    <div class="viz"><svg viewBox="0 0 400 170" style="max-width:400px" xmlns="http://www.w3.org/2000/svg" role="img"><rect class="c c-ghost" x="10" y="10" width="380" height="150" rx="8"/><text class="gd" x="24" y="30">make_counter() 스코프</text><rect class="c c-warn" x="30" y="42" width="100" height="34" rx="4"/><text class="ct ct-warn" x="80" y="63.5">count = 0</text><rect class="c c-acc" x="150" y="90" width="220" height="52" rx="6"/><text class="ct ct-acc" x="260" y="112">counter() (내부 함수)</text><text class="gd" x="260" y="130" text-anchor="middle">nonlocal count로 캡처</text></svg></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out"><span class="k">def</span> make_counter():
+    count = <span class="n">0</span>
+    <span class="k">def</span> counter():
+        <span class="k">nonlocal</span> count
+        count += <span class="n">1</span>
+        <span class="k">return</span> count
+    <span class="k">return</span> counter
+
+c = make_counter()
+<span class="k">print</span>(c(), c(), c())    <span class="c"># count가 호출 간에 유지됨</span>
+
+<span class="k">def</span> log_call(func):
+    <span class="k">def</span> wrapper(*args, **kwargs):
+        <span class="k">print</span>(f<span class="s">"{func.__name__} 호출: {args}"</span>)
+        <span class="k">return</span> func(*args, **kwargs)
+    <span class="k">return</span> wrapper
+
+<span class="s">@log_call</span>
+<span class="k">def</span> add(a, b):
+    <span class="k">return</span> a + b
+
+<span class="k">print</span>(add(<span class="n">2</span>, <span class="n">3</span>))</pre>
+    <div class="out">1 2 3
+add 호출: (2, 3)
+5</div>
+    <div class="tip"><code>@log_call</code>은 <code>add = log_call(add)</code>와 완전히 같습니다. 여러 데코레이터를 쌓으면 <b>가까운 것부터</b> 안쪽에서 바깥쪽으로 적용됩니다.</div>
+  </div>
+</section>
+
+<!-- ============ L. 예외 처리 ============ -->
+<section id="l">
+  <div class="sec-h"><span class="key">L</span><h2>예외 처리</h2><span class="cnt">2 topics</span></div>
+  <p class="sec-note">예상치 못한 상황에서 프로그램이 그냥 죽지 않고 정해진 방식으로 대응하게 합니다.</p>
+
+  <div class="fn" data-key="try except finally raise 예외처리">
+    <div class="fn-h"><span class="rank">#14</span><h3>try / except / else / finally</h3></div>
+    <p>예외가 발생할 수 있는 코드를 감싸고, 발생 시 처리 방법을 지정합니다. <code>finally</code>는 예외 발생 여부와 무관하게 <b>항상</b> 실행됩니다.</p>
+    <div class="viz"><svg viewBox="0 0 360 190" style="max-width:360px" xmlns="http://www.w3.org/2000/svg" role="img"><defs><marker id="ah-tryexcept" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" class="ahp"/></marker></defs><rect class="c c-base" x="20" y="10" width="320" height="40" rx="6"/><text class="ct" x="180" y="35">try 블록</text><line class="ar" x1="180" y1="50" x2="180" y2="72" marker-end="url(#ah-tryexcept)"/><rect class="c c-warn" x="20" y="72" width="150" height="40" rx="6"/><text class="ct ct-warn" x="95" y="97">예외 발생 → except</text><rect class="c c-acc" x="190" y="72" width="150" height="40" rx="6"/><text class="ct ct-acc" x="265" y="97">정상 종료 → else</text><line class="ar" x1="95" y1="112" x2="180" y2="140" marker-end="url(#ah-tryexcept)"/><line class="ar" x1="265" y1="112" x2="180" y2="140" marker-end="url(#ah-tryexcept)"/><rect class="c c-hl" x="80" y="140" width="200" height="40" rx="6"/><text class="ct ct-hl" x="180" y="165">finally — 항상 실행</text></svg></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out"><span class="k">def</span> safe_div(a, b):
+    <span class="k">try</span>:
+        result = a / b
+    <span class="k">except</span> ZeroDivisionError:
+        <span class="k">print</span>(<span class="s">"0으로 나눌 수 없음"</span>)
+        result = <span class="k">float</span>(<span class="s">"inf"</span>)
+    <span class="k">else</span>:
+        <span class="k">print</span>(<span class="s">"정상 계산됨"</span>)
+    <span class="k">finally</span>:
+        <span class="k">print</span>(<span class="s">"--- 처리 종료 ---"</span>)
+    <span class="k">return</span> result
+
+<span class="k">print</span>(safe_div(<span class="n">10</span>, <span class="n">2</span>))
+<span class="k">print</span>(safe_div(<span class="n">10</span>, <span class="n">0</span>))</pre>
+    <div class="out">정상 계산됨
+--- 처리 종료 ---
+5.0
+0으로 나눌 수 없음
+--- 처리 종료 ---
+inf</div>
+    <div class="note">여러 예외 타입을 한 번에 잡으려면 <code>except (TypeError, ValueError) as e:</code>처럼 튜플로 묶습니다. <code>except Exception:</code>처럼 지나치게 넓게 잡으면 진짜 버그까지 삼켜버리니 필요한 예외 타입만 구체적으로 지정하세요.</div>
+  </div>
+
+  <div class="fn" data-key="예외 타입 raise custom exception 흔한예외">
+    <div class="fn-h"><h3>흔한 예외 타입과 raise</h3></div>
+    <p>어떤 상황에서 어떤 예외가 나는지 알아야 <code>except</code>를 정확히 지정할 수 있습니다. <code>raise</code>로 직접 예외를 일으킬 수도 있습니다.</p>
+    <div class="tbl-wrap"><table>
+      <tr><th>예외</th><th>발생 상황</th></tr>
+      <tr><td>ValueError</td><td>타입은 맞지만 값이 부적절 (<code>int("abc")</code>)</td></tr>
+      <tr><td>TypeError</td><td>타입이 맞지 않는 연산 (<code>"a" + 1</code>)</td></tr>
+      <tr><td>KeyError</td><td>딕셔너리에 없는 키 접근</td></tr>
+      <tr><td>IndexError</td><td>시퀀스 범위를 벗어난 인덱스</td></tr>
+      <tr><td>ZeroDivisionError</td><td>0으로 나누기</td></tr>
+      <tr><td>FileNotFoundError</td><td>존재하지 않는 파일 열기</td></tr>
+    </table></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out"><span class="k">def</span> withdraw(balance, amount):
+    <span class="k">if</span> amount &gt; balance:
+        <span class="k">raise</span> ValueError(<span class="s">"잔액이 부족합니다"</span>)
+    <span class="k">return</span> balance - amount
+
+<span class="k">try</span>:
+    withdraw(<span class="n">1000</span>, <span class="n">5000</span>)
+<span class="k">except</span> ValueError <span class="k">as</span> e:
+    <span class="k">print</span>(f<span class="s">"오류: {e}"</span>)</pre>
+    <div class="out">오류: 잔액이 부족합니다</div>
+    <div class="tip">표준 예외 타입 중 상황에 맞는 게 없다면 <code>Exception</code>을 상속한 <b>커스텀 예외 클래스</b>를 만들 수 있습니다(<code>class InsufficientFundsError(Exception): pass</code>). 클래스 정의는 §N 참고.</div>
+  </div>
+</section>
+
+<!-- ============ M. 파일 입출력 ============ -->
+<section id="m">
+  <div class="sec-h"><span class="key">M</span><h2>파일 입출력</h2><span class="cnt">4 topics</span></div>
+  <p class="sec-note"><code>open()</code>과 <code>with</code>로 파일을 열고, 끝나면 자동으로 닫습니다.</p>
+
+  <div class="fn" data-key="with as open 파일열기 컨텍스트매니저">
+    <div class="fn-h"><span class="rank">#17</span><h3>with ... as ...: (open)</h3></div>
+    <p>블록을 벗어날 때 <b>자동으로 자원을 정리</b>합니다. 파일처럼 "열었으면 반드시 닫아야 하는" 자원에 표준으로 쓰입니다. 블록 안에서 예외가 발생해도 정리 코드는 실행됩니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out"><span class="k">with</span> <span class="k">open</span>(<span class="s">"notes.txt"</span>, <span class="s">"w"</span>, encoding=<span class="s">"utf-8"</span>) <span class="k">as</span> f:
+    f.write(<span class="s">"첫째 줄\n"</span>)
+    f.write(<span class="s">"둘째 줄\n"</span>)
+<span class="c"># 이 시점에 f는 이미 자동으로 close() 됨</span>
+
+<span class="k">with</span> <span class="k">open</span>(<span class="s">"notes.txt"</span>, encoding=<span class="s">"utf-8"</span>) <span class="k">as</span> f:
+    <span class="k">for</span> line <span class="k">in</span> f:
+        <span class="k">print</span>(line.strip())
+
+<span class="k">print</span>(f.closed)   <span class="c"># with 블록을 나오면 True</span></pre>
+    <div class="out">첫째 줄
+둘째 줄
+True</div>
+    <div class="warn"><code>f = open(...)</code> 후 <code>f.close()</code>를 수동으로 호출하는 방식은 중간에 예외가 나면 <code>close()</code>가 실행되지 않고 <b>파일 핸들이 새어나갑니다(leak)</b>. 특별한 이유가 없다면 항상 <code>with</code>를 쓰세요.</div>
+  </div>
+
+  <div class="fn" data-key="open 파일모드 encoding 인코딩">
+    <div class="fn-h"><h3>open() 모드와 encoding</h3></div>
+    <div class="tbl-wrap"><table>
+      <tr><th>모드</th><th>의미</th></tr>
+      <tr><td>'r' (기본)</td><td>읽기 전용. 파일이 없으면 에러</td></tr>
+      <tr><td>'w'</td><td>쓰기 — 기존 내용을 <b>덮어씀</b>. 없으면 새로 생성</td></tr>
+      <tr><td>'a'</td><td>추가 — 파일 끝에 이어서 씀</td></tr>
+      <tr><td>'x'</td><td>배타적 생성 — 파일이 이미 있으면 에러</td></tr>
+      <tr><td>'b'</td><td>바이너리 모드. <code>'rb'</code>, <code>'wb'</code>처럼 조합</td></tr>
+      <tr><td>encoding='utf-8'</td><td>텍스트 인코딩. <b>항상 명시</b>하는 것을 권장</td></tr>
+    </table></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out"><span class="k">with</span> <span class="k">open</span>(<span class="s">"log.txt"</span>, <span class="s">"a"</span>, encoding=<span class="s">"utf-8"</span>) <span class="k">as</span> f:
+    f.write(<span class="s">"이벤트 발생\n"</span>)
+
+<span class="k">with</span> <span class="k">open</span>(<span class="s">"log.txt"</span>, encoding=<span class="s">"utf-8"</span>) <span class="k">as</span> f:
+    content = f.read()
+<span class="k">print</span>(<span class="k">repr</span>(content))</pre>
+    <div class="out">'이벤트 발생\n'</div>
+    <div class="warn"><code>encoding</code>을 생략하면 OS 기본 인코딩을 따르는데, Windows는 종종 UTF-8이 아닙니다. 한글 등 비ASCII 문자가 포함된 파일은 <code>encoding="utf-8"</code>을 항상 명시해야 플랫폼 간 이식성이 보장됩니다.</div>
+  </div>
+
+  <div class="fn" data-key="read readline readlines write 텍스트 바이너리">
+    <div class="fn-h"><h3>read() · readline() · readlines() · write()</h3></div>
+    <p>파일 내용을 읽고 쓰는 기본 메소드들입니다. 텍스트 모드에서는 <code>str</code>을, 바이너리 모드(<code>'b'</code>)에서는 <code>bytes</code>를 주고받습니다.</p>
+    <div class="tbl-wrap"><table>
+      <tr><th>메소드</th><th>반환값</th></tr>
+      <tr><td>read()</td><td>전체 내용을 문자열 하나로</td></tr>
+      <tr><td>readline()</td><td>한 줄만 (개행 포함)</td></tr>
+      <tr><td>readlines()</td><td>줄 단위 리스트</td></tr>
+      <tr><td>write(s) / writelines(list)</td><td>문자열(들)을 씀. 개행은 직접 추가해야 함</td></tr>
+    </table></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out"><span class="k">with</span> <span class="k">open</span>(<span class="s">"data.bin"</span>, <span class="s">"wb"</span>) <span class="k">as</span> f:
+    f.write(<span class="s">b"\x00\x01\x02"</span>)   <span class="c"># bytes만 허용</span>
+
+<span class="k">with</span> <span class="k">open</span>(<span class="s">"data.bin"</span>, <span class="s">"rb"</span>) <span class="k">as</span> f:
+    raw = f.read()
+<span class="k">print</span>(raw, <span class="k">len</span>(raw))</pre>
+    <div class="out">b'\x00\x01\x02' 3</div>
+    <div class="warn">텍스트 모드로 이미지·실행파일 등을 열면 인코딩 디코딩 과정에서 데이터가 깨집니다. 사람이 읽는 텍스트가 아니면 반드시 <code>'b'</code> 모드를 쓰세요.</div>
+  </div>
+
+  <div class="fn" data-key="pathlib Path 경로 조작">
+    <div class="fn-h"><h3>pathlib.Path — 기본 사용</h3></div>
+    <p>경로를 문자열이 아니라 <b>객체</b>로 다룹니다. <code>/</code> 연산자로 경로를 이어붙일 수 있고, OS별 구분자 차이를 알아서 처리합니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out"><span class="k">from</span> pathlib <span class="k">import</span> Path
+
+p = Path(<span class="s">"data"</span>) / <span class="s">"2024"</span> / <span class="s">"report.csv"</span>
+<span class="k">print</span>(p)
+<span class="k">print</span>(p.suffix, p.stem, p.parent)
+<span class="k">print</span>(p.with_suffix(<span class="s">".json"</span>))
+<span class="k">print</span>(p.exists())</pre>
+    <div class="out">data/2024/report.csv
+.csv report data/2024
+data/2024/report.json
+False</div>
+    <div class="tip"><code>os.path.join()</code> + 문자열 연결로 경로를 만들던 옛날 코드는 <code>Path</code>로 바꾸면 짧아지고 실수가 줄어듭니다. 디렉토리 생성은 <code>.mkdir(parents=True, exist_ok=True)</code>를 씁니다.</div>
+  </div>
+</section>
+
+<!-- ============ N. 클래스·OOP ============ -->
+<section id="n">
+  <div class="sec-h"><span class="key">N</span><h2>클래스·OOP</h2><span class="cnt">5 topics</span></div>
+  <p class="sec-note">파이썬의 모든 값은 객체이며, <code>class</code>로 나만의 타입을 정의합니다. 여기서는 <b>기초</b>만 다룹니다 — 디스크립터, 메타클래스 같은 심화 주제는 OOP 전용 문서를 참고하세요.</p>
+
+  <div class="fn" data-key="class 클래스 정의 self 인스턴스 클래스변수">
+    <div class="fn-h"><span class="rank">#16</span><h3>class</h3></div>
+    <p>속성(상태)과 메소드(행동)를 묶은 사용자 정의 타입을 만듭니다. 모든 인스턴스 메소드의 첫 인자 <code>self</code>는 호출한 인스턴스 자신을 가리킵니다. <b>클래스 변수</b>는 모든 인스턴스가 공유하고, <b>인스턴스 변수</b>는 각자 따로 갖습니다.</p>
+    <div class="viz"><svg viewBox="0 0 440 150" style="max-width:440px" xmlns="http://www.w3.org/2000/svg" role="img"><defs><marker id="ah-class" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" class="ahp"/></marker></defs><rect class="c c-ghost" x="140" y="10" width="160" height="40" rx="6"/><text class="gd" x="220" y="34" text-anchor="middle">Dog (클래스) — species</text><rect class="c c-base" x="20" y="90" width="150" height="46" rx="6"/><text class="ct" x="95" y="112">d1: name="바둑이"</text><rect class="c c-base" x="260" y="90" width="150" height="46" rx="6"/><text class="ct" x="335" y="112">d2: name="초코"</text><line class="ar" x1="95" y1="90" x2="200" y2="52" marker-end="url(#ah-class)"/><line class="ar" x1="335" y1="90" x2="240" y2="52" marker-end="url(#ah-class)"/><text class="gd" x="220" y="140" text-anchor="middle">d1.species 조회 → 인스턴스에 없으면 클래스에서 찾음</text></svg></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out"><span class="k">class</span> Dog:
+    species = <span class="s">"Canis familiaris"</span>   <span class="c"># 클래스 변수 — 모든 인스턴스가 공유</span>
+
+    <span class="k">def</span> __init__(self, name):
+        self.name = name            <span class="c"># 인스턴스 변수</span>
+
+    <span class="k">def</span> bark(self):
+        <span class="k">return</span> f<span class="s">"{self.name}: 멍!"</span>
+
+d1 = Dog(<span class="s">"바둑이"</span>)
+d2 = Dog(<span class="s">"초코"</span>)
+<span class="k">print</span>(d1.bark())
+<span class="k">print</span>(d2.bark())
+<span class="k">print</span>(d1.species <span class="k">is</span> d2.species)</pre>
+    <div class="out">바둑이: 멍!
+초코: 멍!
+True</div>
+  </div>
+
+  <div class="fn" data-key="dunder methods init repr eq add 던더메소드 매직메소드">
+    <div class="fn-h"><h3>__init__ · __repr__ · 던더(dunder) 메소드</h3></div>
+    <p><code>__</code>로 시작해 <code>__</code>로 끝나는 특수 메소드로, 파이썬 내장 문법(<code>print</code>, <code>+</code>, <code>==</code> …)이 커스텀 객체에서 어떻게 동작할지 정의합니다.</p>
+    <div class="tbl-wrap"><table>
+      <tr><th>메소드</th><th>호출 시점</th></tr>
+      <tr><td>__init__(self, ...)</td><td>객체 생성 시 초기화</td></tr>
+      <tr><td>__repr__(self)</td><td>개발자용 표현. <code>repr(x)</code>, 콘솔 출력</td></tr>
+      <tr><td>__str__(self)</td><td>사용자용 표현. <code>print(x)</code>, <code>str(x)</code></td></tr>
+      <tr><td>__eq__(self, other)</td><td><code>==</code> 비교</td></tr>
+      <tr><td>__add__(self, other)</td><td><code>+</code> 연산자</td></tr>
+      <tr><td>__len__(self)</td><td><code>len(x)</code></td></tr>
+    </table></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out"><span class="k">class</span> Point:
+    <span class="k">def</span> __init__(self, x, y):
+        self.x, self.y = x, y
+    <span class="k">def</span> __repr__(self):
+        <span class="k">return</span> f<span class="s">"Point({self.x}, {self.y})"</span>
+    <span class="k">def</span> __add__(self, other):
+        <span class="k">return</span> Point(self.x + other.x, self.y + other.y)
+    <span class="k">def</span> __eq__(self, other):
+        <span class="k">return</span> (self.x, self.y) == (other.x, other.y)
+
+p1, p2 = Point(<span class="n">1</span>, <span class="n">2</span>), Point(<span class="n">3</span>, <span class="n">4</span>)
+<span class="k">print</span>(p1 + p2)
+<span class="k">print</span>(p1 == Point(<span class="n">1</span>, <span class="n">2</span>))
+<span class="k">print</span>(p1)</pre>
+    <div class="out">Point(4, 6)
+True
+Point(1, 2)</div>
+    <div class="note"><code>__repr__</code>을 정의하지 않으면 <code>&lt;__main__.Point object at 0x...&gt;</code>처럼 메모리 주소만 찍혀 디버깅이 어렵습니다. 클래스를 만들면 습관적으로 <code>__repr__</code>부터 채우는 것을 추천합니다.</div>
+  </div>
+
+  <div class="fn" data-key="inheritance super 상속 오버라이드">
+    <div class="fn-h"><h3>상속과 super()</h3></div>
+    <p>기존 클래스의 속성·메소드를 물려받아 확장합니다. <code>super()</code>는 부모 클래스의 메소드를 호출할 때 씁니다 — 오버라이드하면서도 부모 로직을 재사용하고 싶을 때 필수입니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out"><span class="k">class</span> Animal:
+    <span class="k">def</span> __init__(self, name):
+        self.name = name
+    <span class="k">def</span> speak(self):
+        <span class="k">return</span> <span class="s">"..."</span>
+
+<span class="k">class</span> Cat(Animal):
+    <span class="k">def</span> speak(self):
+        <span class="k">return</span> f<span class="s">"{self.name}: 야옹"</span>
+
+<span class="k">class</span> LoudCat(Cat):
+    <span class="k">def</span> speak(self):
+        <span class="k">return</span> super().speak() + <span class="s">"!!!"</span>
+
+<span class="k">print</span>(Cat(<span class="s">"나비"</span>).speak())
+<span class="k">print</span>(LoudCat(<span class="s">"나비"</span>).speak())
+<span class="k">print</span>(<span class="k">isinstance</span>(LoudCat(<span class="s">"나비"</span>), Animal))   <span class="c"># 상속 관계 유지</span></pre>
+    <div class="out">나비: 야옹
+나비: 야옹!!!
+True</div>
+  </div>
+
+  <div class="fn" data-key="property classmethod staticmethod 프로퍼티">
+    <div class="fn-h"><h3>@property · @classmethod · @staticmethod</h3></div>
+    <p>세 데코레이터는 메소드의 "호출 방식"을 바꿉니다. <code>property</code>는 메소드를 <b>속성처럼</b> 괄호 없이 접근하게 하고, <code>classmethod</code>는 인스턴스 대신 클래스를 받으며, <code>staticmethod</code>는 <code>self</code>도 <code>cls</code>도 받지 않는 일반 함수를 클래스 안에 둘 때 씁니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out"><span class="k">class</span> Circle:
+    <span class="k">def</span> __init__(self, r):
+        self.r = r
+
+    <span class="s">@property</span>
+    <span class="k">def</span> area(self):
+        <span class="k">return</span> <span class="n">3.14159</span> * self.r ** <span class="n">2</span>
+
+    <span class="s">@classmethod</span>
+    <span class="k">def</span> unit(cls):
+        <span class="k">return</span> cls(<span class="n">1</span>)
+
+    <span class="s">@staticmethod</span>
+    <span class="k">def</span> is_valid(r):
+        <span class="k">return</span> r &gt; <span class="n">0</span>
+
+c = Circle(<span class="n">2</span>)
+<span class="k">print</span>(c.area)             <span class="c"># 괄호 없이 접근</span>
+<span class="k">print</span>(Circle.unit().r)
+<span class="k">print</span>(Circle.is_valid(-<span class="n">1</span>))</pre>
+    <div class="out">12.56636
+1
+False</div>
+  </div>
+
+  <div class="fn" data-key="dataclass 데이터클래스 간단소개">
+    <div class="fn-h"><h3>@dataclass — 짧게 보는 데이터 클래스</h3><span class="tag new">3.7+</span></div>
+    <p>속성만 나열하면 <code>__init__</code>, <code>__repr__</code>, <code>__eq__</code>를 자동으로 만들어주는 데코레이터입니다. 데이터를 담는 게 목적인 클래스의 보일러플레이트를 없애줍니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out"><span class="k">from</span> dataclasses <span class="k">import</span> dataclass
+
+<span class="s">@dataclass</span>
+<span class="k">class</span> Point:
+    x: <span class="k">int</span>
+    y: <span class="k">int</span> = <span class="n">0</span>
+
+p1 = Point(<span class="n">1</span>, <span class="n">2</span>)
+p2 = Point(<span class="n">1</span>, <span class="n">2</span>)
+<span class="k">print</span>(p1)              <span class="c"># __repr__ 자동 생성</span>
+<span class="k">print</span>(p1 == p2)         <span class="c"># __eq__ 자동 생성 (값으로 비교)</span></pre>
+    <div class="out">Point(x=1, y=2)
+True</div>
+    <div class="note">일반 클래스와 똑같이 <b>가변 기본 인자 함정</b>(§K)이 적용됩니다 — <code>tags: list = []</code>라고 직접 쓰면 <code>ValueError</code>가 나며, 대신 <code>field(default_factory=list)</code>를 써야 합니다.</div>
+  </div>
+</section>
+
+<!-- ============ O. 표준 모듈 ============ -->
+<section id="o">
+  <div class="sec-h"><span class="key">O</span><h2>표준 모듈</h2><span class="cnt">7 topics</span></div>
+  <p class="sec-note">직접 구현하면 버그가 나기 쉬운 반복·함수형·카운팅·난수 로직을 검증된 형태로 제공하는, 사실상 기본 문법처럼 쓰이는 표준 라이브러리입니다.</p>
+
+  <div class="fn" data-key="itertools chain product combinations permutations groupby">
+    <div class="fn-h"><h3>itertools 핵심 함수</h3></div>
+    <div class="tbl-wrap"><table>
+      <tr><th>함수</th><th>하는 일</th></tr>
+      <tr><td>chain(a, b, ...)</td><td>여러 이터러블을 하나로 이어붙여 순회</td></tr>
+      <tr><td>product(a, b)</td><td>데카르트 곱 (중첩 for문 대체)</td></tr>
+      <tr><td>combinations(it, r)</td><td>순서 없는 r개 조합</td></tr>
+      <tr><td>permutations(it, r)</td><td>순서 있는 r개 순열</td></tr>
+      <tr><td>groupby(it, key)</td><td>연속된 같은 키끼리 묶음 (사전 정렬 필요)</td></tr>
+    </table></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out"><span class="k">import</span> itertools
+
+<span class="k">print</span>(<span class="k">list</span>(itertools.chain([<span class="n">1</span>, <span class="n">2</span>], [<span class="n">3</span>, <span class="n">4</span>])))
+<span class="k">print</span>(<span class="k">list</span>(itertools.product([<span class="n">1</span>, <span class="n">2</span>], [<span class="s">"a"</span>, <span class="s">"b"</span>])))
+<span class="k">print</span>(<span class="k">list</span>(itertools.combinations([<span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span>], <span class="n">2</span>)))
+<span class="k">print</span>(<span class="k">list</span>(itertools.permutations([<span class="n">1</span>, <span class="n">2</span>], <span class="n">2</span>)))
+
+data = [<span class="n">1</span>, <span class="n">1</span>, <span class="n">2</span>, <span class="n">2</span>, <span class="n">2</span>, <span class="n">3</span>]
+<span class="k">print</span>([(k, <span class="k">list</span>(g)) <span class="k">for</span> k, g <span class="k">in</span> itertools.groupby(data)])</pre>
+    <div class="out">[1, 2, 3, 4]
+[(1, 'a'), (1, 'b'), (2, 'a'), (2, 'b')]
+[(1, 2), (1, 3), (2, 3)]
+[(1, 2), (2, 1)]
+[(1, [1, 1]), (2, [2, 2, 2]), (3, [3])]</div>
+    <div class="warn"><code>groupby</code>는 <b>연속</b>된 원소만 묶습니다. <code>[1, 2, 1]</code>처럼 같은 값이 떨어져 있으면 별도 그룹으로 취급됩니다. 값 전체를 기준으로 묶고 싶다면 미리 정렬하거나 <code>Counter</code>를 쓰세요.</div>
+  </div>
+
+  <div class="fn" data-key="functools reduce partial 누적 부분적용">
+    <div class="fn-h"><h3>functools.reduce() · partial()</h3></div>
+    <p><code>reduce</code>는 이터러블을 왼쪽부터 누적 계산해 하나의 값으로 접습니다. <code>partial</code>은 함수의 일부 인자를 미리 고정한 새 함수를 만듭니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out"><span class="k">from</span> functools <span class="k">import</span> reduce, partial
+
+<span class="k">print</span>(reduce(<span class="k">lambda</span> a, b: a + b, [<span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span>, <span class="n">4</span>]))
+<span class="k">print</span>(reduce(<span class="k">lambda</span> a, b: a * b, [<span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span>, <span class="n">4</span>], <span class="n">1</span>))
+
+<span class="k">def</span> power(base, exp):
+    <span class="k">return</span> base ** exp
+
+square = partial(power, exp=<span class="n">2</span>)
+cube = partial(power, exp=<span class="n">3</span>)
+<span class="k">print</span>(square(<span class="n">5</span>), cube(<span class="n">2</span>))</pre>
+    <div class="out">10
+24
+25 8</div>
+    <div class="tip">합계·곱은 <code>reduce</code>보다 내장 <code>sum()</code>, <code>math.prod()</code>가 더 빠르고 읽기 쉽습니다. <code>reduce</code>는 내장 함수가 없는 커스텀 누적 로직에 쓰는 게 제 자리입니다.</div>
+  </div>
+
+  <div class="fn" data-key="lru_cache 메모이제이션 캐시">
+    <div class="fn-h"><h3>functools.lru_cache</h3><span class="tag perf">캐싱</span></div>
+    <p>함수 호출 결과를 인자 기준으로 캐싱하는 데코레이터입니다. 같은 인자로 다시 호출되면 재계산 없이 저장된 값을 즉시 반환합니다. 재귀 함수의 속도를 극적으로 바꿔줍니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig">@functools.lru_cache(maxsize=128)</div>
+    <h4>예시 코드</h4>
+    <pre class="has-out"><span class="k">from</span> functools <span class="k">import</span> lru_cache
+
+<span class="s">@lru_cache</span>(maxsize=<span class="k">None</span>)
+<span class="k">def</span> fib(n):
+    <span class="k">if</span> n &lt; <span class="n">2</span>:
+        <span class="k">return</span> n
+    <span class="k">return</span> fib(n - <span class="n">1</span>) + fib(n - <span class="n">2</span>)
+
+<span class="k">print</span>(fib(<span class="n">30</span>))     <span class="c"># 캐시 없으면 지수 시간, 있으면 순식간</span>
+<span class="k">print</span>(fib.cache_info().hits &gt; <span class="n">0</span>)</pre>
+    <div class="out">832040
+True</div>
+    <div class="warn">캐시 키는 <b>인자 값 자체</b>로 만들어지므로, 인자가 리스트처럼 해시 불가능한(unhashable) 타입이면 <code>TypeError</code>가 납니다.</div>
+  </div>
+
+  <div class="fn" data-key="Counter 개수세기 최빈값">
+    <div class="fn-h"><h3>collections.Counter</h3></div>
+    <p>이터러블의 각 원소가 몇 번 나왔는지 세는 dict 서브클래스입니다. 최빈값 찾기, 도수 분포 계산의 표준 도구입니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out"><span class="k">from</span> collections <span class="k">import</span> Counter
+
+words = <span class="s">"the quick brown fox the lazy dog the fox"</span>.split()
+c = Counter(words)
+<span class="k">print</span>(c[<span class="s">"the"</span>], c[<span class="s">"fox"</span>], c[<span class="s">"cat"</span>])   <span class="c"># 없는 키도 KeyError 대신 0</span>
+<span class="k">print</span>(c.most_common(<span class="n">2</span>))</pre>
+    <div class="out">3 2 0
+[('the', 3), ('fox', 2)]</div>
+    <div class="tip">일반 <code>dict</code>는 없는 키에 접근하면 <code>KeyError</code>지만, <code>Counter</code>는 <b>없으면 0</b>을 돌려줍니다. 두 <code>Counter</code>끼리 <code>+</code>, <code>-</code> 연산도 가능합니다.</div>
+  </div>
+
+  <div class="fn" data-key="defaultdict 기본값 그룹핑">
+    <div class="fn-h"><h3>collections.defaultdict</h3></div>
+    <p>없는 키에 접근하면 <code>KeyError</code> 대신 <b>기본값을 만들어 자동으로 채워 넣는</b> dict입니다. 그룹핑 로직에서 <code>setdefault</code> 호출을 없애줍니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out"><span class="k">from</span> collections <span class="k">import</span> defaultdict
+
+dd = defaultdict(<span class="k">list</span>)
+<span class="k">for</span> word <span class="k">in</span> [<span class="s">"apple"</span>, <span class="s">"ant"</span>, <span class="s">"bee"</span>, <span class="s">"bat"</span>]:
+    dd[word[<span class="n">0</span>]].append(word)     <span class="c"># 키가 없으면 [] 를 먼저 만들고 append</span>
+<span class="k">print</span>(<span class="k">dict</span>(dd))</pre>
+    <div class="out">{'a': ['apple', 'ant'], 'b': ['bee', 'bat']}</div>
+  </div>
+
+  <div class="fn" data-key="namedtuple deque 이름있는튜플 양방향큐">
+    <div class="fn-h"><h3>collections.namedtuple() · deque</h3></div>
+    <p><code>namedtuple</code>은 인덱스 대신 <b>이름으로 접근</b>하는 가벼운 불변 레코드를, <code>deque</code>는 <b>양쪽 끝에서 O(1)</b>로 추가·제거되는 큐를 제공합니다(리스트는 앞쪽 삽입이 O(n)).</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out"><span class="k">from</span> collections <span class="k">import</span> namedtuple, deque
+
+Point = namedtuple(<span class="s">"Point"</span>, [<span class="s">"x"</span>, <span class="s">"y"</span>])
+p = Point(<span class="n">1</span>, <span class="n">2</span>)
+<span class="k">print</span>(p, p.x, p.y, p[<span class="n">0</span>])
+
+dq = deque([<span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span>])
+dq.appendleft(<span class="n">0</span>)
+dq.append(<span class="n">4</span>)
+<span class="k">print</span>(dq)
+<span class="k">print</span>(dq.popleft(), dq)</pre>
+    <div class="out">Point(x=1, y=2) 1 2 1
+deque([0, 1, 2, 3, 4])
+0 deque([1, 2, 3, 4])</div>
+    <div class="tip">최근 N개만 유지하는 슬라이딩 윈도우가 필요하면 <code>deque(maxlen=N)</code>을 쓰세요. 용량을 넘으면 반대쪽 원소가 자동으로 밀려납니다.</div>
+  </div>
+
+  <div class="fn" data-key="random choice randint shuffle sample seed 난수">
+    <div class="fn-h"><h3>random 모듈</h3></div>
+    <p>난수 생성 표준 라이브러리입니다. <code>seed()</code>로 시드를 고정하면 <b>재현 가능한</b> 난수 시퀀스를 얻을 수 있어 테스트·예제에 유용합니다.</p>
+    <div class="tbl-wrap"><table>
+      <tr><th>함수</th><th>하는 일</th></tr>
+      <tr><td>random()</td><td>0.0 이상 1.0 미만 실수</td></tr>
+      <tr><td>randint(a, b)</td><td>a 이상 b <b>이하</b> 정수</td></tr>
+      <tr><td>choice(seq)</td><td>시퀀스에서 원소 하나 무작위 선택</td></tr>
+      <tr><td>sample(seq, k)</td><td>중복 없이 k개 무작위 선택</td></tr>
+      <tr><td>shuffle(list)</td><td>리스트를 <b>제자리</b>에서 섞음</td></tr>
+    </table></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out"><span class="k">import</span> random
+
+random.seed(<span class="n">42</span>)   <span class="c"># 시드 고정 → 항상 같은 결과 재현</span>
+<span class="k">print</span>(random.randint(<span class="n">1</span>, <span class="n">10</span>))
+<span class="k">print</span>(random.choice([<span class="s">"가위"</span>, <span class="s">"바위"</span>, <span class="s">"보"</span>]))
+nums = [<span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span>, <span class="n">4</span>, <span class="n">5</span>]
+random.shuffle(nums)
+<span class="k">print</span>(nums)</pre>
+    <div class="out">2
+가위
+[4, 5, 1, 2, 3]</div>
+    <div class="note">위 <code>.out</code>은 <code>random.seed(42)</code> 기준 CPython 3.12 환경에서 실제로 나온 결과입니다. 시드를 고정하지 않으면 실행할 때마다 값이 달라집니다. 암호학적으로 안전한 난수가 필요하면 <code>random</code> 대신 <code>secrets</code> 모듈을 쓰세요.</div>
+  </div>
+</section>
+
+<!-- ============ Z. 전체 색인 ============ -->
+<section id="z">
+  <div class="sec-h"><span class="key">Z</span><h2>전체 색인</h2><span class="cnt">quick reference</span></div>
+  <p class="sec-note">본문에서 다룬 주제를 한 장으로 요약했습니다. 인쇄해서 옆에 두고 쓰세요.</p>
+
+  <div class="fn">
+    <h4>출력 · 입력 · 연산자 · 조건문</h4>
+    <div class="tbl-wrap"><table>
+      <tr><td>print / f-string / 포맷 스펙</td><td>출력</td><td>input / 형변환 / split</td><td>입력</td></tr>
+      <tr><td>산술 / 비교·논리 / 비트 연산자</td><td>연산</td><td>대입·왈러스(:=) / 삼항식</td><td>연산</td></tr>
+      <tr><td>if / elif / else</td><td>분기</td><td>match / case</td><td>패턴 매칭</td></tr>
+    </table></div>
+    <h4>반복문 · 문자열</h4>
+    <div class="tbl-wrap"><table>
+      <tr><td>for / while / break / continue</td><td>반복</td><td>range / enumerate / zip</td><td>반복 보조</td></tr>
+      <tr><td>인덱싱 / 슬라이싱 / 불변성</td><td>문자열 기본</td><td>split / join / strip / replace</td><td>문자열 가공</td></tr>
+      <tr><td>upper / lower / startswith / isdigit</td><td>검사·변환</td><td></td><td></td></tr>
+    </table></div>
+    <h4>자료구조</h4>
+    <div class="tbl-wrap"><table>
+      <tr><td>list.append / extend / pop / remove / sort</td><td>리스트 변경</td><td>슬라이싱 [a:b:c]</td><td>부분 추출</td></tr>
+      <tr><td>튜플 생성 / 언패킹 / *rest</td><td>튜플</td><td>dict {} / .get() / .items() / setdefault</td><td>딕셔너리</td></tr>
+      <tr><td>set & | - ^ / add / discard</td><td>집합 연산</td><td>리스트/딕셔너리/집합 컴프리헨션</td><td>생성 축약</td></tr>
+    </table></div>
+    <h4>함수 · 예외 · 파일 · 클래스</h4>
+    <div class="tbl-wrap"><table>
+      <tr><td>def / *args / **kwargs / lambda</td><td>함수 정의</td><td>클로저 / 데코레이터 / nonlocal</td><td>함수 확장</td></tr>
+      <tr><td>try / except / else / finally / raise</td><td>예외 처리</td><td>open / with / read / write / Path</td><td>파일 입출력</td></tr>
+      <tr><td>class / __init__ / 던더메소드</td><td>클래스 정의</td><td>상속 / super() / property / classmethod</td><td>클래스 확장</td></tr>
+      <tr><td>@dataclass</td><td>데이터 클래스</td><td></td><td></td></tr>
+    </table></div>
+    <h4>표준 모듈</h4>
+    <div class="tbl-wrap"><table>
+      <tr><td>itertools (chain/product/combinations/groupby)</td><td>반복 조합</td><td>functools (reduce/partial/lru_cache)</td><td>함수형 도구</td></tr>
+      <tr><td>Counter / defaultdict</td><td>카운팅·그룹핑</td><td>namedtuple / deque</td><td>레코드·큐</td></tr>
+      <tr><td>random (randint/choice/shuffle/sample/seed)</td><td>난수</td><td></td><td></td></tr>
+    </table></div>
+  </div>
+</section>
+
+</main>
+</div>
+
+<footer>
+  <p><b>검증 환경</b> — Python 3.12 / 3.13, CPython 참조 구현 기준. 문서에 수록된 예제는 표준 라이브러리만 사용했으며, 결과는 이 환경에서 직접 트레이스한 값을 옮겼습니다. dict/set의 출력 순서는 버전에 따라 달라질 수 있는 부분을 최대한 피해 작성했습니다.</p>
+  <p><b>참고</b> — <a href="https://docs.python.org/3/">Python 공식 문서</a> · <a href="https://docs.python.org/3/library/index.html">표준 라이브러리 레퍼런스</a> · <a href="https://peps.python.org/pep-0008/">PEP 8 스타일 가이드</a> · 사용 빈도는 공개 코드베이스 분석과 실무 큐레이션 자료를 교차 참고한 상대 지수입니다.</p>
+  <p class="copyright">&copy; 2026 AISHIFT. All rights reserved.</p>
+</footer>
+
+<script src="reference.js"></script>
+</body>
+</html>

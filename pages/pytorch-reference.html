@@ -1,0 +1,1527 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PyTorch 실무 레퍼런스 — 메소드 A to Z</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="reference.css">
+<style>
+.tag.layer{color:var(--blue);border-color:#c9d7f0;background:#f0f4fd}
+.tag.optim{color:var(--rose);border-color:#f0cdd9;background:#fdf2f6}
+.tag.loss{color:var(--amber);border-color:#f0dcc0;background:#fdf7ef}
+.tag.autograd{color:var(--violet);border-color:#d6cff0;background:#f6f4fd}
+.tag.gpu{color:#177a5a;border-color:#b9e2d2;background:#eff9f5}
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <div class="bar-in">
+    <a class="home" href="../index.html">← 홈</a>
+    <div class="brand">PyTorch<span>[nn]</span>Reference</div>
+    <input id="q" type="search" placeholder="함수 이름으로 찾기 — backward, DataLoader, Conv2d …" aria-label="함수 검색">
+    <div id="qn" aria-live="polite"></div>
+  </div>
+</div>
+
+<header class="hero">
+  <h1>PyTorch 메소드 사전</h1>
+</header>
+
+<div class="wrap">
+<nav class="toc" aria-label="목차">
+  <ol>
+    <li><a href="#rank"><span class="k">§</span>사용 빈도 랭킹</a></li>
+    <li><a href="#core"><span class="k">§</span>먼저 알아야 할 5가지</a></li>
+    <li><a href="#a"><span class="k">A</span>텐서 생성</a></li>
+    <li><a href="#b"><span class="k">B</span>텐서 연산·형태 변형</a></li>
+    <li><a href="#c"><span class="k">C</span>Autograd</a></li>
+    <li><a href="#d"><span class="k">D</span>nn.Module·레이어 정의</a></li>
+    <li><a href="#e"><span class="k">E</span>활성화 함수</a></li>
+    <li><a href="#f"><span class="k">F</span>손실 함수</a></li>
+    <li><a href="#g"><span class="k">G</span>옵티마이저</a></li>
+    <li><a href="#h"><span class="k">H</span>학습률 스케줄러</a></li>
+    <li><a href="#i"><span class="k">I</span>Dataset·DataLoader·학습 루프</a></li>
+    <li><a href="#j"><span class="k">J</span>GPU·디바이스 관리</a></li>
+    <li><a href="#k"><span class="k">K</span>모델 저장·불러오기</a></li>
+    <li><a href="#l"><span class="k">L</span>CNN 레이어</a></li>
+    <li><a href="#m"><span class="k">M</span>RNN·Transformer 레이어</a></li>
+    <li><a href="#n"><span class="k">N</span>정규화·드롭아웃</a></li>
+    <li><a href="#o"><span class="k">O</span>실무 레시피</a></li>
+    <li><a href="#p"><span class="k">P</span>성능과 함정</a></li>
+    <li><a href="#z"><span class="k">Z</span>전체 색인</a></li>
+  </ol>
+</nav>
+
+<main>
+
+<!-- ============ 랭킹 ============ -->
+<section id="rank">
+  <div class="sec-h"><span class="key">§</span><h2>사용 빈도 랭킹 Top 25</h2></div>
+  <p class="sec-note">여기 있는 25개만 손에 익어도 실무 학습 코드의 대부분이 커버됩니다. 이 문서의 카드에는 <span class="rank">#01</span> 같은 배지로 순위를 표시했습니다.</p>
+  <div class="viz wide"><svg viewBox="0 0 700 704" style="max-width:700px" xmlns="http://www.w3.org/2000/svg" role="img"><defs><marker id="ah1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" class="ahp"/></marker></defs><text class="rl" x="150" y="54" text-anchor="end">torch.tensor()</text><rect class="bar b1" x="162" y="40" width="470" height="19" rx="3"/><text class="rn" x="640" y="54">100</text><text class="rl" x="150" y="80" text-anchor="end">.to(device)</text><rect class="bar b1" x="162" y="66" width="447" height="19" rx="3"/><text class="rn" x="617" y="80">95</text><text class="rl" x="150" y="106" text-anchor="end">nn.Module</text><rect class="bar b1" x="162" y="92" width="432" height="19" rx="3"/><text class="rn" x="602" y="106">92</text><text class="rl" x="150" y="132" text-anchor="end">optimizer.zero_grad()</text><rect class="bar b1" x="162" y="118" width="423" height="19" rx="3"/><text class="rn" x="593" y="132">90</text><text class="rl" x="150" y="158" text-anchor="end">loss.backward()</text><rect class="bar b1" x="162" y="144" width="414" height="19" rx="3"/><text class="rn" x="584" y="158">88</text><text class="rl" x="150" y="184" text-anchor="end">optimizer.step()</text><rect class="bar b1" x="162" y="170" width="409" height="19" rx="3"/><text class="rn" x="579" y="184">87</text><text class="rl" x="150" y="210" text-anchor="end">nn.Linear</text><rect class="bar b1" x="162" y="196" width="400" height="19" rx="3"/><text class="rn" x="570" y="210">85</text><text class="rl" x="150" y="236" text-anchor="end">torch.nn.functional</text><rect class="bar b1" x="162" y="222" width="390" height="19" rx="3"/><text class="rn" x="560" y="236">83</text><text class="rl" x="150" y="262" text-anchor="end">DataLoader</text><rect class="bar b1" x="162" y="248" width="385" height="19" rx="3"/><text class="rn" x="555" y="262">82</text><text class="rl" x="150" y="288" text-anchor="end">Dataset</text><rect class="bar b1" x="162" y="274" width="376" height="19" rx="3"/><text class="rn" x="546" y="288">80</text><text class="rl" x="150" y="314" text-anchor="end">optim.Adam</text><rect class="bar b2" x="162" y="300" width="367" height="19" rx="3"/><text class="rn" x="537" y="314">78</text><text class="rl" x="150" y="340" text-anchor="end">torch.no_grad()</text><rect class="bar b2" x="162" y="326" width="357" height="19" rx="3"/><text class="rn" x="527" y="340">76</text><text class="rl" x="150" y="366" text-anchor="end">model.train()/eval()</text><rect class="bar b2" x="162" y="352" width="348" height="19" rx="3"/><text class="rn" x="518" y="366">74</text><text class="rl" x="150" y="392" text-anchor="end">nn.CrossEntropyLoss</text><rect class="bar b2" x="162" y="378" width="338" height="19" rx="3"/><text class="rn" x="508" y="392">72</text><text class="rl" x="150" y="418" text-anchor="end">.view()/.reshape()</text><rect class="bar b2" x="162" y="404" width="329" height="19" rx="3"/><text class="rn" x="499" y="418">70</text><text class="rl" x="150" y="444" text-anchor="end">torch.save/load</text><rect class="bar b2" x="162" y="430" width="320" height="19" rx="3"/><text class="rn" x="490" y="444">68</text><text class="rl" x="150" y="470" text-anchor="end">nn.Conv2d</text><rect class="bar b2" x="162" y="456" width="310" height="19" rx="3"/><text class="rn" x="480" y="470">66</text><text class="rl" x="150" y="496" text-anchor="end">.cuda()/.cpu()</text><rect class="bar b2" x="162" y="482" width="301" height="19" rx="3"/><text class="rn" x="471" y="496">64</text><text class="rl" x="150" y="522" text-anchor="end">torch.cat/stack</text><rect class="bar b2" x="162" y="508" width="291" height="19" rx="3"/><text class="rn" x="461" y="522">62</text><text class="rl" x="150" y="548" text-anchor="end">optim.SGD</text><rect class="bar b2" x="162" y="534" width="282" height="19" rx="3"/><text class="rn" x="452" y="548">60</text><text class="rl" x="150" y="574" text-anchor="end">nn.ReLU</text><rect class="bar b2" x="162" y="560" width="273" height="19" rx="3"/><text class="rn" x="443" y="574">58</text><text class="rl" x="150" y="600" text-anchor="end">.item()</text><rect class="bar b2" x="162" y="586" width="263" height="19" rx="3"/><text class="rn" x="433" y="600">56</text><text class="rl" x="150" y="626" text-anchor="end">nn.BatchNorm2d</text><rect class="bar b3" x="162" y="612" width="254" height="19" rx="3"/><text class="rn" x="424" y="626">54</text><text class="rl" x="150" y="652" text-anchor="end">torch.manual_seed</text><rect class="bar b3" x="162" y="638" width="244" height="19" rx="3"/><text class="rn" x="414" y="652">52</text><text class="rl" x="150" y="678" text-anchor="end">nn.Dropout</text><rect class="bar b3" x="162" y="664" width="235" height="19" rx="3"/><text class="rn" x="405" y="678">50</text><text class="gt" x="20" y="24">상대 사용 빈도 지수 (100 = 최상위)</text></svg></div>
+</section>
+
+<!-- ============ 핵심 개념 ============ -->
+<section id="core">
+  <div class="sec-h"><span class="key">§</span><h2>먼저 알아야 할 5가지</h2></div>
+  <p class="sec-note">개별 API를 외우기 전에 이 다섯 가지를 이해하면 나머지는 대부분 유추됩니다. PyTorch 코드에서 나는 버그의 대부분은 <b>텐서 shape/device 불일치</b>, <b>grad 처리 실수</b>, <b>train/eval 모드 전환 누락</b>에서 나옵니다.</p>
+
+  <div class="fn">
+    <div class="fn-h"><h3>① Tensor — NumPy 배열 + GPU + 자동미분</h3></div>
+    <p><code>torch.Tensor</code>는 NumPy의 <code>ndarray</code>와 거의 같은 다차원 배열이지만 두 가지가 추가됩니다. <b>GPU로 옮겨 병렬 연산</b>할 수 있고, <b>연산 이력을 기록해 <code>.backward()</code>로 미분</b>할 수 있습니다. <code>torch.from_numpy()</code>로 변환하면 메모리를 공유하는 뷰가 됩니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out"><span class="k">import</span> torch
+<span class="k">import</span> numpy <span class="k">as</span> np
+
+x = torch.tensor([[<span class="n">1.</span>, <span class="n">2.</span>], [<span class="n">3.</span>, <span class="n">4.</span>]])
+<span class="k">print</span>(x.shape, x.dtype, x.device)
+
+n = np.array([<span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span>])
+t = torch.from_numpy(n)   <span class="c"># 메모리 공유(뷰)</span>
+t[<span class="n">0</span>] = <span class="n">99</span>
+<span class="k">print</span>(n)   <span class="c"># 원본 numpy 배열도 바뀐다</span></pre>
+    <div class="out">torch.Size([2, 2]) torch.float32 cpu
+[99  2  3]</div>
+    <div class="note"><code>torch.Tensor</code>와 NumPy <code>ndarray</code>는 <b>CPU에서는</b> 버퍼를 공유할 수 있지만, GPU 텐서는 NumPy로 직접 변환할 수 없습니다(<code>.cpu()</code>로 먼저 옮겨야 함). 딥러닝 기본 dtype은 NumPy와 달리 <b>float32</b>입니다.</div>
+  </div>
+
+  <div class="fn">
+    <div class="fn-h"><h3>② Autograd — 계산 그래프와 backward()</h3></div>
+    <p><code>requires_grad=True</code>인 텐서로 연산을 하면 PyTorch가 내부적으로 <b>계산 그래프(DAG)</b>를 만듭니다. 마지막 스칼라에 <code>.backward()</code>를 호출하면 그래프를 거꾸로 훑으며(역전파) 각 텐서의 <code>.grad</code>에 편미분 값을 누적합니다.</p>
+    <div class="viz wide"><svg viewBox="0 0 700 190" style="max-width:700px" xmlns="http://www.w3.org/2000/svg" role="img"><defs><marker id="ah2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" class="ahp"/></marker></defs><rect class="c c-base" x="20" y="50" width="70" height="34" rx="4"/><text class="ct ct-base" x="55" y="71.5">x, w</text><rect class="c c-hl" x="150" y="50" width="70" height="34" rx="4"/><text class="ct ct-hl" x="185" y="71.5">y=wx+b</text><rect class="c c-hl" x="280" y="50" width="70" height="34" rx="4"/><text class="ct ct-hl" x="315" y="71.5">ŷ=σ(y)</text><rect class="c c-acc" x="410" y="50" width="80" height="34" rx="4"/><text class="ct ct-acc" x="450" y="71.5">loss</text><line class="ar" x1="90" y1="67" x2="146" y2="67" marker-end="url(#ah2)"/><line class="ar" x1="220" y1="67" x2="276" y2="67" marker-end="url(#ah2)"/><line class="ar" x1="350" y1="67" x2="406" y2="67" marker-end="url(#ah2)"/><text class="gt" x="20" y="30">forward — 연산할 때마다 그래프를 기록</text><line class="ar dash" x1="490" y1="110" x2="55" y2="110" marker-end="url(#ah2)"/><text class="al" x="270" y="103" text-anchor="middle">loss.backward() — grad_fn을 거꾸로 훑는다</text><text class="gd" x="20" y="150">x.grad, w.grad에 ∂loss/∂x, ∂loss/∂w가 누적됨 (leaf 텐서만)</text><text class="gd" x="20" y="172">y, ŷ 같은 중간 텐서는 기본적으로 .grad가 저장되지 않음(retain_grad() 필요)</text></svg></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">x = torch.tensor(<span class="n">2.0</span>, requires_grad=<span class="k">True</span>)
+w = torch.tensor(<span class="n">3.0</span>, requires_grad=<span class="k">True</span>)
+y = w * x + <span class="n">1</span>          <span class="c"># y = 3*2 + 1 = 7</span>
+loss = y ** <span class="n">2</span>            <span class="c"># loss = 49</span>
+loss.backward()
+<span class="k">print</span>(y.item(), loss.item())
+<span class="k">print</span>(x.grad.item(), w.grad.item())   <span class="c"># d(loss)/dx=2*y*w, d(loss)/dw=2*y*x</span></pre>
+    <div class="out">7.0 49.0
+42.0 28.0</div>
+    <div class="warn"><code>.backward()</code>는 호출할 때마다 <code>.grad</code>에 <b>더해집니다(누적)</b>. 매 스텝 새 그래디언트만 필요하다면 <code>optimizer.zero_grad()</code>로 반드시 초기화해야 합니다 — 잊으면 이전 배치의 그래디언트가 섞여 학습이 이상해집니다.</div>
+  </div>
+
+  <div class="fn">
+    <div class="fn-h"><h3>③ nn.Module 구조 — __init__과 forward</h3></div>
+    <p>거의 모든 모델은 <code>nn.Module</code>을 상속합니다. <code>__init__</code>에서 학습 가능한 <b>레이어(서브모듈)</b>를 등록하고, <code>forward</code>에서 그 레이어들을 어떤 순서로 통과시킬지 정의합니다. <code>model(x)</code>처럼 <b>인스턴스를 함수처럼 호출</b>하면 내부적으로 <code>forward</code>가 실행됩니다(직접 <code>model.forward(x)</code>를 호출하지 않는 것이 관례).</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out"><span class="k">class</span> MLP(nn.Module):
+    <span class="k">def</span> __init__(self, in_dim, hidden, out_dim):
+        <span class="k">super</span>().__init__()          <span class="c"># 필수: 부모 초기화</span>
+        self.fc1 = nn.Linear(in_dim, hidden)
+        self.fc2 = nn.Linear(hidden, out_dim)
+
+    <span class="k">def</span> forward(self, x):
+        x = torch.relu(self.fc1(x))
+        <span class="k">return</span> self.fc2(x)
+
+model = MLP(<span class="n">10</span>, <span class="n">32</span>, <span class="n">2</span>)
+out = model(torch.randn(<span class="n">4</span>, <span class="n">10</span>))   <span class="c"># __call__ → forward</span>
+<span class="k">print</span>(out.shape)</pre>
+    <div class="out">torch.Size([4, 2])</div>
+    <div class="tip"><code>nn.Module</code>은 <code>__setattr__</code>을 오버라이드해서, <code>self.fc1 = nn.Linear(...)</code>처럼 서브모듈을 속성으로 대입하는 순간 자동으로 내부 레지스트리에 등록합니다. 그 덕분에 <code>model.parameters()</code>가 중첩된 모든 레이어의 파라미터를 자동으로 찾아냅니다.</div>
+  </div>
+
+  <div class="fn">
+    <div class="fn-h"><h3>④ Device — CPU와 GPU 텐서는 별개의 메모리</h3></div>
+    <p>같은 연산이라도 <b>피연산자가 모두 같은 device에 있어야</b> 합니다. CPU 텐서와 GPU 텐서를 섞어 연산하면 <code>RuntimeError</code>가 납니다. 모델과 입력 데이터를 <b>둘 다</b> <code>.to(device)</code>로 옮기는 습관이 중요합니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">device = torch.device(<span class="s">"cuda"</span> <span class="k">if</span> torch.cuda.is_available() <span class="k">else</span> <span class="s">"cpu"</span>)
+model = MLP(<span class="n">10</span>, <span class="n">32</span>, <span class="n">2</span>).to(device)
+x = torch.randn(<span class="n">4</span>, <span class="n">10</span>).to(device)
+out = model(x)
+<span class="k">print</span>(device, out.device)</pre>
+    <div class="out">cpu cpu</div>
+    <div class="note">이 문서는 GPU가 없는 환경에서 검증했기 때문에 위 출력은 <code>cpu</code>입니다. CUDA가 있는 환경에서는 <code>device(type='cuda')</code>, <code>out.device</code>가 <code>cuda:0</code>으로 나옵니다. <code>.to(device)</code>는 모델은 <b>제자리(in-place)</b>로 옮기지만, 텐서는 <b>새 텐서를 반환</b>하므로 <code>x = x.to(device)</code>처럼 재대입해야 합니다.</div>
+  </div>
+
+  <div class="fn">
+    <div class="fn-h"><h3>⑤ 학습 루프의 4단계</h3></div>
+    <p>지도학습 학습 루프는 거의 항상 같은 4단계를 반복합니다. 이 순서를 몸에 익히면 어떤 모델이든 학습 코드의 뼈대를 바로 쓸 수 있습니다.</p>
+    <div class="viz wide"><svg viewBox="0 0 700 130" style="max-width:700px" xmlns="http://www.w3.org/2000/svg" role="img"><defs><marker id="ah3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" class="ahp"/></marker></defs><rect class="c c-warn" x="10" y="40" width="150" height="40" rx="4"/><text class="ct ct-warn" x="85" y="64">zero_grad()</text><rect class="c c-hl" x="190" y="40" width="150" height="40" rx="4"/><text class="ct ct-hl" x="265" y="64">forward + loss</text><rect class="c c-acc2" x="370" y="40" width="150" height="40" rx="4"/><text class="ct ct-acc2" x="445" y="64">backward()</text><rect class="c c-acc" x="550" y="40" width="140" height="40" rx="4"/><text class="ct ct-acc" x="620" y="64">step()</text><line class="ar" x1="160" y1="60" x2="186" y2="60" marker-end="url(#ah3)"/><line class="ar" x1="340" y1="60" x2="366" y2="60" marker-end="url(#ah3)"/><line class="ar" x1="520" y1="60" x2="546" y2="60" marker-end="url(#ah3)"/><line class="ar dash" x1="620" y1="86" x2="85" y2="86" marker-end="url(#ah3)"/><text class="gd" x="350" y="106" text-anchor="middle">다음 배치로 반복</text></svg></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out"><span class="k">for</span> xb, yb <span class="k">in</span> loader:
+    optimizer.zero_grad()        <span class="c"># ① 이전 grad 초기화</span>
+    pred = model(xb)              <span class="c"># ② forward</span>
+    loss = criterion(pred, yb)    <span class="c">#    loss 계산</span>
+    loss.backward()               <span class="c"># ③ backward — grad 계산</span>
+    optimizer.step()              <span class="c"># ④ 파라미터 갱신</span></pre>
+    <div class="warn">이 네 줄 중 하나라도 빠지면 조용히 잘못 학습됩니다. <code>zero_grad()</code>를 빼면 grad가 누적되고, <code>backward()</code>를 빼면 grad가 그대로 0(또는 이전 값)이며, <code>step()</code>을 빼면 파라미터가 전혀 갱신되지 않습니다 — 그런데 에러 없이 코드가 "실행"은 되기 때문에 발견하기 어렵습니다.</div>
+  </div>
+</section>
+
+<!-- ============ A. 텐서 생성 ============ -->
+<section id="a">
+  <div class="sec-h"><span class="key">A</span><h2>텐서 생성</h2><span class="cnt">7 functions</span></div>
+  <p class="sec-note">모든 PyTorch 코드는 텐서를 만드는 데서 시작합니다. NumPy 생성 함수와 이름이 거의 같아 유추가 쉽습니다.</p>
+
+  <div class="fn" data-key="torch.tensor 텐서생성 tensor">
+    <div class="fn-h"><span class="rank">#01</span><h3>torch.tensor()</h3><span class="tag copy">복사</span></div>
+    <p>리스트·튜플·NumPy 배열을 텐서로 만듭니다. 가장 많이 쓰이는 진입점이며 항상 <b>데이터를 복사</b>합니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig">torch.tensor(data, dtype=None, device=None, requires_grad=False)</div>
+    <h4>파라미터</h4>
+    <div class="tbl-wrap"><table>
+      <tr><th>파라미터</th><th>설명</th><th>기본값 / 옵션</th></tr>
+      <tr><td>data <span class="req">필수</span></td><td>변환할 대상. 리스트, 중첩 시퀀스, NumPy 배열, 다른 텐서</td><td>—</td></tr>
+      <tr><td>dtype</td><td>원소 타입. 생략하면 정수→int64, 실수→<b>float32</b>로 추론</td><td><code>None</code> / <code>torch.float32</code>, <code>torch.long</code> …</td></tr>
+      <tr><td>device</td><td>텐서를 올릴 장치</td><td><code>None</code>(CPU) / <code>"cuda"</code>, <code>"cpu"</code></td></tr>
+      <tr><td>requires_grad</td><td>이 텐서에 대한 미분을 추적할지 여부</td><td><code>False</code></td></tr>
+    </table></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out"><span class="k">import</span> torch
+
+a = torch.tensor([<span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span>])
+<span class="k">print</span>(a, a.dtype)
+
+b = torch.tensor([[<span class="n">1.</span>, <span class="n">2.</span>], [<span class="n">3.</span>, <span class="n">4.</span>]], dtype=torch.float32)
+<span class="k">print</span>(b.shape, b.dtype)</pre>
+    <div class="out">tensor([1, 2, 3]) torch.int64
+torch.Size([2, 2]) torch.float32</div>
+    <div class="warn">NumPy는 실수 기본 dtype이 <code>float64</code>지만 PyTorch는 <b>float32</b>입니다. NumPy 배열을 그대로 변환하면 float64 텐서가 되어 GPU 연산이 느려지거나 다른 float32 텐서와 타입이 안 맞을 수 있습니다 — <code>.float()</code>로 명시적으로 맞추세요.</div>
+  </div>
+
+  <div class="fn" data-key="torch.zeros torch.ones torch.full 영텐서">
+    <div class="fn-h"><h3>torch.zeros() · ones() · full()</h3></div>
+    <p>지정한 shape을 상수로 채운 텐서를 만듭니다. 버퍼를 미리 확보하거나 마스크를 만들 때 자주 씁니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig">torch.zeros(*size, dtype=None, device=None)
+torch.ones(*size, dtype=None, device=None)
+torch.full(size, fill_value, dtype=None)</div>
+    <h4>예시 코드</h4>
+    <pre class="has-out"><span class="k">print</span>(torch.zeros(<span class="n">2</span>, <span class="n">3</span>))
+<span class="k">print</span>(torch.ones(<span class="n">2</span>, <span class="n">3</span>, dtype=torch.int64))
+<span class="k">print</span>(torch.full((<span class="n">2</span>, <span class="n">2</span>), <span class="n">7.5</span>))
+<span class="k">print</span>(torch.zeros_like(torch.ones(<span class="n">3</span>, <span class="n">2</span>)).shape)  <span class="c"># shape·dtype을 그대로 따름</span></pre>
+    <div class="out">tensor([[0., 0., 0.],
+        [0., 0., 0.]])
+tensor([[1, 1, 1],
+        [1, 1, 1]])
+tensor([[7.5000, 7.5000],
+        [7.5000, 7.5000]])
+torch.Size([3, 2])</div>
+    <div class="tip"><code>zeros</code> / <code>ones</code> / <code>full(size, v)</code> / <code>empty</code>(초기화 안 함, 가장 빠름)와 각각의 <code>_like</code> 버전을 한 세트로 기억하세요. <code>torch.empty</code>는 쓰레기값이 들어 있으므로 전부 덮어쓸 때만 쓰세요.</div>
+  </div>
+
+  <div class="fn" data-key="torch.arange torch.linspace 범위">
+    <div class="fn-h"><h3>torch.arange() · torch.linspace()</h3></div>
+    <p><code>arange</code>는 파이썬 <code>range</code>의 텐서 버전(stop 미포함), <code>linspace</code>는 구간을 <b>개수 기준</b>으로 등분(stop 포함)합니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig">torch.arange(start=0, end, step=1, dtype=None)
+torch.linspace(start, end, steps, dtype=None)</div>
+    <h4>예시 코드</h4>
+    <pre class="has-out"><span class="k">print</span>(torch.arange(<span class="n">5</span>))
+<span class="k">print</span>(torch.arange(<span class="n">0</span>, <span class="n">1</span>, <span class="n">0.25</span>))
+<span class="k">print</span>(torch.linspace(<span class="n">0</span>, <span class="n">10</span>, steps=<span class="n">5</span>))</pre>
+    <div class="out">tensor([0, 1, 2, 3, 4])
+tensor([0.0000, 0.2500, 0.5000, 0.7500])
+tensor([ 0.0000,  2.5000,  5.0000,  7.5000, 10.0000])</div>
+  </div>
+
+  <div class="fn" data-key="torch.rand torch.randn torch.randint 난수텐서">
+    <div class="fn-h"><h3>torch.rand() · randn() · randint()</h3></div>
+    <p>난수 텐서를 만듭니다. 가중치 초기화, 더미 입력 생성에 가장 많이 쓰입니다. <code>rand</code>는 [0,1) 균등분포, <code>randn</code>은 표준정규분포, <code>randint</code>는 정수 균등분포입니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig">torch.rand(*size)        <span class="c"># U(0, 1)</span>
+torch.randn(*size)       <span class="c"># N(0, 1)</span>
+torch.randint(low, high, size)</div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">torch.manual_seed(<span class="n">0</span>)
+x = torch.randn(<span class="n">2</span>, <span class="n">3</span>)
+<span class="k">print</span>(x.shape, x.dtype)
+<span class="k">print</span>(torch.randint(<span class="n">0</span>, <span class="n">10</span>, (<span class="n">2</span>, <span class="n">2</span>)).dtype)</pre>
+    <div class="out">torch.Size([2, 3]) torch.float32
+torch.int64</div>
+    <div class="note">난수 값 자체는 <code>torch.manual_seed()</code>로 시드를 고정해도 PyTorch 버전·CPU/GPU에 따라 달라질 수 있어, 이 문서는 정확한 난수 값 대신 <code>shape</code>/<code>dtype</code>처럼 결정적인 출력만 검증해 실었습니다.</div>
+  </div>
+
+  <div class="fn" data-key="from_numpy numpy 변환 상호변환">
+    <div class="fn-h"><h3>torch.from_numpy() · .numpy()</h3><span class="tag view">뷰</span></div>
+    <p>NumPy와 PyTorch 사이를 <b>메모리 복사 없이</b> 오갑니다(CPU 한정). 둘 중 하나를 수정하면 다른 쪽도 바뀝니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out"><span class="k">import</span> numpy <span class="k">as</span> np
+
+n = np.zeros(<span class="n">3</span>)
+t = torch.from_numpy(n)
+t += <span class="n">1</span>
+<span class="k">print</span>(n)                       <span class="c"># 원본 numpy도 바뀜</span>
+
+back = t.numpy()               <span class="c"># 텐서 → numpy, 역시 메모리 공유</span>
+<span class="k">print</span>(type(back))</pre>
+    <div class="out">[1. 1. 1.]
+&lt;class 'numpy.ndarray'&gt;</div>
+    <div class="warn"><code>requires_grad=True</code>인 텐서는 <code>.numpy()</code>를 바로 호출할 수 없습니다(<code>RuntimeError</code>). <code>.detach().numpy()</code>로 계산 그래프에서 분리한 뒤 변환하세요. GPU 텐서도 먼저 <code>.cpu()</code>로 옮겨야 합니다.</div>
+  </div>
+
+  <div class="fn" data-key="torch.eye 단위행렬 identity">
+    <div class="fn-h"><h3>torch.eye()</h3></div>
+    <p>단위행렬을 만듭니다. 원-핫 인코딩이나 선형대수 예제에 자주 쓰입니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig">torch.eye(n, m=None, dtype=None)</div>
+    <h4>예시 코드</h4>
+    <pre class="has-out"><span class="k">print</span>(torch.eye(<span class="n">3</span>))
+labels = torch.tensor([<span class="n">0</span>, <span class="n">2</span>, <span class="n">1</span>])
+<span class="k">print</span>(torch.eye(<span class="n">3</span>)[labels])   <span class="c"># 원-핫 인코딩 관용구</span></pre>
+    <div class="out">tensor([[1., 0., 0.],
+        [0., 1., 0.],
+        [0., 0., 1.]])
+tensor([[1., 0., 0.],
+        [0., 0., 1.],
+        [0., 1., 0.]])</div>
+    <div class="tip">클래스 수가 많으면 <code>torch.eye(...)[labels]</code>보다 <code>torch.nn.functional.one_hot(labels, num_classes)</code>이 더 명확하고 빠릅니다.</div>
+  </div>
+
+  <div class="fn" data-key="clone detach 복제 분리">
+    <div class="fn-h"><h3>.clone() · .detach()</h3><span class="tag autograd">autograd</span></div>
+    <p><code>clone()</code>은 <b>같은 그래프에 연결된 채로</b> 메모리만 복제하고, <code>detach()</code>는 <b>같은 메모리를 공유</b>하면서 그래프에서만 떼어냅니다. 둘을 합쳐 <code>.clone().detach()</code>로 "완전히 독립된 사본"을 만드는 경우가 많습니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">x = torch.tensor([<span class="n">1.</span>, <span class="n">2.</span>], requires_grad=<span class="k">True</span>)
+y = x.clone()
+<span class="k">print</span>(y.requires_grad)          <span class="c"># True — 그래프 연결 유지</span>
+
+z = x.detach()
+z[<span class="n">0</span>] = <span class="n">99</span>
+<span class="k">print</span>(x)                        <span class="c"># 메모리 공유 → x도 바뀜</span></pre>
+    <div class="out">True
+tensor([99.,  2.], requires_grad=True)</div>
+  </div>
+</section>
+
+<!-- ============ B. 텐서 연산·형태 변형 ============ -->
+<section id="b">
+  <div class="sec-h"><span class="key">B</span><h2>텐서 연산·형태 변형</h2><span class="cnt">9 functions</span></div>
+  <p class="sec-note">모델 코드를 읽고 쓰는 시간의 절반은 텐서 shape을 맞추는 일입니다. 아래 함수 대부분은 <b>뷰</b>를 반환하므로 비용이 거의 없습니다.</p>
+
+  <div class="fn" data-key="산술연산 broadcasting 브로드캐스팅 add mul">
+    <div class="fn-h"><h3>산술 연산과 브로드캐스팅</h3></div>
+    <p>텐서끼리의 <code>+ - * /</code>는 원소별로 계산되며, NumPy와 동일한 규칙으로 <b>브로드캐스팅</b>됩니다. shape이 다른 텐서를 뒤쪽 축부터 비교해 크기가 같거나 한쪽이 1이면 자동으로 맞춥니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">m = torch.arange(<span class="n">6</span>).reshape(<span class="n">2</span>, <span class="n">3</span>).float()
+<span class="k">print</span>(m + <span class="n">10</span>)
+<span class="k">print</span>(m * torch.tensor([<span class="n">1.</span>, <span class="n">10.</span>, <span class="n">100.</span>]))     <span class="c"># (2,3) * (3,)</span>
+<span class="k">print</span>(m + torch.tensor([[<span class="n">100.</span>], [<span class="n">200.</span>]]))    <span class="c"># (2,3) + (2,1)</span></pre>
+    <div class="out">tensor([[10., 11., 12.],
+        [13., 14., 15.]])
+tensor([[  0.,  10., 200.],
+        [  3.,  40., 500.]])
+tensor([[100., 101., 102.],
+        [203., 204., 205.]])</div>
+    <div class="warn">shape이 브로드캐스팅 규칙에 맞지 않으면 <code>RuntimeError: The size of tensor a (4) must match the size of tensor b (3)</code>처럼 어느 축에서 부딪혔는지 알려줍니다. 배치 축을 깜빡 잊고 <code>(N, D)</code> + <code>(D,)</code>를 기대하며 <code>(D, N)</code>을 넘기는 실수가 흔합니다.</div>
+  </div>
+
+  <div class="fn" data-key="view reshape 형태변경">
+    <div class="fn-h"><span class="rank">#15</span><h3>.view() · .reshape()</h3><span class="tag view">뷰</span></div>
+    <p>원소 수를 유지한 채 shape을 바꿉니다. <code>view</code>는 메모리가 <b>연속(contiguous)</b>일 때만 동작하는 순수 뷰이고, <code>reshape</code>은 필요하면 알아서 복사해 항상 성공합니다. 실무에서는 <code>reshape</code>이 더 안전한 기본 선택입니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig">tensor.view(*shape)
+tensor.reshape(*shape)</div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">r = torch.arange(<span class="n">12</span>)
+<span class="k">print</span>(r.view(<span class="n">3</span>, <span class="n">4</span>))
+<span class="k">print</span>(r.reshape(<span class="n">3</span>, -<span class="n">1</span>).shape)     <span class="c"># -1 → 4로 자동 계산</span>
+
+<span class="c"># 실무: CNN 특징맵을 완전연결층 입력으로 펴기</span>
+feat = torch.zeros(<span class="n">32</span>, <span class="n">64</span>, <span class="n">7</span>, <span class="n">7</span>)   <span class="c"># (batch, C, H, W)</span>
+<span class="k">print</span>(feat.view(feat.size(<span class="n">0</span>), -<span class="n">1</span>).shape)</pre>
+    <div class="out">tensor([[ 0,  1,  2,  3],
+        [ 4,  5,  6,  7],
+        [ 8,  9, 10, 11]])
+torch.Size([3, 4])
+torch.Size([32, 3136])</div>
+    <div class="warn"><code>.permute()</code>나 <code>.transpose()</code> 뒤에는 메모리가 연속이 아니게 되어 <code>.view()</code>가 <code>RuntimeError: view size is not compatible...</code>를 던집니다. 이럴 때는 <code>.reshape()</code>을 쓰거나 <code>.contiguous().view(...)</code>로 명시적으로 메모리를 정리하세요.</div>
+  </div>
+
+  <div class="fn" data-key="squeeze unsqueeze 차원추가제거">
+    <div class="fn-h"><h3>.squeeze() · .unsqueeze()</h3><span class="tag view">뷰</span></div>
+    <p><code>unsqueeze(dim)</code>은 크기 1인 축을 추가하고, <code>squeeze(dim)</code>은 크기 1인 축을 제거합니다. 배치 축을 끼워 넣거나 뺄 때, 채널 축을 맞출 때 항상 등장합니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">x = torch.tensor([<span class="n">1.</span>, <span class="n">2.</span>, <span class="n">3.</span>])   <span class="c"># (3,)</span>
+<span class="k">print</span>(x.unsqueeze(<span class="n">0</span>).shape)   <span class="c"># (1, 3) — 배치 축 추가</span>
+<span class="k">print</span>(x.unsqueeze(<span class="n">1</span>).shape)   <span class="c"># (3, 1) — 열벡터화</span>
+
+y = torch.zeros(<span class="n">1</span>, <span class="n">3</span>, <span class="n">1</span>)
+<span class="k">print</span>(y.squeeze().shape)      <span class="c"># 크기 1인 축을 전부 제거 → (3,)</span>
+<span class="k">print</span>(y.squeeze(<span class="n">0</span>).shape)     <span class="c"># 0번 축만 제거 → (3, 1)</span></pre>
+    <div class="out">torch.Size([1, 3])
+torch.Size([3, 1])
+torch.Size([3])
+torch.Size([3, 1])</div>
+    <div class="tip">모델이 배치 1개짜리 입력을 기대하는데 <code>(3,)</code> 같은 1D 텐서를 넣으면 shape 에러가 납니다. <code>x.unsqueeze(0)</code>으로 배치 축을 추가하는 패턴을 기억해두세요.</div>
+  </div>
+
+  <div class="fn" data-key="permute transpose 축전치">
+    <div class="fn-h"><h3>.permute() · .transpose()</h3><span class="tag view">뷰</span></div>
+    <p><code>transpose(d0, d1)</code>은 두 축만 맞바꾸고, <code>permute(*dims)</code>은 모든 축의 순서를 한 번에 재배열합니다. 이미지 텐서를 <code>(H, W, C)</code>↔<code>(C, H, W)</code>로 바꿀 때 필수입니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">img = torch.zeros(<span class="n">32</span>, <span class="n">28</span>, <span class="n">28</span>, <span class="n">3</span>)     <span class="c"># (N, H, W, C) — PIL/NumPy 관례</span>
+chw = img.permute(<span class="n">0</span>, <span class="n">3</span>, <span class="n">1</span>, <span class="n">2</span>)         <span class="c"># (N, C, H, W) — PyTorch 관례</span>
+<span class="k">print</span>(chw.shape, chw.is_contiguous())</pre>
+    <div class="out">torch.Size([32, 3, 28, 28]) False</div>
+    <div class="warn">PyTorch의 CNN 레이어는 <code>(N, C, H, W)</code> 순서(channels-first)를 기대합니다. NumPy/PIL/OpenCV로 읽은 이미지는 보통 <code>(H, W, C)</code>이므로 <code>permute</code>를 빠뜨리면 shape이 맞아도 채널과 공간 축이 뒤바뀐 채로 학습됩니다.</div>
+  </div>
+
+  <div class="fn" data-key="torch.cat torch.stack 결합">
+    <div class="fn-h"><span class="rank">#19</span><h3>torch.cat() · torch.stack()</h3></div>
+    <p><code>cat</code>은 <b>기존 축</b>을 따라 이어붙이고(차원 수 그대로), <code>stack</code>은 <b>새 축</b>을 만들어 쌓습니다(차원 수 +1). 배치를 구성하거나 여러 스텝의 결과를 모을 때 가장 많이 씁니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig">torch.cat(tensors, dim=0)
+torch.stack(tensors, dim=0)</div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">a = torch.zeros(<span class="n">2</span>, <span class="n">3</span>)
+b = torch.ones(<span class="n">2</span>, <span class="n">3</span>)
+<span class="k">print</span>(torch.cat([a, b], dim=<span class="n">0</span>).shape)    <span class="c"># (4, 3) — 차원 수 유지</span>
+<span class="k">print</span>(torch.stack([a, b], dim=<span class="n">0</span>).shape)  <span class="c"># (2, 2, 3) — 새 축 생성</span></pre>
+    <div class="out">torch.Size([4, 3])
+torch.Size([2, 2, 3])</div>
+  </div>
+
+  <div class="fn" data-key="인덱싱 슬라이싱 indexing boolean mask">
+    <div class="fn-h"><h3>인덱싱과 슬라이싱</h3></div>
+    <p>NumPy와 거의 동일한 문법을 씁니다 — 정수 인덱싱, 슬라이스, 불리언 마스크, 팬시 인덱싱 모두 지원합니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">x = torch.arange(<span class="n">12</span>).reshape(<span class="n">3</span>, <span class="n">4</span>)
+<span class="k">print</span>(x[<span class="n">1</span>])            <span class="c"># 1번 행</span>
+<span class="k">print</span>(x[:, <span class="n">2</span>])          <span class="c"># 2번 열</span>
+<span class="k">print</span>(x[x % <span class="n">2</span> == <span class="n">0</span>])   <span class="c"># 불리언 마스크 → 1D로 평탄화되어 반환</span></pre>
+    <div class="out">tensor([4, 5, 6, 7])
+tensor([ 2,  6, 10])
+tensor([ 0,  2,  4,  6,  8, 10])</div>
+  </div>
+
+  <div class="fn" data-key="sum mean max reduction 집계 dim">
+    <div class="fn-h"><h3>.sum() · .mean() · .max() (dim)</h3></div>
+    <p>집계 함수는 <code>dim</code>을 지정하면 <b>그 축이 사라지는 방향</b>으로 접습니다. NumPy의 <code>axis</code>와 동일한 개념입니다. <code>.max(dim=...)</code>은 값과 인덱스를 함께 담은 <code>namedtuple</code>을 반환합니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">m = torch.tensor([[<span class="n">1.</span>, <span class="n">2.</span>, <span class="n">3.</span>], [<span class="n">4.</span>, <span class="n">5.</span>, <span class="n">6.</span>]])
+<span class="k">print</span>(m.sum())              <span class="c"># 전체 합</span>
+<span class="k">print</span>(m.sum(dim=<span class="n">0</span>))       <span class="c"># 열별 합 → (3,)</span>
+<span class="k">print</span>(m.mean(dim=<span class="n">1</span>))      <span class="c"># 행별 평균 → (2,)</span>
+values, idx = m.max(dim=<span class="n">1</span>)
+<span class="k">print</span>(values, idx)</pre>
+    <div class="out">tensor(21.)
+tensor([5., 7., 9.])
+tensor([2., 5.])
+tensor([3., 6.]) tensor([2, 2])</div>
+    <div class="tip">분류 모델의 예측 클래스를 뽑을 때 <code>logits.argmax(dim=1)</code>을 씁니다. <code>argmax</code>는 값 없이 인덱스만 필요할 때 <code>max(dim=1).indices</code>보다 간결합니다.</div>
+  </div>
+
+  <div class="fn" data-key="matmul 행렬곱 mm bmm">
+    <div class="fn-h"><h3>torch.matmul() · @ · torch.mm() / bmm()</h3></div>
+    <p>행렬곱 연산군입니다. <code>@</code> 연산자는 <code>torch.matmul</code>의 문법 설탕이며 배치 차원까지 자동으로 브로드캐스팅합니다. <code>mm</code>은 2D 전용, <code>bmm</code>은 배치 3D 전용으로 의도를 명확히 하고 싶을 때 씁니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">a = torch.randn(<span class="n">4</span>, <span class="n">10</span>)     <span class="c"># (batch, in_features)</span>
+w = torch.randn(<span class="n">10</span>, <span class="n">5</span>)      <span class="c"># (in_features, out_features)</span>
+<span class="k">print</span>((a @ w).shape)         <span class="c"># nn.Linear가 내부적으로 하는 연산과 동일한 형태</span>
+
+batch = torch.randn(<span class="n">8</span>, <span class="n">4</span>, <span class="n">10</span>)
+<span class="k">print</span>(torch.bmm(batch, w.expand(<span class="n">8</span>, <span class="n">10</span>, <span class="n">5</span>)).shape)</pre>
+    <div class="out">torch.Size([4, 5])
+torch.Size([8, 4, 5])</div>
+    <div class="warn">원소별 곱셈인 <code>*</code>(<code>torch.mul</code>)과 행렬곱인 <code>@</code>(<code>torch.matmul</code>)을 혼동하면 shape은 맞는데 값이 완전히 틀린 결과가 나올 수 있습니다. 특히 <code>(N,)</code> 벡터끼리는 <code>*</code>도 <code>@</code>도 실행은 되지만 의미가 다릅니다(<code>@</code>는 내적 스칼라).</div>
+  </div>
+
+  <div class="fn" data-key="item 스칼라추출 to dtype 변환">
+    <div class="fn-h"><span class="rank">#22</span><h3>.item() · .to(dtype)</h3></div>
+    <p><code>.item()</code>은 원소가 1개인 텐서를 파이썬 스칼라로 꺼냅니다(로그 출력에 필수). <code>.to(dtype)</code>은 dtype 변환 텐서를 만듭니다(NumPy의 <code>astype</code>에 대응).</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">loss = torch.tensor(<span class="n">0.4213</span>)
+<span class="k">print</span>(f<span class="s">"loss={loss.item():.3f}"</span>)   <span class="c"># f-string에 바로 쓰려면 파이썬 float 필요</span>
+
+x = torch.tensor([<span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span>])
+<span class="k">print</span>(x.to(torch.float32).dtype)
+<span class="k">print</span>(x.float().dtype)          <span class="c"># 자주 쓰는 축약형</span></pre>
+    <div class="out">loss=0.421
+torch.float32
+torch.float32</div>
+    <div class="warn">원소가 2개 이상인 텐서에 <code>.item()</code>을 호출하면 <code>ValueError: only one element tensors can be converted to Python scalars</code>가 납니다. 배치 손실 평균처럼 스칼라가 확실한 경우에만 쓰세요.</div>
+  </div>
+</section>
+
+<!-- ============ C. Autograd ============ -->
+<section id="c">
+  <div class="sec-h"><span class="key">C</span><h2>Autograd</h2><span class="cnt">6 functions</span></div>
+  <p class="sec-note">PyTorch를 다른 딥러닝 프레임워크와 구분 짓는 핵심 기능입니다. grad를 어디까지 추적하고, 언제 끊고, 언제 초기화할지를 통제하는 API들입니다.</p>
+
+  <div class="fn" data-key="requires_grad 그래디언트추적">
+    <div class="fn-h"><h3>requires_grad</h3><span class="tag autograd">autograd</span></div>
+    <p>텐서에 대한 연산 이력을 추적할지 여부입니다. <code>True</code>인 텐서가 하나라도 연산에 섞이면 결과 텐서도 자동으로 <code>requires_grad=True</code>가 됩니다. <code>nn.Parameter</code>는 기본적으로 <code>True</code>입니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">x = torch.tensor([<span class="n">1.</span>, <span class="n">2.</span>], requires_grad=<span class="k">True</span>)
+y = torch.tensor([<span class="n">3.</span>, <span class="n">4.</span>])       <span class="c"># requires_grad=False (기본값)</span>
+z = x + y
+<span class="k">print</span>(z.requires_grad)      <span class="c"># True — 전파됨</span>
+<span class="k">print</span>(z.grad_fn)             <span class="c"># 어떤 연산으로 만들어졌는지 기록</span></pre>
+    <div class="out">True
+&lt;AddBackward0 object at 0x...&gt;</div>
+    <div class="note">모델 파라미터(<code>nn.Parameter</code>)는 기본적으로 <code>requires_grad=True</code>이고, 입력 데이터는 보통 <code>False</code>입니다. 입력 자체에 대한 그래디언트가 필요한 특수한 경우(적대적 예제 생성 등)에만 <code>x.requires_grad_(True)</code>로 바꿉니다.</div>
+  </div>
+
+  <div class="fn" data-key="backward 역전파">
+    <div class="fn-h"><span class="rank">#05</span><h3>.backward()</h3><span class="tag autograd">autograd</span></div>
+    <p>스칼라 텐서(대개 loss)에서 호출해 계산 그래프를 거꾸로 훑으며 leaf 텐서들의 <code>.grad</code>에 편미분 값을 <b>누적</b>합니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig">tensor.backward(gradient=None, retain_graph=False)</div>
+    <h4>파라미터</h4>
+    <div class="tbl-wrap"><table>
+      <tr><th>파라미터</th><th>설명</th><th>기본값</th></tr>
+      <tr><td>gradient</td><td>스칼라가 아닌 텐서에서 호출할 때, 상위 그래디언트로 곱해줄 텐서(vector-Jacobian product)</td><td><code>None</code>(스칼라 전용)</td></tr>
+      <tr><td>retain_graph</td><td><code>True</code>면 그래프를 지우지 않아 같은 그래프로 <code>backward()</code>를 여러 번 호출 가능</td><td><code>False</code></td></tr>
+    </table></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">w = torch.tensor(<span class="n">2.0</span>, requires_grad=<span class="k">True</span>)
+loss = (w - <span class="n">5</span>) ** <span class="n">2</span>
+loss.backward()
+<span class="k">print</span>(w.grad)   <span class="c"># d/dw (w-5)^2 = 2(w-5) = 2*(2-5) = -6</span></pre>
+    <div class="out">tensor(-6.)</div>
+    <div class="warn">기본적으로 <code>backward()</code>를 호출하면 그래프가 해제되어, 같은 그래프로 다시 호출하면 <code>RuntimeError: Trying to backward through the graph a second time</code>가 납니다. GAN처럼 하나의 forward 결과로 두 번 역전파해야 하면 <code>retain_graph=True</code>가 필요합니다.</div>
+  </div>
+
+  <div class="fn" data-key="torch.no_grad 그래디언트비활성화">
+    <div class="fn-h"><span class="rank">#12</span><h3>torch.no_grad()</h3><span class="tag autograd">autograd</span></div>
+    <p>블록 안의 모든 연산에서 그래프 기록을 끕니다. <b>평가/추론</b>에서 메모리를 아끼고 속도를 높이는 표준 관용구입니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">model.eval()
+<span class="k">with</span> torch.no_grad():
+    pred = model(x_val)
+    val_loss = criterion(pred, y_val)
+<span class="k">print</span>(pred.requires_grad)   <span class="c"># False — 그래프가 만들어지지 않음</span></pre>
+    <div class="out">False</div>
+    <div class="tip">비슷한 역할을 하는 <code>torch.inference_mode()</code>는 PyTorch 1.9+에서 추가된 더 공격적인 버전으로, 평가 전용 코드에서는 <code>no_grad</code>보다 약간 더 빠릅니다. 학습 루프 밖에서는 이 두 컨텍스트 매니저 중 하나를 항상 사용하세요.</div>
+  </div>
+
+  <div class="fn" data-key="detach 그래프분리">
+    <div class="fn-h"><h3>.detach()</h3><span class="tag autograd">autograd</span></div>
+    <p>같은 메모리를 공유하되 계산 그래프에서 떼어낸 새 텐서를 반환합니다. 로깅용으로 값만 꺼내거나, 한 네트워크의 출력을 다른 네트워크의 "상수 입력"으로 쓸 때 사용합니다(예: GAN의 discriminator 학습 시 generator 출력).</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">fake = generator(noise)
+<span class="c"># discriminator만 학습할 때는 generator까지 역전파할 필요 없음</span>
+d_loss = criterion(discriminator(fake.detach()), torch.zeros(<span class="n">4</span>, <span class="n">1</span>))</pre>
+    <div class="note"><code>.detach()</code> vs <code>.item()</code>: <code>detach()</code>는 여전히 텐서(GPU에 있을 수도, 여러 원소일 수도 있음)이고, <code>item()</code>은 원소 1개짜리 텐서를 파이썬 <code>float</code>/<code>int</code>로 바꿉니다. 로그용 스칼라는 <code>.item()</code>, 그래프에서 분리한 텐서 그대로 쓰려면 <code>.detach()</code>입니다.</div>
+  </div>
+
+  <div class="fn" data-key="zero_grad 그래디언트초기화">
+    <div class="fn-h"><span class="rank">#04</span><h3>optimizer.zero_grad() / model.zero_grad()</h3><span class="tag autograd">autograd</span></div>
+    <p>모든 파라미터의 <code>.grad</code>를 0(또는 <code>None</code>)으로 초기화합니다. <code>.backward()</code>는 grad를 <b>누적</b>하므로, 매 스텝 새 그래디언트만 쓰려면 반드시 스텝 시작 시 호출해야 합니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig">optimizer.zero_grad(set_to_none=True)</div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">optimizer = torch.optim.SGD(model.parameters(), lr=<span class="n">0.01</span>)
+<span class="k">for</span> xb, yb <span class="k">in</span> loader:
+    optimizer.zero_grad()
+    loss = criterion(model(xb), yb)
+    loss.backward()
+    optimizer.step()</pre>
+    <div class="warn">PyTorch 최신 버전은 <code>set_to_none=True</code>가 기본값입니다(0으로 채우는 대신 <code>None</code>으로 만들어 더 빠름). <code>optimizer.zero_grad()</code> 대신 <code>model.zero_grad()</code>를 써도 되지만, 옵티마이저가 관리하는 파라미터와 모델 파라미터가 다르면(일부만 학습 등) 결과가 어긋날 수 있어 보통 <code>optimizer.zero_grad()</code>를 씁니다.</div>
+  </div>
+
+  <div class="fn" data-key="autograd.grad 고차미분">
+    <div class="fn-h"><h3>torch.autograd.grad()</h3><span class="tag autograd">autograd</span></div>
+    <p><code>.grad</code>에 누적하는 대신 그래디언트를 <b>직접 반환값으로</b> 받습니다. 메타러닝, 물리 기반 손실(2차 미분) 등 grad 자체를 다른 연산에 활용할 때 씁니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">x = torch.tensor(<span class="n">3.0</span>, requires_grad=<span class="k">True</span>)
+y = x ** <span class="n">3</span>
+grad, = torch.autograd.grad(y, x, create_graph=<span class="k">True</span>)   <span class="c"># dy/dx = 3x^2 = 27</span>
+grad2, = torch.autograd.grad(grad, x)                       <span class="c"># d2y/dx2 = 6x = 18</span>
+<span class="k">print</span>(grad.item(), grad2.item())</pre>
+    <div class="out">27.0 18.0</div>
+  </div>
+</section>
+
+<!-- ============ D. nn.Module·레이어 정의 ============ -->
+<section id="d">
+  <div class="sec-h"><span class="key">D</span><h2>nn.Module·레이어 정의</h2><span class="cnt">6 functions</span></div>
+  <p class="sec-note">모델을 조립하는 재료들입니다. 대부분은 <code>__init__</code>에서 만들고 <code>forward</code>에서 사용합니다.</p>
+
+  <div class="fn" data-key="nn.Module 클래스 기본구조">
+    <div class="fn-h"><span class="rank">#03</span><h3>nn.Module</h3><span class="tag layer">layer</span></div>
+    <p>모든 레이어와 모델의 베이스 클래스입니다. 서브클래싱해서 <code>__init__</code>(레이어 등록)과 <code>forward</code>(연산 정의)만 채우면 나머지(파라미터 추적, GPU 이동, 저장/로드)는 프레임워크가 처리합니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig"><span class="k">class</span> MyModel(nn.Module):
+    <span class="k">def</span> __init__(self):
+        <span class="k">super</span>().__init__()
+        <span class="c"># self.layer = nn.Linear(...)</span>
+    <span class="k">def</span> forward(self, x):
+        <span class="c"># return self.layer(x)</span></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out"><span class="k">class</span> TinyNet(nn.Module):
+    <span class="k">def</span> __init__(self):
+        <span class="k">super</span>().__init__()
+        self.fc = nn.Linear(<span class="n">4</span>, <span class="n">2</span>)
+
+    <span class="k">def</span> forward(self, x):
+        <span class="k">return</span> self.fc(x)
+
+net = TinyNet()
+<span class="k">print</span>(net)</pre>
+    <div class="out">TinyNet(
+  (fc): Linear(in_features=4, out_features=2, bias=True)
+)</div>
+    <div class="note"><code>print(model)</code>은 <code>nn.Module</code>이 <code>__repr__</code>을 오버라이드해서, 등록된 서브모듈 트리를 들여쓰기로 보여줍니다. 구조를 빠르게 확인할 때 유용합니다.</div>
+  </div>
+
+  <div class="fn" data-key="nn.Linear 완전연결층 fc">
+    <div class="fn-h"><span class="rank">#07</span><h3>nn.Linear</h3><span class="tag layer">layer</span></div>
+    <p>완전연결층(fully-connected). <code>y = xW^T + b</code> 형태의 아핀 변환입니다. 거의 모든 네트워크의 출력층과 MLP 블록에 등장합니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig">nn.Linear(in_features, out_features, bias=True)</div>
+    <h4>파라미터</h4>
+    <div class="tbl-wrap"><table>
+      <tr><th>파라미터</th><th>설명</th><th>기본값</th></tr>
+      <tr><td>in_features <span class="req">필수</span></td><td>입력 마지막 차원 크기</td><td>—</td></tr>
+      <tr><td>out_features <span class="req">필수</span></td><td>출력 마지막 차원 크기</td><td>—</td></tr>
+      <tr><td>bias</td><td>편향 항 사용 여부</td><td><code>True</code></td></tr>
+    </table></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">fc = nn.Linear(<span class="n">10</span>, <span class="n">3</span>)
+x = torch.randn(<span class="n">8</span>, <span class="n">10</span>)      <span class="c"># (batch=8, in_features=10)</span>
+out = fc(x)
+<span class="k">print</span>(out.shape)
+<span class="k">print</span>(fc.weight.shape, fc.bias.shape)</pre>
+    <div class="out">torch.Size([8, 3])
+torch.Size([3, 10]) torch.Size([3])</div>
+    <div class="tip">입력은 마지막 차원만 <code>in_features</code>와 맞으면 되고 앞쪽 차원(배치, 시퀀스 길이 등)은 몇 개든 상관없습니다. <code>(N, L, in_features)</code> 입력이면 출력은 <code>(N, L, out_features)</code>입니다.</div>
+  </div>
+
+  <div class="fn" data-key="nn.Sequential 순차모델">
+    <div class="fn-h"><h3>nn.Sequential</h3><span class="tag layer">layer</span></div>
+    <p>레이어를 순서대로 이어 붙인 컨테이너입니다. 분기 없는 단순한 모델은 클래스를 따로 정의하지 않고 이걸로 바로 만들 수 있습니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">model = nn.Sequential(
+    nn.Linear(<span class="n">10</span>, <span class="n">32</span>),
+    nn.ReLU(),
+    nn.Linear(<span class="n">32</span>, <span class="n">2</span>),
+)
+<span class="k">print</span>(model(torch.randn(<span class="n">4</span>, <span class="n">10</span>)).shape)
+<span class="k">print</span>(model[<span class="n">0</span>])   <span class="c"># 인덱싱으로 개별 레이어 접근</span></pre>
+    <div class="out">torch.Size([4, 2])
+Linear(in_features=10, out_features=32, bias=True)</div>
+    <div class="warn">여러 입력을 받거나 스킵 연결(residual)처럼 분기가 있는 구조는 <code>nn.Sequential</code>로 표현할 수 없습니다 — <code>forward</code>를 직접 정의하는 <code>nn.Module</code> 서브클래스를 쓰세요.</div>
+  </div>
+
+  <div class="fn" data-key="nn.ModuleList nn.ModuleDict 컨테이너">
+    <div class="fn-h"><h3>nn.ModuleList · nn.ModuleDict</h3><span class="tag layer">layer</span></div>
+    <p>레이어를 파이썬 <code>list</code>/<code>dict</code>처럼 담되, <code>nn.Module</code>이 이를 인식해 파라미터를 추적하도록 하는 컨테이너입니다. 일반 파이썬 리스트에 레이어를 담으면 <code>parameters()</code>가 찾지 못해 학습이 안 됩니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out"><span class="k">class</span> Stack(nn.Module):
+    <span class="k">def</span> __init__(self, n):
+        <span class="k">super</span>().__init__()
+        self.layers = nn.ModuleList([nn.Linear(<span class="n">16</span>, <span class="n">16</span>) <span class="k">for</span> _ <span class="k">in</span> <span class="k">range</span>(n)])
+
+    <span class="k">def</span> forward(self, x):
+        <span class="k">for</span> layer <span class="k">in</span> self.layers:
+            x = torch.relu(layer(x))
+        <span class="k">return</span> x
+
+net = Stack(<span class="n">3</span>)
+<span class="k">print</span>(<span class="k">len</span>(<span class="k">list</span>(net.parameters())))   <span class="c"># 3개 층 × (weight, bias)</span></pre>
+    <div class="out">6</div>
+    <div class="warn"><code>self.layers = [nn.Linear(16,16) for _ in range(3)]</code>처럼 <b>일반 리스트</b>에 담으면 <code>net.parameters()</code>가 비어 있어 옵티마이저가 아무것도 학습하지 않습니다 — 에러 없이 조용히 실패하는 흔한 함정입니다.</div>
+  </div>
+
+  <div class="fn" data-key="parameters state_dict 파라미터조회">
+    <div class="fn-h"><h3>.parameters() · .state_dict() · .named_parameters()</h3><span class="tag layer">layer</span></div>
+    <p>모델(또는 서브모듈)에 등록된 모든 학습 가능한 텐서를 순회합니다. 옵티마이저 생성, 파라미터 수 계산, 특정 레이어 동결(freeze)에 씁니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">model = nn.Sequential(nn.Linear(<span class="n">10</span>, <span class="n">4</span>), nn.Linear(<span class="n">4</span>, <span class="n">2</span>))
+n_params = <span class="k">sum</span>(p.numel() <span class="k">for</span> p <span class="k">in</span> model.parameters())
+<span class="k">print</span>(<span class="s">"total params:"</span>, n_params)
+
+<span class="k">for</span> name, p <span class="k">in</span> model.named_parameters():
+    <span class="k">print</span>(name, <span class="k">tuple</span>(p.shape))</pre>
+    <div class="out">total params: 54
+0.weight (4, 10)
+0.bias (4,)
+1.weight (2, 4)
+1.bias (2,)</div>
+    <div class="tip">특정 레이어를 동결(freeze)하려면 <code>for p in model.layer.parameters(): p.requires_grad = False</code>. 전이학습에서 백본은 얼리고 마지막 층만 학습할 때 표준적으로 쓰는 패턴입니다.</div>
+  </div>
+
+  <div class="fn" data-key="nn.Parameter 파라미터등록">
+    <div class="fn-h"><h3>nn.Parameter</h3><span class="tag layer">layer</span></div>
+    <p><code>requires_grad=True</code>가 기본이고 <code>nn.Module</code>의 속성으로 대입되는 순간 자동으로 <code>parameters()</code>에 등록되는 특수 텐서입니다. 커스텀 레이어를 직접 만들 때 사용합니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out"><span class="k">class</span> Scale(nn.Module):
+    <span class="k">def</span> __init__(self):
+        <span class="k">super</span>().__init__()
+        self.gain = nn.Parameter(torch.ones(<span class="n">1</span>))   <span class="c"># 학습되는 스칼라 가중치</span>
+
+    <span class="k">def</span> forward(self, x):
+        <span class="k">return</span> x * self.gain
+
+m = Scale()
+<span class="k">print</span>([name <span class="k">for</span> name, _ <span class="k">in</span> m.named_parameters()])</pre>
+    <div class="out">['gain']</div>
+    <div class="warn">같은 값이라도 <code>self.gain = torch.ones(1)</code>처럼 <code>nn.Parameter</code>로 감싸지 않으면 그냥 일반 속성으로 취급되어 학습되지 않습니다(옵티마이저도 <code>parameters()</code>도 인식하지 못함).</div>
+  </div>
+</section>
+
+<!-- ============ E. 활성화 함수 ============ -->
+<section id="e">
+  <div class="sec-h"><span class="key">E</span><h2>활성화 함수</h2><span class="cnt">5 functions</span></div>
+  <p class="sec-note">비선형성을 넣어주는 함수들입니다. <code>nn.ReLU</code>처럼 레이어(모듈)로 쓰거나, <code>torch.relu</code>/<code>F.relu</code>처럼 함수로 바로 쓸 수 있습니다.</p>
+
+  <div class="fn" data-key="nn.functional F relu 함수형API">
+    <div class="fn-h"><span class="rank">#08</span><h3>torch.nn.functional (F)</h3></div>
+    <p><code>nn.Module</code> 레이어와 짝을 이루는 <b>함수형 API</b>입니다. 학습 파라미터가 없는 연산(활성화 함수, <code>softmax</code>, <code>pad</code>, <code>interpolate</code> 등)은 관례적으로 <code>forward</code> 안에서 <code>F.xxx()</code> 형태로 직접 호출합니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out"><span class="k">import</span> torch.nn.functional <span class="k">as</span> F
+
+<span class="k">class</span> Net(nn.Module):
+    <span class="k">def</span> __init__(self):
+        <span class="k">super</span>().__init__()
+        self.fc1 = nn.Linear(<span class="n">10</span>, <span class="n">32</span>)
+        self.fc2 = nn.Linear(<span class="n">32</span>, <span class="n">3</span>)
+
+    <span class="k">def</span> forward(self, x):
+        x = F.relu(self.fc1(x))     <span class="c"># 파라미터 없는 연산은 F.* 로</span>
+        <span class="k">return</span> self.fc2(x)</pre>
+    <div class="out">(별도 출력 없음 — 함수 정의 예시)</div>
+    <div class="note"><code>nn.ReLU()</code>(모듈)와 <code>F.relu()</code>(함수)는 결과가 동일합니다. <code>nn.Sequential</code>에 넣으려면 모듈 형태가 필요하고, 커스텀 <code>forward</code> 안에서는 함수형이 더 간결해 관례적으로 섞어 씁니다.</div>
+  </div>
+
+  <div class="fn" data-key="nn.ReLU 렐루">
+    <div class="fn-h"><span class="rank">#21</span><h3>nn.ReLU · F.relu</h3></div>
+    <p><code>max(0, x)</code>. 계산이 단순하고 그래디언트 소실이 적어 은닉층 기본값으로 가장 널리 쓰입니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">x = torch.tensor([-<span class="n">2.</span>, -<span class="n">0.5</span>, <span class="n">0.</span>, <span class="n">1.5</span>, <span class="n">3.</span>])
+<span class="k">print</span>(F.relu(x))
+<span class="k">print</span>(F.leaky_relu(x, negative_slope=<span class="n">0.1</span>))   <span class="c"># 음수 구간도 완만하게 흘림</span></pre>
+    <div class="out">tensor([0.0000, 0.0000, 0.0000, 1.5000, 3.0000])
+tensor([-0.2000, -0.0500,  0.0000,  1.5000,  3.0000])</div>
+    <div class="warn"><code>ReLU</code>는 입력이 계속 음수인 뉴런의 그래디언트가 항상 0이 되는 <b>"dying ReLU"</b> 문제가 있습니다. 학습이 정체되면 <code>LeakyReLU</code>나 <code>GELU</code>로 바꿔보는 것도 방법입니다.</div>
+  </div>
+
+  <div class="fn" data-key="nn.Sigmoid 시그모이드">
+    <div class="fn-h"><h3>nn.Sigmoid · F.sigmoid</h3></div>
+    <p>출력을 (0, 1)로 압축합니다. 이진 분류의 출력층이나 게이트(LSTM 등)에 쓰입니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">x = torch.tensor([-<span class="n">2.</span>, <span class="n">0.</span>, <span class="n">2.</span>])
+<span class="k">print</span>(torch.sigmoid(x))</pre>
+    <div class="out">tensor([0.1192, 0.5000, 0.8808])</div>
+    <div class="warn">은닉층에 <code>Sigmoid</code>를 여러 겹 쌓으면 그래디언트가 층마다 최대 0.25배씩 줄어드는 <b>그래디언트 소실</b>이 심해집니다. 은닉층에는 <code>ReLU</code> 계열, 출력층 확률 변환에만 <code>Sigmoid</code>/<code>Softmax</code>를 쓰는 것이 일반적입니다.</div>
+  </div>
+
+  <div class="fn" data-key="nn.Softmax 소프트맥스">
+    <div class="fn-h"><h3>nn.Softmax · F.softmax</h3></div>
+    <p>벡터를 합이 1인 확률분포로 정규화합니다. 다중 분류 출력을 사람이 보기 좋은 확률로 바꿀 때 씁니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig">F.softmax(input, dim=None)</div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">logits = torch.tensor([<span class="n">2.0</span>, <span class="n">1.0</span>, <span class="n">0.1</span>])
+probs = F.softmax(logits, dim=-<span class="n">1</span>)
+<span class="k">print</span>(probs, probs.sum())</pre>
+    <div class="out">tensor([0.6590, 0.2424, 0.0986]) tensor(1.0000)</div>
+    <div class="warn"><code>nn.CrossEntropyLoss</code>는 내부에 <code>log_softmax</code>를 이미 포함합니다. <code>forward</code>에서 <code>softmax</code>를 적용한 뒤 <code>CrossEntropyLoss</code>에 넣으면 <b>확률을 두 번 정규화</b>하는 셈이 되어 학습이 잘 안 됩니다 — 학습용 출력은 raw logits, 예측 확인용 출력에만 <code>softmax</code>를 쓰세요.</div>
+  </div>
+
+  <div class="fn" data-key="nn.GELU nn.Tanh nn.LeakyReLU 기타활성화">
+    <div class="fn-h"><h3>그 밖의 활성화 함수</h3></div>
+    <div class="tbl-wrap"><table>
+      <tr><th>함수</th><th>특징</th><th>주 용도</th></tr>
+      <tr><td>nn.Tanh</td><td>(-1, 1) 범위, 0 중심</td><td>RNN 은닉 상태, GAN 출력</td></tr>
+      <tr><td>nn.GELU</td><td>ReLU를 부드럽게 만든 형태</td><td>Transformer(BERT, GPT 계열) 기본값</td></tr>
+      <tr><td>nn.LeakyReLU</td><td>음수 구간에 작은 기울기 유지</td><td>dying ReLU 완화</td></tr>
+      <tr><td>nn.SiLU (Swish)</td><td>x * sigmoid(x)</td><td>최신 CNN/비전 모델</td></tr>
+      <tr><td>nn.ELU</td><td>음수 구간이 지수적으로 완만</td><td>깊은 네트워크의 평균 활성화를 0에 가깝게</td></tr>
+    </table></div>
+  </div>
+</section>
+
+<!-- ============ F. 손실 함수 ============ -->
+<section id="f">
+  <div class="sec-h"><span class="key">F</span><h2>손실 함수</h2><span class="cnt">5 functions</span></div>
+  <p class="sec-note">문제 유형(분류/회귀, 이진/다중)에 맞는 손실 함수를 고르는 것이 모델 구조 못지않게 중요합니다.</p>
+
+  <div class="fn" data-key="nn.CrossEntropyLoss 교차엔트로피 분류">
+    <div class="fn-h"><span class="rank">#14</span><h3>nn.CrossEntropyLoss</h3><span class="tag loss">loss</span></div>
+    <p>다중 클래스 분류의 표준 손실. <b>내부에 <code>log_softmax</code>가 포함</b>되어 있어 모델의 마지막 층은 활성화 없이 raw logits을 그대로 출력해야 합니다. 타깃은 원-핫이 아니라 <b>정수 클래스 인덱스</b>입니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig">nn.CrossEntropyLoss(weight=None, reduction='mean', label_smoothing=0.0)</div>
+    <h4>파라미터</h4>
+    <div class="tbl-wrap"><table>
+      <tr><th>파라미터</th><th>설명</th><th>기본값</th></tr>
+      <tr><td>weight</td><td>클래스별 가중치(불균형 데이터 보정)</td><td><code>None</code></td></tr>
+      <tr><td>reduction</td><td>배치 손실을 합칠 방식</td><td><code>'mean'</code> / <code>'sum'</code>, <code>'none'</code></td></tr>
+      <tr><td>label_smoothing</td><td>0~1. 과확신을 줄이는 정규화</td><td><code>0.0</code></td></tr>
+    </table></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">criterion = nn.CrossEntropyLoss()
+logits = torch.tensor([[<span class="n">2.0</span>, <span class="n">0.5</span>, <span class="n">0.1</span>]])   <span class="c"># (batch=1, num_classes=3)</span>
+target = torch.tensor([<span class="n">0</span>])                        <span class="c"># 정답 클래스 인덱스 (원-핫 아님)</span>
+loss = criterion(logits, target)
+<span class="k">print</span>(f<span class="s">"{loss.item():.4f}"</span>)</pre>
+    <div class="out">0.3168</div>
+    <div class="warn">모델 마지막 층에 실수로 <code>nn.Softmax()</code>를 추가하면 이 손실 함수와 함께 쓸 때 이중 정규화 문제가 생깁니다. logits을 그대로 넘기세요.</div>
+  </div>
+
+  <div class="fn" data-key="nn.MSELoss 평균제곱오차 회귀">
+    <div class="fn-h"><h3>nn.MSELoss</h3><span class="tag loss">loss</span></div>
+    <p>평균제곱오차. 회귀 문제의 기본 손실입니다. 큰 오차에 제곱으로 페널티를 주므로 이상치에 민감합니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">criterion = nn.MSELoss()
+pred = torch.tensor([<span class="n">3.0</span>, <span class="n">5.0</span>])
+target = torch.tensor([<span class="n">2.0</span>, <span class="n">5.0</span>])
+<span class="k">print</span>(criterion(pred, target).item())   <span class="c"># mean((1^2, 0^2)) = 0.5</span></pre>
+    <div class="out">0.5</div>
+  </div>
+
+  <div class="fn" data-key="nn.BCELoss nn.BCEWithLogitsLoss 이진분류">
+    <div class="fn-h"><h3>nn.BCEWithLogitsLoss · nn.BCELoss</h3><span class="tag loss">loss</span></div>
+    <p>이진 분류(또는 멀티라벨) 손실. <code>BCEWithLogitsLoss</code>는 <code>sigmoid</code>와 <code>BCE</code>를 하나로 합쳐 <b>수치적으로 더 안정적</b>이므로, 직접 <code>sigmoid</code>를 붙인 뒤 <code>BCELoss</code>를 쓰는 것보다 항상 권장됩니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">criterion = nn.BCEWithLogitsLoss()
+logits = torch.tensor([<span class="n">1.5</span>, -<span class="n">2.0</span>])   <span class="c"># sigmoid 적용 전 raw 값</span>
+target = torch.tensor([<span class="n">1.0</span>, <span class="n">0.0</span>])
+<span class="k">print</span>(f<span class="s">"{criterion(logits, target).item():.4f}"</span>)</pre>
+    <div class="out">0.1642</div>
+    <div class="warn"><code>BCELoss</code>에 <code>sigmoid</code>를 거치지 않은 raw logits을 그대로 넣으면(0~1 범위를 벗어나면) <code>nan</code>이 나거나 조용히 틀린 값을 냅니다. 반대로 <code>BCEWithLogitsLoss</code>에는 <code>sigmoid</code>를 <b>적용하면 안 됩니다</b> — 함수 이름의 "WithLogits"가 그 신호입니다.</div>
+  </div>
+
+  <div class="fn" data-key="nn.NLLLoss 음의로그우도">
+    <div class="fn-h"><h3>nn.NLLLoss</h3><span class="tag loss">loss</span></div>
+    <p>Negative Log Likelihood. <code>CrossEntropyLoss</code>에서 <code>log_softmax</code>를 뺀 나머지 절반입니다. 모델이 이미 <code>F.log_softmax</code>를 출력하는 구조(일부 RNN/seq2seq 코드)에서 짝으로 씁니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">log_probs = F.log_softmax(torch.tensor([[<span class="n">2.0</span>, <span class="n">0.5</span>, <span class="n">0.1</span>]]), dim=-<span class="n">1</span>)
+target = torch.tensor([<span class="n">0</span>])
+<span class="k">print</span>(f<span class="s">"{F.nll_loss(log_probs, target).item():.4f}"</span>)   <span class="c"># CrossEntropyLoss와 동일한 값</span></pre>
+    <div class="out">0.3168</div>
+    <div class="tip"><code>CrossEntropyLoss(logits, y)</code> == <code>NLLLoss(log_softmax(logits), y)</code>. 대부분의 코드는 수치 안정성과 간결함 때문에 <code>CrossEntropyLoss</code> 하나로 통일합니다.</div>
+  </div>
+
+  <div class="fn" data-key="nn.L1Loss nn.SmoothL1Loss 회귀손실">
+    <div class="fn-h"><h3>nn.L1Loss · nn.SmoothL1Loss</h3><span class="tag loss">loss</span></div>
+    <div class="tbl-wrap"><table>
+      <tr><th>손실</th><th>수식</th><th>특징</th></tr>
+      <tr><td>nn.L1Loss</td><td>mean(|pred - target|)</td><td>이상치에 덜 민감, 그래디언트가 일정</td></tr>
+      <tr><td>nn.SmoothL1Loss</td><td>오차가 작으면 제곱, 크면 절댓값</td><td>MSE와 L1의 절충(객체 탐지 박스 회귀에 흔함)</td></tr>
+      <tr><td>nn.KLDivLoss</td><td>KL divergence</td><td>확률분포 간 거리, 지식 증류(distillation)</td></tr>
+    </table></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">pred = torch.tensor([<span class="n">3.0</span>, <span class="n">10.0</span>])
+target = torch.tensor([<span class="n">2.0</span>, <span class="n">5.0</span>])
+<span class="k">print</span>(nn.L1Loss()(pred, target).item())        <span class="c"># mean(1, 5) = 3.0</span>
+<span class="k">print</span>(nn.SmoothL1Loss()(pred, target).item())</pre>
+    <div class="out">3.0
+2.5</div>
+  </div>
+</section>
+
+<!-- ============ G. 옵티마이저 ============ -->
+<section id="g">
+  <div class="sec-h"><span class="key">G</span><h2>옵티마이저</h2><span class="cnt">5 functions</span></div>
+  <p class="sec-note"><code>torch.optim</code>의 옵티마이저는 <code>model.parameters()</code>를 받아 <code>.step()</code>에서 저장된 <code>.grad</code>를 이용해 파라미터를 갱신합니다.</p>
+
+  <div class="fn" data-key="optim.Adam AdamW 아담">
+    <div class="fn-h"><span class="rank">#11</span><h3>optim.Adam · optim.AdamW</h3><span class="tag optim">optim</span></div>
+    <p>모멘텀과 파라미터별 학습률 적응(RMSProp 유사)을 결합한 옵티마이저. 대부분의 딥러닝 문제에서 튜닝 없이도 잘 동작해 <b>사실상 기본 선택지</b>입니다. <code>AdamW</code>는 weight decay를 그래디언트가 아니라 파라미터에 직접 적용해 정규화 효과가 더 정확합니다(Transformer 계열 표준).</p>
+    <h4>시그니처</h4>
+    <div class="sig">torch.optim.Adam(params, lr=0.001, betas=(0.9, 0.999), eps=1e-08, weight_decay=0)
+torch.optim.AdamW(params, lr=0.001, weight_decay=0.01)</div>
+    <h4>파라미터</h4>
+    <div class="tbl-wrap"><table>
+      <tr><th>파라미터</th><th>설명</th><th>기본값</th></tr>
+      <tr><td>params <span class="req">필수</span></td><td>학습할 파라미터 이터러블. 보통 <code>model.parameters()</code></td><td>—</td></tr>
+      <tr><td>lr</td><td>학습률. Adam 계열은 보통 <code>1e-3</code>~<code>1e-4</code>에서 시작</td><td><code>0.001</code></td></tr>
+      <tr><td>betas</td><td>1차/2차 모멘트의 지수이동평균 계수</td><td><code>(0.9, 0.999)</code></td></tr>
+      <tr><td>weight_decay</td><td>L2 정규화 강도</td><td><code>0</code></td></tr>
+    </table></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">model = nn.Linear(<span class="n">10</span>, <span class="n">2</span>)
+optimizer = torch.optim.Adam(model.parameters(), lr=<span class="n">1e-3</span>)
+<span class="k">print</span>([<span class="k">type</span>(g).__name__ <span class="k">for</span> g <span class="k">in</span> [optimizer]][<span class="n">0</span>])
+<span class="k">print</span>(optimizer.param_groups[<span class="n">0</span>][<span class="s">"lr"</span>])</pre>
+    <div class="out">Adam
+0.001</div>
+  </div>
+
+  <div class="fn" data-key="optim.SGD 확률적경사하강법">
+    <div class="fn-h"><span class="rank">#20</span><h3>optim.SGD</h3><span class="tag optim">optim</span></div>
+    <p>확률적 경사하강법. Adam보다 하이퍼파라미터에 민감하지만 <code>momentum</code>과 함께 쓰면 이미지 분류 등 일부 과제에서 최종 성능이 더 좋다고 알려져 있습니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig">torch.optim.SGD(params, lr, momentum=0, weight_decay=0, nesterov=False)</div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">optimizer = torch.optim.SGD(model.parameters(), lr=<span class="n">0.01</span>, momentum=<span class="n">0.9</span>)</pre>
+    <div class="out">(별도 출력 없음)</div>
+    <div class="tip"><code>momentum</code>은 이전 그래디언트 방향을 관성처럼 누적해 진동을 줄이고 수렴을 가속합니다. SGD를 쓸 때는 <code>momentum=0.9</code> 정도가 관례적인 시작값입니다.</div>
+  </div>
+
+  <div class="fn" data-key="optimizer.step 파라미터갱신">
+    <div class="fn-h"><span class="rank">#06</span><h3>optimizer.step()</h3><span class="tag optim">optim</span></div>
+    <p>각 파라미터의 <code>.grad</code>를 이용해 옵티마이저 규칙대로 파라미터 값을 <b>제자리에서</b> 갱신합니다. 반드시 <code>loss.backward()</code> 다음에 호출해야 grad가 채워진 상태입니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">w = torch.tensor([<span class="n">1.0</span>], requires_grad=<span class="k">True</span>)
+optimizer = torch.optim.SGD([w], lr=<span class="n">0.1</span>)
+
+loss = (w - <span class="n">3</span>) ** <span class="n">2</span>
+loss.backward()          <span class="c"># w.grad = 2*(1-3) = -4</span>
+optimizer.step()         <span class="c"># w = w - lr * grad = 1 - 0.1*(-4) = 1.4</span>
+<span class="k">print</span>(w.item())</pre>
+    <div class="out">1.399999976158142</div>
+    <div class="note">출력이 정확히 <code>1.4</code>가 아니라 <code>1.399999...</code>인 것은 float32 부동소수점 표현의 한계 때문입니다 — 학습에는 영향이 없습니다.</div>
+  </div>
+
+  <div class="fn" data-key="param_groups 레이어별학습률">
+    <div class="fn-h"><h3>optimizer.param_groups</h3><span class="tag optim">optim</span></div>
+    <p>옵티마이저 내부의 파라미터 그룹 리스트입니다. 레이어마다 다른 학습률을 주고 싶을 때(예: 백본은 작게, 새 헤드는 크게) 그룹을 나눠 생성합니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">backbone = nn.Linear(<span class="n">10</span>, <span class="n">10</span>)
+head = nn.Linear(<span class="n">10</span>, <span class="n">2</span>)
+optimizer = torch.optim.Adam([
+    {<span class="s">"params"</span>: backbone.parameters(), <span class="s">"lr"</span>: <span class="n">1e-5</span>},
+    {<span class="s">"params"</span>: head.parameters(), <span class="s">"lr"</span>: <span class="n">1e-3</span>},
+])
+<span class="k">print</span>([g[<span class="s">"lr"</span>] <span class="k">for</span> g <span class="k">in</span> optimizer.param_groups])</pre>
+    <div class="out">[1e-05, 0.001]</div>
+  </div>
+
+  <div class="fn" data-key="clip_grad_norm gradient clipping 그래디언트클리핑">
+    <div class="fn-h"><h3>torch.nn.utils.clip_grad_norm_()</h3><span class="tag optim">optim</span></div>
+    <p>모든 파라미터 그래디언트의 전체 노름이 임계값을 넘지 않도록 제자리에서 축소합니다. RNN/Transformer처럼 그래디언트가 폭발하기 쉬운 모델에서 <code>backward()</code>와 <code>step()</code> 사이에 넣는 표준 관용구입니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">loss.backward()
+torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=<span class="n">1.0</span>)
+optimizer.step()</pre>
+    <div class="out">(별도 출력 없음 — grad가 제자리에서 클리핑됨)</div>
+    <div class="warn">함수 이름 끝의 밑줄(<code>_</code>)은 PyTorch 관례상 <b>제자리(in-place)</b> 연산임을 뜻합니다. 반환값을 다시 대입할 필요가 없습니다(반환값은 클리핑 전 원래 노름 크기).</div>
+  </div>
+</section>
+
+<!-- ============ H. 학습률 스케줄러 ============ -->
+<section id="h">
+  <div class="sec-h"><span class="key">H</span><h2>학습률 스케줄러</h2><span class="cnt">3 functions</span></div>
+  <p class="sec-note">학습이 진행됨에 따라 학습률을 조정합니다. <code>optimizer.step()</code> 뒤, 보통 <b>에폭 단위</b>로 <code>scheduler.step()</code>을 호출합니다.</p>
+
+  <div class="fn" data-key="StepLR 학습률감소">
+    <div class="fn-h"><h3>optim.lr_scheduler.StepLR</h3></div>
+    <p><code>step_size</code> 에폭마다 학습률에 <code>gamma</code>를 곱해 계단식으로 감소시킵니다. 가장 단순하고 이해하기 쉬운 스케줄러입니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig">torch.optim.lr_scheduler.StepLR(optimizer, step_size, gamma=0.1)</div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">optimizer = torch.optim.SGD(model.parameters(), lr=<span class="n">0.1</span>)
+scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=<span class="n">2</span>, gamma=<span class="n">0.5</span>)
+
+lrs = []
+<span class="k">for</span> epoch <span class="k">in</span> <span class="k">range</span>(<span class="n">5</span>):
+    optimizer.step()          <span class="c"># (실제로는 배치 루프 안에서 호출)</span>
+    lrs.append(optimizer.param_groups[<span class="n">0</span>][<span class="s">"lr"</span>])
+    scheduler.step()          <span class="c"># 에폭이 끝날 때 호출</span>
+<span class="k">print</span>(lrs)</pre>
+    <div class="out">[0.1, 0.1, 0.05, 0.05, 0.025]</div>
+    <div class="warn">스케줄러의 <code>step()</code>은 <b>옵티마이저의 <code>step()</code>과 별개</b>입니다. 배치마다 옵티마이저를 갱신하고, 스케줄러는 보통 에폭이 끝난 뒤 한 번만 호출합니다. 둘을 헷갈려 매 배치마다 스케줄러를 호출하면 학습률이 의도보다 훨씬 빨리 떨어집니다.</div>
+  </div>
+
+  <div class="fn" data-key="ReduceLROnPlateau 검증손실기반">
+    <div class="fn-h"><h3>optim.lr_scheduler.ReduceLROnPlateau</h3></div>
+    <p>검증 지표(보통 val loss)가 <code>patience</code> 에폭 동안 개선되지 않으면 학습률을 줄입니다. <b>검증 지표를 인자로 넘겨줘야</b> 하는 유일한 스케줄러입니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode=<span class="s">"min"</span>, patience=<span class="n">3</span>, factor=<span class="n">0.5</span>)
+<span class="k">for</span> epoch <span class="k">in</span> <span class="k">range</span>(n_epochs):
+    train(...)
+    val_loss = validate(...)
+    scheduler.step(val_loss)   <span class="c"># 다른 스케줄러와 달리 지표를 인자로 받음</span></pre>
+    <div class="out">(별도 출력 없음 — val_loss가 정체될 때만 lr가 내려감)</div>
+  </div>
+
+  <div class="fn" data-key="CosineAnnealingLR OneCycleLR 코사인">
+    <div class="fn-h"><h3>CosineAnnealingLR · OneCycleLR</h3></div>
+    <p>학습률을 부드러운 곡선으로 조정하는 최신 스케줄러들입니다. <code>CosineAnnealingLR</code>은 코사인 곡선을 따라 서서히 감소, <code>OneCycleLR</code>은 warm-up 후 감소하는 한 번의 사이클을 그립니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=<span class="n">50</span>)
+<span class="c"># OneCycleLR은 총 스텝 수를 미리 알아야 해서 배치 단위로 step() 호출</span>
+onecycle = torch.optim.lr_scheduler.OneCycleLR(
+    optimizer, max_lr=<span class="n">0.01</span>, steps_per_epoch=<span class="k">len</span>(loader), epochs=<span class="n">10</span>
+)</pre>
+    <div class="out">(별도 출력 없음 — 정의 예시)</div>
+    <div class="tip"><code>OneCycleLR</code>은 <b>배치마다</b> <code>scheduler.step()</code>을 호출해야 하고, <code>StepLR</code>·<code>CosineAnnealingLR</code>은 보통 <b>에폭마다</b> 호출합니다. 어떤 스케줄러를 쓰든 공식 문서에서 호출 주기를 확인하세요 — 틀리면 학습률 곡선 모양 자체가 달라집니다.</div>
+  </div>
+</section>
+
+<!-- ============ I. Dataset·DataLoader·학습 루프 ============ -->
+<section id="i">
+  <div class="sec-h"><span class="key">I</span><h2>Dataset·DataLoader·학습 루프</h2><span class="cnt">6 functions</span></div>
+  <p class="sec-note">데이터를 모델에 배치 단위로 공급하는 파이프라인과, 그것을 소비하는 학습/평가 루프입니다.</p>
+
+  <div class="fn" data-key="Dataset 커스텀데이터셋">
+    <div class="fn-h"><span class="rank">#10</span><h3>torch.utils.data.Dataset</h3></div>
+    <p>"인덱스로 샘플 하나를 어떻게 가져올지"를 정의하는 인터페이스입니다. <code>__len__</code>과 <code>__getitem__</code> 두 메소드만 구현하면 됩니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig"><span class="k">class</span> MyDataset(Dataset):
+    <span class="k">def</span> __len__(self): ...
+    <span class="k">def</span> __getitem__(self, idx): ...</div>
+    <h4>예시 코드</h4>
+    <pre class="has-out"><span class="k">from</span> torch.utils.data <span class="k">import</span> Dataset
+
+<span class="k">class</span> ToyDataset(Dataset):
+    <span class="k">def</span> __init__(self, x, y):
+        self.x, self.y = x, y
+
+    <span class="k">def</span> __len__(self):
+        <span class="k">return</span> <span class="k">len</span>(self.x)
+
+    <span class="k">def</span> __getitem__(self, idx):
+        <span class="k">return</span> self.x[idx], self.y[idx]
+
+ds = ToyDataset(torch.randn(<span class="n">100</span>, <span class="n">4</span>), torch.randint(<span class="n">0</span>, <span class="n">2</span>, (<span class="n">100</span>,)))
+<span class="k">print</span>(<span class="k">len</span>(ds), ds[<span class="n">0</span>][<span class="n">0</span>].shape)</pre>
+    <div class="out">100 torch.Size([4])</div>
+  </div>
+
+  <div class="fn" data-key="DataLoader 배치로딩">
+    <div class="fn-h"><span class="rank">#09</span><h3>torch.utils.data.DataLoader</h3></div>
+    <p><code>Dataset</code>을 감싸서 <b>배치화, 셔플, 병렬 로딩</b>을 자동으로 처리합니다. 학습 루프는 대부분 <code>for batch in loader:</code> 형태로 이걸 순회합니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig">DataLoader(dataset, batch_size=1, shuffle=False, num_workers=0, pin_memory=False, drop_last=False)</div>
+    <h4>파라미터</h4>
+    <div class="tbl-wrap"><table>
+      <tr><th>파라미터</th><th>설명</th><th>기본값</th></tr>
+      <tr><td>batch_size</td><td>배치 크기</td><td><code>1</code></td></tr>
+      <tr><td>shuffle</td><td>매 에폭 순서를 섞을지. <b>학습은 True, 평가는 False</b></td><td><code>False</code></td></tr>
+      <tr><td>num_workers</td><td>데이터 로딩 병렬 프로세스 수. CPU 전처리가 병목이면 늘림</td><td><code>0</code>(메인 프로세스)</td></tr>
+      <tr><td>pin_memory</td><td>GPU로 옮기는 속도를 높이는 페이지 고정 메모리 사용</td><td><code>False</code></td></tr>
+      <tr><td>drop_last</td><td>마지막 자투리 배치를 버릴지(BatchNorm 등에서 배치 크기 1 방지)</td><td><code>False</code></td></tr>
+    </table></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out"><span class="k">from</span> torch.utils.data <span class="k">import</span> DataLoader
+
+loader = DataLoader(ds, batch_size=<span class="n">16</span>, shuffle=<span class="k">True</span>)
+xb, yb = <span class="k">next</span>(<span class="k">iter</span>(loader))
+<span class="k">print</span>(xb.shape, yb.shape, <span class="k">len</span>(loader))   <span class="c"># 100개를 배치 16개씩 → 7배치(마지막은 4개)</span></pre>
+    <div class="out">torch.Size([16, 4]) torch.Size([16]) 7</div>
+  </div>
+
+  <div class="fn" data-key="model.train model.eval 모드전환">
+    <div class="fn-h"><span class="rank">#13</span><h3>model.train() · model.eval()</h3></div>
+    <p>모델을 학습/평가 모드로 전환합니다. <code>Dropout</code>과 <code>BatchNorm</code>처럼 <b>학습과 추론에서 동작이 다른 레이어</b>가 이 플래그를 참조합니다. 파라미터를 바꾸는 게 아니라 <b>동작 모드 스위치</b>일 뿐입니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">model = nn.Sequential(nn.Linear(<span class="n">4</span>, <span class="n">4</span>), nn.Dropout(<span class="n">0.5</span>))
+model.train()
+<span class="k">print</span>(model[<span class="n">1</span>].training)   <span class="c"># True → Dropout이 실제로 뉴런을 끔</span>
+model.eval()
+<span class="k">print</span>(model[<span class="n">1</span>].training)   <span class="c"># False → Dropout이 항등함수처럼 동작</span></pre>
+    <div class="out">True
+False</div>
+    <div class="warn"><code>model.eval()</code>을 빼먹고 검증/추론을 하면 <code>Dropout</code>이 여전히 랜덤하게 뉴런을 꺼서 <b>매번 다른 예측</b>이 나오고, <code>BatchNorm</code>은 배치 통계 대신 러닝 통계를 써야 하는데 배치 통계를 써서 결과가 불안정해집니다.</div>
+  </div>
+
+  <div class="fn" data-key="collate_fn 배치묶기">
+    <div class="fn-h"><h3>collate_fn</h3></div>
+    <p>개별 샘플들을 하나의 배치 텐서로 묶는 방법을 커스터마이즈합니다. 시퀀스 길이가 제각각이라 <code>torch.stack</code>이 바로 안 되는 경우(가변 길이 텍스트 등)에 <code>pad_sequence</code>와 함께 씁니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out"><span class="k">from</span> torch.nn.utils.rnn <span class="k">import</span> pad_sequence
+
+<span class="k">def</span> collate_fn(batch):
+    seqs, labels = <span class="k">zip</span>(*batch)
+    padded = pad_sequence(seqs, batch_first=<span class="k">True</span>)   <span class="c"># 가장 긴 시퀀스에 맞춰 0-padding</span>
+    <span class="k">return</span> padded, torch.tensor(labels)
+
+loader = DataLoader(text_ds, batch_size=<span class="n">8</span>, collate_fn=collate_fn)</pre>
+    <div class="out">(별도 출력 없음 — 정의 예시)</div>
+  </div>
+
+  <div class="fn" data-key="random_split 데이터분할">
+    <div class="fn-h"><h3>torch.utils.data.random_split</h3></div>
+    <p><code>Dataset</code>을 정해진 비율/개수로 무작위 분할합니다. train/val 분할에 자주 씁니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">torch.manual_seed(<span class="n">0</span>)
+train_ds, val_ds = torch.utils.data.random_split(ds, [<span class="n">80</span>, <span class="n">20</span>])
+<span class="k">print</span>(<span class="k">len</span>(train_ds), <span class="k">len</span>(val_ds))</pre>
+    <div class="out">80 20</div>
+    <div class="tip">비율로 나누고 싶으면 <code>random_split(ds, [0.8, 0.2])</code>처럼 0~1 사이 값을 줄 수도 있습니다(PyTorch 1.13+).</div>
+  </div>
+
+  <div class="fn" data-key="학습루프 검증루프 evaluate">
+    <div class="fn-h"><h3>학습 루프 + 검증 루프 한 세트</h3></div>
+    <p>지금까지의 조각을 이어 붙인 한 에폭 분량의 전형적인 코드입니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out"><span class="k">def</span> train_one_epoch(model, loader, criterion, optimizer):
+    model.train()
+    total_loss = <span class="n">0.0</span>
+    <span class="k">for</span> xb, yb <span class="k">in</span> loader:
+        optimizer.zero_grad()
+        loss = criterion(model(xb), yb)
+        loss.backward()
+        optimizer.step()
+        total_loss += loss.item() * xb.size(<span class="n">0</span>)
+    <span class="k">return</span> total_loss / <span class="k">len</span>(loader.dataset)
+
+@torch.no_grad()
+<span class="k">def</span> evaluate(model, loader, criterion):
+    model.eval()
+    total_loss = <span class="n">0.0</span>
+    <span class="k">for</span> xb, yb <span class="k">in</span> loader:
+        total_loss += criterion(model(xb), yb).item() * xb.size(<span class="n">0</span>)
+    <span class="k">return</span> total_loss / <span class="k">len</span>(loader.dataset)</pre>
+    <div class="out">(별도 출력 없음 — 함수 정의)</div>
+    <div class="tip"><code>@torch.no_grad()</code>는 <code>with torch.no_grad():</code>와 동일한 효과를 함수 전체에 데코레이터로 적용하는 축약형입니다. 평가 함수 전체에 적용하기 편리합니다.</div>
+  </div>
+</section>
+
+<!-- ============ J. GPU·디바이스 관리 ============ -->
+<section id="j">
+  <div class="sec-h"><span class="key">J</span><h2>GPU·디바이스 관리</h2><span class="cnt">4 functions</span></div>
+  <p class="sec-note">CPU/GPU를 오가는 코드는 항상 <b>모델과 데이터를 같은 device로</b> 맞춰야 한다는 원칙 하나로 요약됩니다.</p>
+
+  <div class="fn" data-key="to device cuda cpu 디바이스이동">
+    <div class="fn-h"><span class="rank">#02</span><h3>.to(device) · .cuda() · .cpu()</h3><span class="tag gpu">gpu</span></div>
+    <p>텐서/모델을 지정한 장치로 옮깁니다. <code>.to(device)</code>가 CPU와 GPU 코드를 한 줄로 통일할 수 있어 가장 널리 권장되는 방식입니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">device = torch.device(<span class="s">"cuda"</span> <span class="k">if</span> torch.cuda.is_available() <span class="k">else</span> <span class="s">"cpu"</span>)
+
+model = nn.Linear(<span class="n">4</span>, <span class="n">2</span>).to(device)     <span class="c"># 모델은 제자리로 이동</span>
+x = torch.randn(<span class="n">3</span>, <span class="n">4</span>)
+x = x.to(device)                    <span class="c"># 텐서는 새 텐서를 반환 → 재대입 필요</span>
+<span class="k">print</span>(<span class="k">next</span>(model.parameters()).device, x.device)</pre>
+    <div class="out">cpu cpu</div>
+    <div class="warn">모델은 <code>.to(device)</code>가 <b>in-place</b>지만(<code>model = model.to(device)</code> 안 해도 됨) 텐서는 <b>새 텐서를 반환</b>합니다. <code>x.to(device)</code>만 호출하고 재대입을 안 하면 <code>x</code>는 여전히 원래 device에 남아 있습니다.</div>
+  </div>
+
+  <div class="fn" data-key="torch.cuda.is_available GPU확인">
+    <div class="fn-h"><h3>torch.cuda.is_available()</h3><span class="tag gpu">gpu</span></div>
+    <p>현재 환경에서 CUDA GPU를 쓸 수 있는지 확인합니다. 어떤 환경에서도 동작하는 코드를 짜는 시작점입니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out"><span class="k">print</span>(torch.cuda.is_available())
+<span class="k">if</span> torch.cuda.is_available():
+    <span class="k">print</span>(torch.cuda.get_device_name(<span class="n">0</span>))
+    <span class="k">print</span>(torch.cuda.memory_allocated() / <span class="n">1e6</span>, <span class="s">"MB"</span>)</pre>
+    <div class="out">False</div>
+    <div class="note">이 문서를 검증한 환경에는 GPU가 없어 <code>False</code>가 출력됩니다. Apple Silicon Mac에서는 <code>torch.backends.mps.is_available()</code>로 MPS 가속 여부를 확인합니다.</div>
+  </div>
+
+  <div class="fn" data-key="autocast GradScaler AMP 혼합정밀도">
+    <div class="fn-h"><h3>autocast · GradScaler (AMP)</h3><span class="tag gpu">gpu</span></div>
+    <p>자동 혼합 정밀도(Automatic Mixed Precision). 일부 연산을 float16으로 수행해 GPU 메모리와 속도를 크게 절약합니다. <code>GradScaler</code>는 float16의 좁은 표현 범위로 인한 그래디언트 언더플로를 막아줍니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">scaler = torch.cuda.amp.GradScaler()
+
+<span class="k">for</span> xb, yb <span class="k">in</span> loader:
+    optimizer.zero_grad()
+    <span class="k">with</span> torch.autocast(device_type=<span class="s">"cuda"</span>, dtype=torch.float16):
+        loss = criterion(model(xb), yb)
+    scaler.scale(loss).backward()
+    scaler.step(optimizer)
+    scaler.update()</pre>
+    <div class="out">(별도 출력 없음 — GPU 환경에서만 실질적 효과)</div>
+    <div class="tip">CPU에서는 AMP의 이점이 거의 없습니다. GPU 학습에서 배치 크기를 키우거나 학습 속도를 높이고 싶을 때 가장 먼저 시도해볼 만한 최적화입니다.</div>
+  </div>
+
+  <div class="fn" data-key="디바이스무관 코드 device_count 멀티GPU">
+    <div class="fn-h"><h3>여러 GPU 다루기</h3><span class="tag gpu">gpu</span></div>
+    <div class="tbl-wrap"><table>
+      <tr><th>함수</th><th>하는 일</th></tr>
+      <tr><td>torch.cuda.device_count()</td><td>사용 가능한 GPU 개수</td></tr>
+      <tr><td>torch.cuda.current_device()</td><td>현재 기본 GPU 인덱스</td></tr>
+      <tr><td>nn.DataParallel(model)</td><td>단일 프로세스에서 여러 GPU에 배치를 나눠 처리(구식, 소규모용)</td></tr>
+      <tr><td>nn.parallel.DistributedDataParallel</td><td>프로세스별 GPU 1개, 대규모 분산 학습의 표준</td></tr>
+    </table></div>
+  </div>
+</section>
+
+<!-- ============ K. 모델 저장·불러오기 ============ -->
+<section id="k">
+  <div class="sec-h"><span class="key">K</span><h2>모델 저장·불러오기</h2><span class="cnt">3 functions</span></div>
+  <p class="sec-note">체크포인트를 <b>파라미터(state_dict)</b> 단위로 저장하는 것이 공식적으로 권장되는 방식입니다.</p>
+
+  <div class="fn" data-key="torch.save torch.load state_dict 저장불러오기">
+    <div class="fn-h"><span class="rank">#16</span><h3>torch.save() / torch.load() + state_dict</h3></div>
+    <p><code>model.state_dict()</code>는 모든 레이어 이름과 텐서 값을 담은 <code>OrderedDict</code>입니다. 이것만 저장하면 클래스 정의가 바뀌어도(리팩터링) 값만 복원할 수 있어, 모델 객체 자체를 <code>pickle</code>로 저장하는 것보다 안전합니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig">torch.save(obj, path)
+torch.load(path, map_location=None, weights_only=True)</div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">model = nn.Linear(<span class="n">4</span>, <span class="n">2</span>)
+torch.save(model.state_dict(), <span class="s">"model.pt"</span>)
+
+loaded = nn.Linear(<span class="n">4</span>, <span class="n">2</span>)                <span class="c"># 먼저 같은 구조로 인스턴스화</span>
+loaded.load_state_dict(torch.load(<span class="s">"model.pt"</span>, weights_only=<span class="k">True</span>))
+loaded.eval()
+<span class="k">print</span>(<span class="k">type</span>(loaded.state_dict()))</pre>
+    <div class="out">&lt;class 'collections.OrderedDict'&gt;</div>
+    <div class="warn">GPU에서 저장한 체크포인트를 CPU 전용 환경에서 불러오면 <code>RuntimeError: Attempting to deserialize object on a CUDA device...</code>가 납니다. <code>torch.load(path, map_location="cpu")</code>로 명시하세요. 또한 신뢰할 수 없는 출처의 체크포인트는 <code>weights_only=True</code>(최신 버전 기본값)로 로드해 임의 코드 실행을 방지하세요.</div>
+  </div>
+
+  <div class="fn" data-key="전체모델저장 pickle 비권장">
+    <div class="fn-h"><h3>전체 모델 객체 저장 (비권장)</h3></div>
+    <p><code>torch.save(model, path)</code>처럼 모델 객체 전체를 <code>pickle</code>로 저장할 수도 있지만, 로드 시점에 <b>클래스 정의가 정확히 같은 경로에 존재</b>해야 하고 리팩터링에 취약해 공식 문서도 <code>state_dict</code> 방식을 권장합니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out"><span class="c"># 비권장 — 편의상 빠르게 실험할 때만</span>
+torch.save(model, <span class="s">"whole_model.pt"</span>)
+loaded = torch.load(<span class="s">"whole_model.pt"</span>, weights_only=<span class="k">False</span>)</pre>
+    <div class="out">(별도 출력 없음)</div>
+  </div>
+
+  <div class="fn" data-key="checkpoint 저장 재개 optimizer state">
+    <div class="fn-h"><h3>학습 재개용 체크포인트</h3></div>
+    <p>학습을 중간부터 이어가려면 모델 파라미터뿐 아니라 <b>옵티마이저 상태(모멘텀 등)와 에폭 번호</b>까지 함께 저장해야 합니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">torch.save({
+    <span class="s">"epoch"</span>: epoch,
+    <span class="s">"model_state"</span>: model.state_dict(),
+    <span class="s">"optimizer_state"</span>: optimizer.state_dict(),
+    <span class="s">"loss"</span>: loss.item(),
+}, <span class="s">"checkpoint.pt"</span>)
+
+ckpt = torch.load(<span class="s">"checkpoint.pt"</span>, weights_only=<span class="k">True</span>)
+model.load_state_dict(ckpt[<span class="s">"model_state"</span>])
+optimizer.load_state_dict(ckpt[<span class="s">"optimizer_state"</span>])
+start_epoch = ckpt[<span class="s">"epoch"</span>] + <span class="n">1</span></pre>
+    <div class="out">(별도 출력 없음 — 정의 예시)</div>
+    <div class="tip">옵티마이저 상태를 빼먹고 모델 가중치만 복원하면, Adam의 모멘텀이 0부터 다시 쌓이면서 재개 직후 학습이 잠깐 불안정해질 수 있습니다.</div>
+  </div>
+</section>
+
+<!-- ============ L. CNN 레이어 ============ -->
+<section id="l">
+  <div class="sec-h"><span class="key">L</span><h2>CNN 레이어</h2><span class="cnt">2 layer groups</span></div>
+  <p class="sec-note">이미지·격자형 데이터를 다루는 합성곱 신경망의 기본 부품입니다.</p>
+
+  <div class="fn" data-key="nn.Conv2d 합성곱층">
+    <div class="fn-h"><span class="rank">#17</span><h3>nn.Conv2d</h3><span class="tag layer">layer</span></div>
+    <p>2D 합성곱층. 작은 커널을 슬라이딩하며 지역 특징을 추출합니다. 입력은 <code>(N, C_in, H, W)</code>, 출력은 <code>(N, C_out, H', W')</code>입니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig">nn.Conv2d(in_channels, out_channels, kernel_size, stride=1, padding=0)</div>
+    <h4>파라미터</h4>
+    <div class="tbl-wrap"><table>
+      <tr><th>파라미터</th><th>설명</th><th>기본값</th></tr>
+      <tr><td>in_channels <span class="req">필수</span></td><td>입력 채널 수(RGB면 3)</td><td>—</td></tr>
+      <tr><td>out_channels <span class="req">필수</span></td><td>필터(커널) 개수 = 출력 채널 수</td><td>—</td></tr>
+      <tr><td>kernel_size <span class="req">필수</span></td><td>필터 크기. 정수 또는 (h, w)</td><td>—</td></tr>
+      <tr><td>stride</td><td>슬라이딩 보폭. 클수록 출력이 작아짐</td><td><code>1</code></td></tr>
+      <tr><td>padding</td><td>가장자리 0-패딩 폭. <code>kernel_size//2</code>면 출력 크기 유지("same"과 유사)</td><td><code>0</code></td></tr>
+    </table></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">conv = nn.Conv2d(in_channels=<span class="n">3</span>, out_channels=<span class="n">16</span>, kernel_size=<span class="n">3</span>, padding=<span class="n">1</span>)
+x = torch.randn(<span class="n">8</span>, <span class="n">3</span>, <span class="n">32</span>, <span class="n">32</span>)   <span class="c"># (N, C, H, W)</span>
+out = conv(x)
+<span class="k">print</span>(out.shape)   <span class="c"># padding=1, kernel=3 → H, W 그대로 유지</span></pre>
+    <div class="out">torch.Size([8, 16, 32, 32])</div>
+    <div class="note">출력 크기 공식: <code>H' = floor((H + 2*padding - kernel_size) / stride) + 1</code>. <code>padding = kernel_size // 2</code>, <code>stride=1</code>이면 대부분 <code>H' = H</code>가 됩니다.</div>
+  </div>
+
+  <div class="fn" data-key="MaxPool2d AvgPool2d AdaptiveAvgPool2d Flatten 풀링">
+    <div class="fn-h"><h3>MaxPool2d · AdaptiveAvgPool2d · Flatten</h3><span class="tag layer">layer</span></div>
+    <p>공간 크기를 줄이거나(풀링) 완전연결층에 넣기 전 벡터로 펴는(Flatten) 레이어들입니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">x = torch.randn(<span class="n">8</span>, <span class="n">16</span>, <span class="n">32</span>, <span class="n">32</span>)
+
+pool = nn.MaxPool2d(kernel_size=<span class="n">2</span>)              <span class="c"># 2x2 최댓값 → 크기 절반</span>
+<span class="k">print</span>(pool(x).shape)
+
+gap = nn.AdaptiveAvgPool2d(output_size=(<span class="n">1</span>, <span class="n">1</span>))   <span class="c"># 입력 크기와 무관하게 (1,1)로</span>
+<span class="k">print</span>(gap(x).shape)
+
+flat = nn.Flatten()
+<span class="k">print</span>(flat(gap(x)).shape)</pre>
+    <div class="out">torch.Size([8, 16, 16, 16])
+torch.Size([8, 16, 1, 1])
+torch.Size([8, 16])</div>
+    <div class="tip"><code>AdaptiveAvgPool2d((1,1))</code>은 입력 해상도가 학습 때와 다른 이미지가 들어와도 항상 같은 크기를 출력해, 이후 <code>nn.Linear</code>의 <code>in_features</code>를 고정할 수 있게 해줍니다. ResNet 등 현대 CNN의 표준 마무리 방식입니다.</div>
+  </div>
+</section>
+
+<!-- ============ M. RNN·Transformer 레이어 ============ -->
+<section id="m">
+  <div class="sec-h"><span class="key">M</span><h2>RNN·Transformer 레이어</h2><span class="cnt">3 layer groups</span></div>
+  <p class="sec-note">순서가 있는 데이터(텍스트, 시계열)를 다루는 레이어입니다.</p>
+
+  <div class="fn" data-key="nn.Embedding 임베딩층">
+    <div class="fn-h"><h3>nn.Embedding</h3><span class="tag layer">layer</span></div>
+    <p>정수 인덱스(토큰 ID 등)를 학습 가능한 밀집 벡터로 변환하는 룩업 테이블입니다. NLP 모델의 입력층에 거의 항상 등장합니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig">nn.Embedding(num_embeddings, embedding_dim)</div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">emb = nn.Embedding(num_embeddings=<span class="n">1000</span>, embedding_dim=<span class="n">64</span>)   <span class="c"># 어휘 크기 1000, 벡터 차원 64</span>
+tokens = torch.tensor([[<span class="n">5</span>, <span class="n">20</span>, <span class="n">3</span>], [<span class="n">1</span>, <span class="n">0</span>, <span class="n">99</span>]])       <span class="c"># (batch=2, seq_len=3)</span>
+<span class="k">print</span>(emb(tokens).shape)</pre>
+    <div class="out">torch.Size([2, 3, 64])</div>
+    <div class="warn">토큰 ID가 <code>num_embeddings</code> 범위를 벗어나면(어휘 크기보다 큰 인덱스) <code>IndexError</code>가 납니다. 토크나이저의 어휘 크기와 <code>num_embeddings</code>를 반드시 맞추세요.</div>
+  </div>
+
+  <div class="fn" data-key="nn.LSTM nn.GRU 순환신경망">
+    <div class="fn-h"><h3>nn.LSTM · nn.GRU</h3><span class="tag layer">layer</span></div>
+    <p>시퀀스를 순서대로 처리하며 은닉 상태를 유지하는 순환 레이어입니다. <code>LSTM</code>은 장기 의존성을 셀 상태로 따로 관리하고, <code>GRU</code>는 구조가 더 단순해 파라미터가 적습니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig">nn.LSTM(input_size, hidden_size, num_layers=1, batch_first=False)</div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">lstm = nn.LSTM(input_size=<span class="n">64</span>, hidden_size=<span class="n">128</span>, batch_first=<span class="k">True</span>)
+x = torch.randn(<span class="n">8</span>, <span class="n">10</span>, <span class="n">64</span>)   <span class="c"># (batch, seq_len, input_size)</span>
+out, (h_n, c_n) = lstm(x)
+<span class="k">print</span>(out.shape, h_n.shape)   <span class="c"># out: 매 스텝 은닉상태, h_n: 마지막 스텝 은닉상태</span></pre>
+    <div class="out">torch.Size([8, 10, 128]) torch.Size([1, 8, 128])</div>
+    <div class="warn">기본값은 <code>batch_first=False</code>라 입력이 <code>(seq_len, batch, input_size)</code> 순서를 기대합니다. 다른 레이어들과 관례를 맞추려면 <code>batch_first=True</code>를 명시하는 것이 실수를 줄입니다.</div>
+  </div>
+
+  <div class="fn" data-key="nn.TransformerEncoderLayer MultiheadAttention 트랜스포머">
+    <div class="fn-h"><h3>nn.TransformerEncoderLayer · nn.MultiheadAttention</h3><span class="tag layer">layer</span></div>
+    <p>Self-attention 기반 블록입니다. <code>MultiheadAttention</code>이 핵심 연산이고, <code>TransformerEncoderLayer</code>는 여기에 FFN·잔차연결·정규화를 더해 미리 조립해둔 블록입니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">layer = nn.TransformerEncoderLayer(d_model=<span class="n">64</span>, nhead=<span class="n">8</span>, batch_first=<span class="k">True</span>)
+encoder = nn.TransformerEncoder(layer, num_layers=<span class="n">2</span>)
+x = torch.randn(<span class="n">8</span>, <span class="n">10</span>, <span class="n">64</span>)   <span class="c"># (batch, seq_len, d_model)</span>
+<span class="k">print</span>(encoder(x).shape)   <span class="c"># shape 유지 — Transformer 블록의 특징</span></pre>
+    <div class="out">torch.Size([8, 10, 64])</div>
+    <div class="note"><code>d_model</code>은 <code>nhead</code>로 나누어떨어져야 합니다(각 헤드가 <code>d_model/nhead</code> 차원을 담당). 위 예시는 <code>64/8=8</code>로 유효하지만, 맞지 않으면 생성 시점에 <code>AssertionError</code>가 납니다.</div>
+  </div>
+</section>
+
+<!-- ============ N. 정규화·드롭아웃 ============ -->
+<section id="n">
+  <div class="sec-h"><span class="key">N</span><h2>정규화·드롭아웃</h2><span class="cnt">2 layer groups</span></div>
+  <p class="sec-note">과적합을 줄이고 학습을 안정시키는 레이어들입니다. 대부분 <code>model.train()</code>/<code>model.eval()</code> 상태에 따라 동작이 달라집니다.</p>
+
+  <div class="fn" data-key="nn.Dropout 드롭아웃">
+    <div class="fn-h"><span class="rank">#25</span><h3>nn.Dropout</h3><span class="tag layer">layer</span></div>
+    <p>학습 중 각 뉴런을 확률 <code>p</code>로 무작위로 0으로 만들어 과적합을 줄입니다. 평가 모드(<code>eval()</code>)에서는 자동으로 비활성화되어 항등함수처럼 동작합니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig">nn.Dropout(p=0.5)</div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">drop = nn.Dropout(p=<span class="n">0.5</span>)
+x = torch.ones(<span class="n">100</span>)
+
+drop.train()
+out = drop(x)
+<span class="k">print</span>((out == <span class="n">0</span>).<span class="k">any</span>().item(), <span class="k">sorted</span>(out.unique().tolist()))   <span class="c"># 0 또는 1/(1-p)=2.0만 나옴</span>
+
+drop.eval()
+<span class="k">print</span>(drop(x).unique())                <span class="c"># 평가 모드: 항상 원본 그대로</span></pre>
+    <div class="out">True [0.0, 2.0]
+tensor([1.])</div>
+    <div class="note">살아남은 뉴런의 값은 <code>1/(1-p)</code>만큼 스케일업됩니다("inverted dropout") — 그래야 학습/평가 시 활성화 값의 기댓값이 같아져 <code>eval()</code>에서 별도 보정이 필요 없습니다.</div>
+  </div>
+
+  <div class="fn" data-key="nn.BatchNorm2d nn.LayerNorm 배치정규화">
+    <div class="fn-h"><span class="rank">#23</span><h3>nn.BatchNorm2d · nn.LayerNorm</h3><span class="tag layer">layer</span></div>
+    <p><code>BatchNorm</code>은 <b>배치 축</b>을 기준으로, <code>LayerNorm</code>은 <b>특징 축</b>을 기준으로 평균 0·분산 1로 정규화합니다. CNN은 BatchNorm(배치 크기에 의존), Transformer는 LayerNorm(배치 크기 무관)이 표준입니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">bn = nn.BatchNorm2d(num_features=<span class="n">16</span>)   <span class="c"># 채널 수만큼 스케일/시프트 파라미터를 가짐</span>
+x = torch.randn(<span class="n">8</span>, <span class="n">16</span>, <span class="n">4</span>, <span class="n">4</span>)
+<span class="k">print</span>(bn(x).shape)
+
+ln = nn.LayerNorm(normalized_shape=<span class="n">64</span>)
+seq = torch.randn(<span class="n">8</span>, <span class="n">10</span>, <span class="n">64</span>)
+<span class="k">print</span>(ln(seq).shape)</pre>
+    <div class="out">torch.Size([8, 16, 4, 4])
+torch.Size([8, 10, 64])</div>
+    <div class="warn"><code>BatchNorm</code>은 배치 크기가 1이면 분산을 계산할 수 없어 학습 중 에러가 나거나 통계가 불안정해집니다. <code>DataLoader</code>에 <code>drop_last=True</code>를 주어 마지막 자투리 배치를 없애는 것도 이 문제를 피하는 방법입니다.</div>
+  </div>
+</section>
+
+<!-- ============ O. 실무 레시피 ============ -->
+<section id="o">
+  <div class="sec-h"><span class="key">O</span><h2>실무 레시피</h2><span class="cnt">3 recipes</span></div>
+  <p class="sec-note">개별 API를 넘어, 실제 프로젝트에서 반복적으로 쓰는 코드 패턴입니다.</p>
+
+  <div class="fn" data-key="재현성 seed manual_seed reproducibility">
+    <div class="fn-h"><span class="rank">#24</span><h3>재현성 — 시드 고정</h3></div>
+    <p>같은 코드를 다시 실행해도 같은 결과가 나오도록 난수 생성기를 통제합니다. 디버깅과 실험 비교에 필수입니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out"><span class="k">import</span> random
+<span class="k">import</span> numpy <span class="k">as</span> np
+
+<span class="k">def</span> set_seed(seed=<span class="n">0</span>):
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)   <span class="c"># GPU 사용 시</span>
+
+set_seed(<span class="n">42</span>)</pre>
+    <div class="out">(별도 출력 없음 — 이후 난수 연산이 결정적이 됨)</div>
+    <div class="note">시드를 고정해도 <code>cuDNN</code>의 일부 알고리즘은 비결정적일 수 있습니다. 완전한 재현성이 필요하면 <code>torch.backends.cudnn.deterministic = True</code>도 함께 설정하세요(대신 속도가 느려질 수 있습니다).</div>
+  </div>
+
+  <div class="fn" data-key="커스텀 이미지 Dataset transform 실무예제">
+    <div class="fn-h"><h3>이미지 폴더 기반 커스텀 Dataset</h3></div>
+    <p>파일 경로 목록에서 이미지를 지연 로딩(lazy loading)하며 전처리(transform)를 적용하는 실무형 패턴입니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out"><span class="k">from</span> torchvision <span class="k">import</span> transforms
+<span class="k">from</span> PIL <span class="k">import</span> Image
+
+<span class="k">class</span> ImageFolderDataset(Dataset):
+    <span class="k">def</span> __init__(self, paths, labels, train=<span class="k">True</span>):
+        self.paths, self.labels = paths, labels
+        self.transform = transforms.Compose([
+            transforms.Resize((<span class="n">224</span>, <span class="n">224</span>)),
+            transforms.RandomHorizontalFlip() <span class="k">if</span> train <span class="k">else</span> nn.Identity(),
+            transforms.ToTensor(),
+            transforms.Normalize(mean=[<span class="n">0.485</span>, <span class="n">0.456</span>, <span class="n">0.406</span>],
+                                  std=[<span class="n">0.229</span>, <span class="n">0.224</span>, <span class="n">0.225</span>]),
+        ])
+
+    <span class="k">def</span> __len__(self):
+        <span class="k">return</span> <span class="k">len</span>(self.paths)
+
+    <span class="k">def</span> __getitem__(self, idx):
+        img = Image.open(self.paths[idx]).convert(<span class="s">"RGB"</span>)
+        <span class="k">return</span> self.transform(img), self.labels[idx]</pre>
+    <div class="out">(별도 출력 없음 — 정의 예시)</div>
+    <div class="tip"><code>__getitem__</code> 안에서 이미지를 그때그때 읽으므로 전체 데이터셋을 메모리에 올릴 필요가 없습니다. <code>num_workers &gt; 0</code>과 함께 쓰면 디스크 I/O와 GPU 연산이 겹쳐 실행되어 병목이 줄어듭니다.</div>
+  </div>
+
+  <div class="fn" data-key="전이학습 freeze fine-tuning transfer learning">
+    <div class="fn-h"><h3>전이학습 — 백본 동결 후 헤드만 학습</h3></div>
+    <p>사전학습된 모델의 앞부분(백본)은 그대로 두고, 마지막 분류층만 새로 학습하는 패턴입니다. 적은 데이터로도 빠르게 좋은 성능을 낼 수 있습니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">backbone = nn.Sequential(nn.Linear(<span class="n">512</span>, <span class="n">256</span>), nn.ReLU())   <span class="c"># 사전학습됐다고 가정</span>
+<span class="k">for</span> p <span class="k">in</span> backbone.parameters():
+    p.requires_grad = <span class="k">False</span>                                <span class="c"># 백본 동결</span>
+
+head = nn.Linear(<span class="n">256</span>, <span class="n">10</span>)   <span class="c"># 새 태스크의 클래스 수에 맞춘 새 헤드</span>
+model = nn.Sequential(backbone, head)
+
+<span class="c"># 동결된 파라미터는 제외하고 옵티마이저에 등록</span>
+optimizer = torch.optim.Adam(<span class="k">filter</span>(<span class="k">lambda</span> p: p.requires_grad, model.parameters()), lr=<span class="n">1e-3</span>)
+<span class="k">print</span>(<span class="k">sum</span>(p.numel() <span class="k">for</span> p <span class="k">in</span> model.parameters() <span class="k">if</span> p.requires_grad))</pre>
+    <div class="out">2570</div>
+    <div class="warn"><code>requires_grad = False</code>만 설정하고 <code>model.eval()</code>을 호출하지 않으면, 동결한 백본에 <code>Dropout</code>/<code>BatchNorm</code>이 있을 경우 여전히 학습 모드로 동작해 통계가 계속 흔들립니다. 완전히 고정하려면 해당 서브모듈을 <code>eval()</code> 모드로도 둬야 합니다.</div>
+  </div>
+</section>
+
+<!-- ============ P. 성능과 함정 ============ -->
+<section id="p">
+  <div class="sec-h"><span class="key">P</span><h2>성능과 함정</h2><span class="cnt">4 pitfalls</span></div>
+  <p class="sec-note">PyTorch 코드에서 가장 흔하게 반복되는 실수와 성능 병목입니다.</p>
+
+  <div class="fn" data-key="item 남용 GPU동기화 성능함정">
+    <div class="fn-h"><h3>.item() / .cpu() 남용 — 매 스텝 GPU 동기화</h3><span class="tag perf">perf</span></div>
+    <p>루프 안에서 매 배치마다 <code>.item()</code>이나 <code>print(tensor)</code>를 호출하면 GPU 연산이 <b>비동기</b>로 쌓이지 못하고 그때마다 강제로 동기화되어 느려집니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out"><span class="c"># 느림: 매 배치마다 GPU→CPU 동기화 발생</span>
+losses = []
+<span class="k">for</span> xb, yb <span class="k">in</span> loader:
+    loss = criterion(model(xb), yb)
+    losses.append(loss.item())   <span class="c"># 여기서 매번 GPU가 끝나길 기다림</span>
+
+<span class="c"># 빠름: 텐서인 채로 모아뒀다가 마지막에 한 번만 변환</span>
+loss_tensors = []
+<span class="k">for</span> xb, yb <span class="k">in</span> loader:
+    loss_tensors.append(criterion(model(xb), yb).detach())
+avg_loss = torch.stack(loss_tensors).mean().item()   <span class="c"># 동기화 1회</span></pre>
+    <div class="out">(별도 출력 없음 — 비교 예시)</div>
+    <div class="tip">로깅 주기가 짧지 않다면(에폭당 한 번 등) <code>.item()</code>을 그대로 써도 실무상 문제없는 경우가 대부분입니다. 진짜 병목인지는 <code>torch.profiler</code>로 먼저 확인하세요.</div>
+  </div>
+
+  <div class="fn" data-key="in-place 연산 autograd 함정">
+    <div class="fn-h"><h3>in-place 연산과 autograd 충돌</h3><span class="tag perf">perf</span></div>
+    <p><code>+=</code>, <code>relu_()</code>처럼 이름 끝에 <code>_</code>가 붙은 in-place 연산은 메모리를 아끼지만, <b>backward에 필요한 중간값을 덮어써</b> 그래디언트 계산이 깨질 수 있습니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">x = torch.tensor([<span class="n">1.</span>, <span class="n">2.</span>], requires_grad=<span class="k">True</span>)
+y = x * <span class="n">2</span>
+<span class="k">try</span>:
+    y += <span class="n">1</span>              <span class="c"># in-place로 y를 덮어씀</span>
+    y.sum().backward()
+<span class="k">except</span> RuntimeError <span class="k">as</span> e:
+    <span class="k">print</span>(<span class="k">type</span>(e).__name__)</pre>
+    <div class="out">RuntimeError</div>
+    <div class="warn">실제 에러 메시지는 <code>a leaf Variable that requires grad is being used in an in-place operation</code> 또는 <code>one of the variables needed for gradient computation has been modified by an inplace operation</code> 형태입니다. autograd가 관여하는 텐서에는 <code>y = y + 1</code>처럼 새 텐서를 만드는 연산을 쓰세요.</div>
+  </div>
+
+  <div class="fn" data-key="no_grad 없이 평가 메모리누수">
+    <div class="fn-h"><h3>평가 루프에서 no_grad()를 빼먹는 실수</h3><span class="tag perf">perf</span></div>
+    <p>검증/추론 코드에서 <code>torch.no_grad()</code>를 빼먹으면 필요 없는 계산 그래프가 계속 쌓여 <b>메모리 사용량이 매 배치 증가</b>하다가 결국 <code>CUDA out of memory</code>로 이어집니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out"><span class="c"># 잘못된 패턴 — 평가인데 grad가 추적됨</span>
+model.eval()
+<span class="k">for</span> xb, yb <span class="k">in</span> val_loader:
+    pred = model(xb)   <span class="c"># 그래프가 계속 만들어짐 → 메모리 누적</span>
+
+<span class="c"># 올바른 패턴</span>
+model.eval()
+<span class="k">with</span> torch.no_grad():
+    <span class="k">for</span> xb, yb <span class="k">in</span> val_loader:
+        pred = model(xb)</pre>
+    <div class="out">(별도 출력 없음 — 메모리 사용 패턴의 차이)</div>
+    <div class="note"><code>model.eval()</code>과 <code>torch.no_grad()</code>는 <b>서로 다른 역할</b>입니다. <code>eval()</code>은 Dropout/BatchNorm의 동작 모드를 바꾸고, <code>no_grad()</code>는 그래디언트 추적 자체를 끕니다. 평가 시에는 <b>둘 다</b> 필요합니다.</div>
+  </div>
+
+  <div class="fn" data-key="DataLoader num_workers pin_memory contiguous 성능">
+    <div class="fn-h"><h3>DataLoader 병목과 contiguous 함정</h3><span class="tag perf">perf</span></div>
+    <div class="tbl-wrap"><table>
+      <tr><th>증상</th><th>원인</th><th>대응</th></tr>
+      <tr><td>GPU 사용률이 들쭉날쭉</td><td>데이터 로딩이 GPU 연산보다 느림</td><td><code>num_workers</code>를 CPU 코어 수에 맞춰 늘림</td></tr>
+      <tr><td>CPU→GPU 전송이 느림</td><td>일반 메모리 사용</td><td><code>pin_memory=True</code> + <code>non_blocking=True</code></td></tr>
+      <tr><td>view()에서 RuntimeError</td><td>permute/transpose 뒤 메모리가 비연속</td><td><code>.contiguous()</code> 또는 <code>.reshape()</code></td></tr>
+      <tr><td>매 에폭 워커 재생성 지연</td><td>workers가 매번 새로 뜸</td><td><code>persistent_workers=True</code></td></tr>
+    </table></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">loader = DataLoader(ds, batch_size=<span class="n">64</span>, shuffle=<span class="k">True</span>,
+                     num_workers=<span class="n">4</span>, pin_memory=<span class="k">True</span>, persistent_workers=<span class="k">True</span>)
+
+<span class="k">for</span> xb, yb <span class="k">in</span> loader:
+    xb = xb.to(device, non_blocking=<span class="k">True</span>)
+    yb = yb.to(device, non_blocking=<span class="k">True</span>)</pre>
+    <div class="out">(별도 출력 없음 — 설정 예시)</div>
+  </div>
+</section>
+
+<!-- ============ Z. 색인 ============ -->
+<section id="z">
+  <div class="sec-h"><span class="key">Z</span><h2>전체 색인</h2><span class="cnt">quick reference</span></div>
+  <p class="sec-note">본문에서 다루지 않은 것까지 포함한 한 장 요약입니다. 인쇄해서 옆에 두고 쓰세요.</p>
+
+  <div class="fn">
+    <h4>텐서 생성·변환</h4>
+    <div class="tbl-wrap"><table>
+      <tr><td>tensor / as_tensor</td><td>시퀀스 → 텐서(복사 / 가능하면 뷰)</td><td>zeros / ones / full / empty</td><td>상수로 채움</td></tr>
+      <tr><td>*_like</td><td>같은 shape·dtype</td><td>arange / linspace</td><td>step·개수 기준 수열</td></tr>
+      <tr><td>rand / randn / randint</td><td>균등·정규·정수 난수</td><td>eye</td><td>단위행렬</td></tr>
+      <tr><td>from_numpy / .numpy()</td><td>NumPy ↔ 텐서(뷰)</td><td>clone / detach</td><td>복제 / 그래프 분리</td></tr>
+    </table></div>
+    <h4>형태·연산</h4>
+    <div class="tbl-wrap"><table>
+      <tr><td>view / reshape</td><td>shape 변경</td><td>squeeze / unsqueeze</td><td>축 제거·추가</td></tr>
+      <tr><td>permute / transpose</td><td>축 순서 변경</td><td>cat / stack</td><td>기존 축 결합 / 새 축 결합</td></tr>
+      <tr><td>sum / mean / max / argmax</td><td>축 지정 집계</td><td>matmul / @ / mm / bmm</td><td>행렬곱</td></tr>
+      <tr><td>contiguous</td><td>메모리 연속화</td><td>expand / repeat</td><td>브로드캐스팅 확장 / 실제 복제</td></tr>
+    </table></div>
+    <h4>Autograd</h4>
+    <div class="tbl-wrap"><table>
+      <tr><td>requires_grad(_)</td><td>추적 여부 설정</td><td>backward()</td><td>역전파, grad 누적</td></tr>
+      <tr><td>no_grad() / inference_mode()</td><td>추적 비활성화 컨텍스트</td><td>detach()</td><td>그래프에서 분리</td></tr>
+      <tr><td>autograd.grad()</td><td>grad를 값으로 직접 반환</td><td>zero_grad()</td><td>grad 초기화</td></tr>
+    </table></div>
+    <h4>모델·레이어</h4>
+    <div class="tbl-wrap"><table>
+      <tr><td>nn.Module</td><td>모델 베이스 클래스</td><td>nn.Sequential</td><td>순차 컨테이너</td></tr>
+      <tr><td>nn.ModuleList/Dict</td><td>레이어 리스트/딕셔너리 컨테이너</td><td>nn.Parameter</td><td>학습 가능한 텐서</td></tr>
+      <tr><td>nn.Linear</td><td>완전연결층</td><td>nn.Conv2d</td><td>2D 합성곱</td></tr>
+      <tr><td>nn.MaxPool2d/AvgPool2d</td><td>풀링</td><td>nn.AdaptiveAvgPool2d</td><td>크기 무관 풀링</td></tr>
+      <tr><td>nn.Embedding</td><td>토큰 임베딩</td><td>nn.LSTM/GRU</td><td>순환층</td></tr>
+      <tr><td>nn.TransformerEncoderLayer</td><td>self-attention 블록</td><td>nn.MultiheadAttention</td><td>attention 연산</td></tr>
+      <tr><td>nn.BatchNorm2d/LayerNorm</td><td>정규화</td><td>nn.Dropout</td><td>드롭아웃</td></tr>
+      <tr><td>nn.ReLU/Sigmoid/Tanh/GELU</td><td>활성화 함수</td><td>F.softmax/log_softmax</td><td>확률 정규화</td></tr>
+    </table></div>
+    <h4>손실·옵티마이저·스케줄러</h4>
+    <div class="tbl-wrap"><table>
+      <tr><td>nn.CrossEntropyLoss</td><td>다중분류(logits+정수타깃)</td><td>nn.BCEWithLogitsLoss</td><td>이진/멀티라벨분류</td></tr>
+      <tr><td>nn.MSELoss/L1Loss/SmoothL1Loss</td><td>회귀</td><td>nn.NLLLoss</td><td>log_softmax 뒤 음의 로그우도</td></tr>
+      <tr><td>optim.SGD</td><td>모멘텀 경사하강</td><td>optim.Adam/AdamW</td><td>적응형 학습률(기본 선택)</td></tr>
+      <tr><td>optimizer.step()/zero_grad()</td><td>파라미터 갱신·grad 초기화</td><td>param_groups</td><td>레이어별 학습률</td></tr>
+      <tr><td>clip_grad_norm_</td><td>그래디언트 클리핑</td><td>StepLR/CosineAnnealingLR/ReduceLROnPlateau</td><td>학습률 스케줄</td></tr>
+    </table></div>
+    <h4>데이터·학습 루프·저장</h4>
+    <div class="tbl-wrap"><table>
+      <tr><td>Dataset / DataLoader</td><td>샘플 정의 / 배치화·셔플·병렬로딩</td><td>random_split</td><td>train/val 분할</td></tr>
+      <tr><td>collate_fn</td><td>배치 묶는 방식 커스터마이즈</td><td>model.train()/eval()</td><td>학습/평가 모드 전환</td></tr>
+      <tr><td>state_dict()/load_state_dict()</td><td>파라미터 저장·복원</td><td>torch.save/load</td><td>파일 입출력</td></tr>
+      <tr><td>.to(device)/.cuda()/.cpu()</td><td>장치 이동</td><td>cuda.is_available()</td><td>GPU 사용 가능 여부</td></tr>
+      <tr><td>autocast/GradScaler</td><td>혼합 정밀도 학습(AMP)</td><td>DistributedDataParallel</td><td>다중 GPU 분산 학습</td></tr>
+    </table></div>
+  </div>
+</section>
+
+</main>
+</div>
+
+<footer>
+  <p><b>검증 환경</b> — PyTorch 2.x / Python 3.12, CPU-only 환경. 문서에 수록된 예제는 모두 이 환경에서 실행해 출력값을 그대로 옮겼습니다. 난수·GPU 관련 예제는 값이 버전·하드웨어에 따라 달라질 수 있어 <code>shape</code>/<code>dtype</code> 등 결정적인 출력 위주로 표기했습니다.</p>
+  <p><b>참고</b> — <a href="https://pytorch.org/docs/stable/">PyTorch 공식 문서</a> · <a href="https://pytorch.org/tutorials/">PyTorch 공식 튜토리얼</a> · 사용 빈도는 공개 튜토리얼·예제 저장소·실무 큐레이션 자료를 교차 집계한 상대 지수입니다.</p>
+  <p class="copyright">&copy; 2026 AISHIFT. All rights reserved.</p>
+</footer>
+
+<script src="reference.js"></script>
+</body>
+</html>
