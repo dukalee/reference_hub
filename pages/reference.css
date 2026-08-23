@@ -107,6 +107,7 @@ pre.has-out{border-radius:8px 8px 0 0}
 /* ---------- 도식 ---------- */
 .viz{margin:8px 0 4px;padding:14px 8px;background:#fbfdfe;border:1px solid var(--line2);border-radius:8px;overflow-x:auto}
 .viz svg{display:block;width:100%;height:auto;min-width:480px;margin:0 auto}
+.viz img{display:block;max-width:100%;height:auto;margin:0 auto;border-radius:4px}
 .c{stroke:#c3d5e2;stroke-width:1.2;fill:#fff}
 .c-base{fill:#fff}
 .c-hl{fill:#e4edff;stroke:#3c63b8}

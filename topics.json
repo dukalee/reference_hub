@@ -79,5 +79,15 @@
     "color": "#d94f2b",
     "icon": "pt",
     "count": 73
+  },
+  {
+    "id": "gradio",
+    "title": "Gradio",
+    "subtitle": "ML Web UI",
+    "desc": "Interface·Blocks 기반 웹 데모 구축, 입출력 컴포넌트, 이벤트·상태 관리부터 스트리밍 챗봇·배포까지.",
+    "file": "pages/gradio-reference.html",
+    "color": "#e67a30",
+    "icon": "gr",
+    "count": 37
   }
 ]
