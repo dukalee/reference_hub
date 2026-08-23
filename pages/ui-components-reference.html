@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UI 구성요소 실무 레퍼런스 — 컴포넌트 A to Z</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="reference.css">
+<style>
+/* ---------- 이 페이지 전용: 인터랙티브 데모 위젯 (순수 HTML/CSS, JS 없음) ---------- */
+.demo-row{display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end}
+.demo-row.center{align-items:center}
+.demo-field{display:flex;flex-direction:column;gap:6px}
+.demo-field label{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--ink3)}
+.demo-field input[type="text"],.demo-field input[type="search"],.demo-field input[type="number"],
+.demo-field input[type="password"],.demo-field input[type="email"],.demo-field input[type="tel"],
+.demo-field input[type="url"],.demo-field input[type="date"],.demo-field input[type="color"],
+.demo-field textarea,.demo-field select{
+  font:inherit;font-size:14px;padding:9px 12px;border:1.5px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);
+}
+.demo-field textarea{resize:vertical;min-height:64px;font-family:var(--sans)}
+.demo-field input:focus,.demo-field textarea:focus,.demo-field select:focus{outline:2px solid var(--blue);outline-offset:1px;border-color:var(--blue)}
+.demo-field input:disabled{background:#f2f5f7;color:var(--ink3);cursor:not-allowed}
+.demo-field input[type="color"]{padding:3px;width:52px;height:38px}
+.demo-hint{font-size:12px;color:var(--ink3);margin-top:2px}
+
+/* 체크박스 · 라디오 커스텀 */
+.ui-check,.ui-radio{display:flex;align-items:center;gap:8px;cursor:pointer;font-size:14px;user-select:none}
+.ui-check input,.ui-radio input{position:absolute;opacity:0;width:0;height:0}
+.ui-check .box,.ui-radio .box{width:20px;height:20px;border:1.6px solid var(--line);background:#fff;flex:0 0 auto;
+  display:flex;align-items:center;justify-content:center;transition:.15s}
+.ui-check .box{border-radius:5px}
+.ui-radio .box{border-radius:50%}
+.ui-check input:checked ~ .box{background:var(--blue);border-color:var(--blue)}
+.ui-check input:checked ~ .box::after{content:"";width:5px;height:9px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg) translate(-1px,-1px)}
+.ui-radio input:checked ~ .box{border-color:var(--blue)}
+.ui-radio input:checked ~ .box::after{content:"";width:10px;height:10px;border-radius:50%;background:var(--blue)}
+.ui-check input:focus-visible ~ .box,.ui-radio input:focus-visible ~ .box{outline:2px solid var(--blue);outline-offset:2px}
+.ui-check input:disabled ~ .box,.ui-radio input:disabled ~ .box{background:#f2f5f7;border-color:var(--line2)}
+.ui-check.disabled,.ui-radio.disabled{color:var(--ink3);cursor:not-allowed}
+
+/* 세그먼트(칩형) 라디오 */
+.ui-segment{display:inline-flex;border:1.5px solid var(--line);border-radius:100px;padding:3px;gap:2px;background:#fff}
+.ui-segment input{position:absolute;opacity:0;width:0;height:0}
+.ui-segment label{padding:6px 16px;border-radius:100px;font-size:13px;cursor:pointer;color:var(--ink2);transition:.15s}
+.ui-segment input:checked + label{background:var(--blue);color:#fff}
+.ui-segment input:focus-visible + label{outline:2px solid var(--blue);outline-offset:2px}
+
+/* 토글 스위치 */
+.ui-switch{display:inline-flex;align-items:center;gap:10px;cursor:pointer;font-size:14px}
+.ui-switch input{position:absolute;opacity:0;width:0;height:0}
+.ui-switch .track{width:42px;height:24px;border-radius:100px;background:var(--line);position:relative;transition:.2s;flex:0 0 auto}
+.ui-switch .track::after{content:"";position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:50%;background:#fff;
+  box-shadow:0 1px 3px rgba(10,39,57,.3);transition:.2s}
+.ui-switch input:checked ~ .track{background:var(--blue)}
+.ui-switch input:checked ~ .track::after{transform:translateX(18px)}
+.ui-switch input:focus-visible ~ .track{outline:2px solid var(--blue);outline-offset:2px}
+.ui-switch input:disabled ~ .track{opacity:.5;cursor:not-allowed}
+
+/* 별점(라디오 기반, JS 없이 CSS 형제 선택자로 구현) */
+.ui-rating{display:inline-flex;flex-direction:row-reverse;gap:2px;font-size:26px}
+.ui-rating input{position:absolute;opacity:0;width:0;height:0}
+.ui-rating label{color:var(--line);cursor:pointer;transition:.1s}
+.ui-rating input:checked ~ label,.ui-rating label:hover,.ui-rating label:hover ~ label{color:var(--amber)}
+.ui-rating input:focus-visible + label{outline:2px solid var(--blue)}
+
+/* 버튼 */
+.ui-btn{font:inherit;font-size:14px;font-weight:600;padding:9px 18px;border-radius:8px;border:1.5px solid transparent;cursor:pointer;transition:.15s}
+.ui-btn.primary{background:var(--blue);color:#fff}
+.ui-btn.primary:hover{background:#2f4f96}
+.ui-btn.secondary{background:#fff;color:var(--ink);border-color:var(--line)}
+.ui-btn.secondary:hover{border-color:var(--blue);color:var(--blue)}
+.ui-btn.ghost{background:transparent;color:var(--blue);border-color:transparent}
+.ui-btn.ghost:hover{background:rgba(60,99,184,.08)}
+.ui-btn.danger{background:var(--rose);color:#fff}
+.ui-btn.danger:hover{background:#9c2c56}
+.ui-btn:disabled{opacity:.5;cursor:not-allowed}
+.ui-btn:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.ui-icon-btn{width:38px;height:38px;border-radius:50%;border:1.5px solid var(--line);background:#fff;font-size:16px;
+  display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:.15s}
+.ui-icon-btn:hover{background:var(--blue);color:#fff;border-color:var(--blue)}
+
+/* 탭 (라디오 해킹, JS 없음) */
+.ui-tabs{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff}
+.ui-tabs input{position:absolute;opacity:0}
+.ui-tabs .tab-heads{display:flex;border-bottom:1px solid var(--line);background:#f8fbfc}
+.ui-tabs .tab-heads label{flex:1;text-align:center;padding:10px;font-size:13.5px;cursor:pointer;color:var(--ink2);border-bottom:2px solid transparent}
+.ui-tabs .tab-panel{display:none;padding:16px}
+#tab1:checked ~ .tab-heads label[for="tab1"],
+#tab2:checked ~ .tab-heads label[for="tab2"],
+#tab3:checked ~ .tab-heads label[for="tab3"]{color:var(--blue);border-color:var(--blue);font-weight:600}
+#tab1:checked ~ .panels #panel1,
+#tab2:checked ~ .panels #panel2,
+#tab3:checked ~ .panels #panel3{display:block}
+
+/* 브레드크럼 */
+.ui-breadcrumb{display:flex;gap:6px;font-size:13.5px;color:var(--ink3);flex-wrap:wrap}
+.ui-breadcrumb a{color:var(--ink2)}
+.ui-breadcrumb span:last-child{color:var(--ink);font-weight:600}
+.ui-breadcrumb .sep{color:var(--line)}
+
+/* 페이지네이션 */
+.ui-pagination{display:flex;gap:6px;list-style:none;margin:0;padding:0}
+.ui-pagination button{font:inherit;font-size:13px;width:32px;height:32px;border-radius:6px;border:1.5px solid var(--line);
+  background:#fff;color:var(--ink2);cursor:pointer}
+.ui-pagination button[aria-current="page"]{background:var(--blue);color:#fff;border-color:var(--blue)}
+.ui-pagination button:disabled{opacity:.4;cursor:not-allowed}
+
+/* 드롭다운 메뉴 (details/summary, JS 없음) */
+.ui-menu{position:relative;display:inline-block}
+.ui-menu summary{list-style:none;font:inherit;font-size:14px;padding:9px 16px;border:1.5px solid var(--line);border-radius:8px;
+  background:#fff;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.ui-menu summary::-webkit-details-marker{display:none}
+.ui-menu summary::after{content:"▾"}
+.ui-menu[open] summary::after{content:"▴"}
+.ui-menu .menu-list{position:absolute;top:calc(100% + 6px);left:0;min-width:160px;background:#fff;border:1px solid var(--line);
+  border-radius:8px;box-shadow:0 8px 24px rgba(10,39,57,.12);padding:6px;z-index:5}
+.ui-menu .menu-list a{display:block;padding:8px 10px;border-radius:6px;font-size:13.5px;color:var(--ink2)}
+.ui-menu .menu-list a:hover{background:#f2f7fa;color:var(--blue);text-decoration:none}
+
+/* 아코디언 */
+.ui-accordion details{border:1px solid var(--line);border-radius:8px;margin-bottom:6px;overflow:hidden;background:#fff}
+.ui-accordion summary{font:inherit;font-size:14px;font-weight:600;padding:12px 14px;cursor:pointer;list-style:none;
+  display:flex;justify-content:space-between}
+.ui-accordion summary::-webkit-details-marker{display:none}
+.ui-accordion summary::after{content:"+";color:var(--blue);font-weight:700}
+.ui-accordion details[open] summary::after{content:"−"}
+.ui-accordion .acc-body{padding:0 14px 14px;color:var(--ink2);font-size:13.7px}
+
+/* 모달 (:target 앵커 해킹, JS 없음) */
+.ui-modal-trigger{display:inline-block}
+.ui-modal-overlay{display:none;position:fixed;inset:0;background:rgba(10,39,57,.45);align-items:center;justify-content:center;
+  z-index:100;padding:20px}
+.ui-modal-overlay:target{display:flex}
+.ui-modal-box{background:#fff;border-radius:12px;padding:20px 22px;max-width:280px;width:100%;box-shadow:0 20px 48px rgba(10,39,57,.25)}
+.ui-modal-box h5{margin:0 0 8px;font-size:15px}
+.ui-modal-box p{margin:0 0 14px;font-size:13.5px;color:var(--ink2)}
+.ui-modal-host{display:inline-block}
+
+/* 툴팁 (hover/focus, JS 없음) */
+.ui-tooltip{position:relative;border-bottom:1px dashed var(--ink3);cursor:help;font-size:14px}
+.ui-tooltip::after{content:attr(data-tip);position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%) translateY(4px);
+  background:var(--ink);color:#fff;font-size:12px;padding:6px 10px;border-radius:6px;white-space:nowrap;
+  opacity:0;pointer-events:none;transition:.15s}
+.ui-tooltip:hover::after,.ui-tooltip:focus::after{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* 카드 */
+.ui-card{border:1px solid var(--line);border-radius:12px;padding:16px;background:#fff;max-width:260px;transition:.15s}
+.ui-card:hover{box-shadow:0 10px 24px rgba(10,39,57,.1);transform:translateY(-2px)}
+.ui-card .thumb{height:80px;border-radius:8px;background:linear-gradient(135deg,var(--blue),var(--cyan));margin-bottom:10px}
+.ui-card h5{margin:0 0 4px;font-size:14.5px}
+.ui-card p{margin:0 0 10px;font-size:13px;color:var(--ink2)}
+
+/* 알림 (체크박스 해킹으로 닫기, JS 없음) */
+.ui-alert-wrap input{position:absolute;opacity:0}
+.ui-alert{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border-radius:8px;border-left:3px solid var(--cyan);
+  background:#f2f8fb;font-size:13.7px;color:var(--ink2)}
+.ui-alert.warn{border-color:var(--amber);background:#fdf7ef}
+.ui-alert label{margin-left:auto;cursor:pointer;color:var(--ink3);font-size:15px;line-height:1}
+.ui-alert-wrap input:checked ~ .ui-alert{display:none}
+
+/* 뱃지/태그 */
+.ui-badge{display:inline-flex;align-items:center;font-size:11.5px;font-weight:700;padding:3px 10px;border-radius:100px}
+.ui-badge.blue{background:#eaf0fb;color:var(--blue)}
+.ui-badge.green{background:#e7f6ee;color:#177a5a}
+.ui-badge.amber{background:#fdf1de;color:#8a5a12}
+.ui-badge.rose{background:#fbe8ee;color:var(--rose)}
+.ui-tag{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;padding:4px 6px 4px 10px;border-radius:100px;
+  background:#f2f7fa;border:1px solid var(--line2);color:var(--ink2)}
+.ui-tag button{border:none;background:transparent;color:var(--ink3);cursor:pointer;border-radius:50%;width:16px;height:16px;font-size:11px}
+.ui-tag button:hover{background:var(--line2);color:var(--ink)}
+
+/* 아바타 */
+.ui-avatar{position:relative;width:44px;height:44px;border-radius:50%;background:var(--blue);color:#fff;
+  display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:15px}
+.ui-avatar::after{content:"";position:absolute;bottom:0;right:0;width:11px;height:11px;border-radius:50%;background:#2ecc71;border:2px solid #fff}
+.ui-avatar.offline::after{background:var(--ink3)}
+
+/* 스피너 · 스켈레톤 */
+.ui-spinner{width:28px;height:28px;border:3px solid var(--line2);border-top-color:var(--blue);border-radius:50%;animation:ui-spin .7s linear infinite}
+@keyframes ui-spin{to{transform:rotate(360deg)}}
+.ui-skeleton{height:14px;border-radius:5px;background:linear-gradient(90deg,#eef3f7 25%,#f8fbfd 37%,#eef3f7 63%);
+  background-size:400% 100%;animation:ui-shimmer 1.4s ease infinite}
+@keyframes ui-shimmer{0%{background-position:100% 50%}100%{background-position:0 50%}}
+
+/* 커스텀 progress / range */
+.ui-progress{height:10px;border-radius:100px;background:var(--line2);overflow:hidden}
+.ui-progress > span{display:block;height:100%;background:var(--blue);border-radius:100px}
+input[type="range"].ui-range{width:100%;accent-color:var(--blue)}
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <div class="bar-in">
+    <a class="home" href="../index.html">← 홈</a>
+    <div class="brand">UI 구성요소<span>[UI]</span>Reference</div>
+    <input id="q" type="search" placeholder="컴포넌트 이름으로 찾기 — 체크박스, 탭, 모달 …" aria-label="컴포넌트 검색">
+    <div id="qn" aria-live="polite"></div>
+  </div>
+</div>
+
+<header class="hero">
+  <h1>UI 구성요소 사전</h1>
+</header>
+
+<div class="wrap">
+<nav class="toc" aria-label="목차">
+  <ol>
+    <li><a href="#rank"><span class="k">§</span>사용 빈도 랭킹</a></li>
+    <li><a href="#core"><span class="k">§</span>먼저 알아야 할 4가지</a></li>
+    <li><a href="#a"><span class="k">A</span>텍스트 입력</a></li>
+    <li><a href="#b"><span class="k">B</span>선택 입력</a></li>
+    <li><a href="#c"><span class="k">C</span>범위·평가·진행</a></li>
+    <li><a href="#d"><span class="k">D</span>버튼과 액션</a></li>
+    <li><a href="#e"><span class="k">E</span>네비게이션</a></li>
+    <li><a href="#f"><span class="k">F</span>오버레이·컨테이너</a></li>
+    <li><a href="#g"><span class="k">G</span>피드백과 표시</a></li>
+    <li><a href="#z"><span class="k">Z</span>전체 색인</a></li>
+  </ol>
+</nav>
+
+<main>
+
+<!-- ============ 랭킹 ============ -->
+<section id="rank">
+  <div class="sec-h"><span class="key">§</span><h2>사용 빈도 랭킹 Top 20</h2></div>
+  <p class="sec-note">특정 라이브러리에 묶이지 않는, 어떤 화면에서든 마주치는 기본 UI 구성요소 20가지입니다. 프레임워크가 바뀌어도 이 요소들이 하는 "역할"은 그대로입니다.</p>
+  <div class="viz wide"><svg viewBox="0 0 700 574" style="max-width:700px" xmlns="http://www.w3.org/2000/svg" role="img"><defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" class="ahp"/></marker></defs><text class="rl" x="150" y="54" text-anchor="end">Button</text><rect class="bar b1" x="162" y="40" width="470" height="19" rx="3"/><text class="rn" x="640" y="54">100</text><text class="rl" x="150" y="80" text-anchor="end">Text Field</text><rect class="bar b1" x="162" y="66" width="451" height="19" rx="3"/><text class="rn" x="621" y="80">96</text><text class="rl" x="150" y="106" text-anchor="end">Checkbox</text><rect class="bar b1" x="162" y="92" width="423" height="19" rx="3"/><text class="rn" x="593" y="106">90</text><text class="rl" x="150" y="132" text-anchor="end">Radio Button</text><rect class="bar b1" x="162" y="118" width="404" height="19" rx="3"/><text class="rn" x="574" y="132">86</text><text class="rl" x="150" y="158" text-anchor="end">Select / Dropdown</text><rect class="bar b1" x="162" y="144" width="385" height="19" rx="3"/><text class="rn" x="555" y="158">82</text><text class="rl" x="150" y="184" text-anchor="end">Label</text><rect class="bar b1" x="162" y="170" width="376" height="19" rx="3"/><text class="rn" x="546" y="184">80</text><text class="rl" x="150" y="210" text-anchor="end">Modal / Dialog</text><rect class="bar b2" x="162" y="196" width="357" height="19" rx="3"/><text class="rn" x="527" y="210">76</text><text class="rl" x="150" y="236" text-anchor="end">Tabs</text><rect class="bar b2" x="162" y="222" width="348" height="19" rx="3"/><text class="rn" x="518" y="236">74</text><text class="rl" x="150" y="262" text-anchor="end">Toggle Switch</text><rect class="bar b2" x="162" y="248" width="338" height="19" rx="3"/><text class="rn" x="508" y="262">72</text><text class="rl" x="150" y="288" text-anchor="end">Tooltip</text><rect class="bar b2" x="162" y="274" width="329" height="19" rx="3"/><text class="rn" x="499" y="288">70</text><text class="rl" x="150" y="314" text-anchor="end">Alert / Banner</text><rect class="bar b2" x="162" y="300" width="320" height="19" rx="3"/><text class="rn" x="490" y="314">68</text><text class="rl" x="150" y="340" text-anchor="end">Badge / Tag</text><rect class="bar b2" x="162" y="326" width="310" height="19" rx="3"/><text class="rn" x="480" y="340">66</text><text class="rl" x="150" y="366" text-anchor="end">Accordion</text><rect class="bar b2" x="162" y="352" width="301" height="19" rx="3"/><text class="rn" x="471" y="366">64</text><text class="rl" x="150" y="392" text-anchor="end">Progress Bar</text><rect class="bar b2" x="162" y="378" width="291" height="19" rx="3"/><text class="rn" x="461" y="392">62</text><text class="rl" x="150" y="418" text-anchor="end">Avatar</text><rect class="bar b2" x="162" y="404" width="282" height="19" rx="3"/><text class="rn" x="452" y="418">60</text><text class="rl" x="150" y="444" text-anchor="end">Pagination</text><rect class="bar b2" x="162" y="430" width="263" height="19" rx="3"/><text class="rn" x="433" y="444">56</text><text class="rl" x="150" y="470" text-anchor="end">Range Slider</text><rect class="bar b3" x="162" y="456" width="254" height="19" rx="3"/><text class="rn" x="424" y="470">54</text><text class="rl" x="150" y="496" text-anchor="end">Breadcrumb</text><rect class="bar b3" x="162" y="482" width="235" height="19" rx="3"/><text class="rn" x="405" y="496">50</text><text class="rl" x="150" y="522" text-anchor="end">Dropdown Menu</text><rect class="bar b3" x="162" y="508" width="226" height="19" rx="3"/><text class="rn" x="396" y="522">48</text><text class="rl" x="150" y="548" text-anchor="end">Rating (Star)</text><rect class="bar b3" x="162" y="534" width="197" height="19" rx="3"/><text class="rn" x="367" y="548">42</text><text class="gt" x="20" y="24">상대 사용 빈도 지수 (100 = 최상위)</text></svg></div>
+</section>
+
+<!-- ============ 핵심 개념 ============ -->
+<section id="core">
+  <div class="sec-h"><span class="key">§</span><h2>먼저 알아야 할 4가지</h2></div>
+  <p class="sec-note">개별 컴포넌트를 외우기 전에 이 네 가지를 이해하면, 어떤 프레임워크·디자인 시스템을 쓰든 UI를 읽고 만드는 방식이 크게 달라지지 않습니다.</p>
+
+  <div class="fn">
+    <div class="fn-h"><h3>① 상태(State) — 요소는 항상 여러 얼굴을 가진다</h3></div>
+    <p>버튼이든 입력창이든, 완성된 컴포넌트는 최소 5가지 상태를 갖습니다: <b>기본</b>(default), <b>hover</b>(마우스 올림), <b>focus</b>(키보드로 선택됨), <b>active</b>(누르는 중), <b>disabled</b>(비활성). 디자인 목업엔 기본 상태만 그려져 있는 경우가 많아, 나머지 상태를 직접 챙기는 것이 UI 구현의 8할입니다.</p>
+    <h4>실습 예시</h4>
+    <div class="viz demo-row center">
+      <button class="ui-btn primary">기본·hover·active를 직접 확인하세요</button>
+      <button class="ui-btn primary" disabled>disabled 상태</button>
+    </div>
+    <div class="tip">마우스를 올려보고(hover), 클릭한 채로 눌러보고(active), <kbd>Tab</kbd> 키로 포커스를 옮겨보세요(focus). 특히 <b>focus 상태를 마우스 클릭만으로는 확인할 수 없습니다</b> — 키보드 사용자를 위해 outline을 절대 <code>display:none</code>으로 지우지 마세요.</div>
+  </div>
+
+  <div class="fn">
+    <div class="fn-h"><h3>② label과 접근성 — 눈에 안 보여도 연결은 되어 있어야 한다</h3></div>
+    <p>모든 입력 요소는 <code>&lt;label&gt;</code>과 짝을 이뤄야 합니다. <code>for</code>·<code>id</code>를 연결하면 라벨 텍스트를 클릭했을 때도 입력에 포커스가 가고, 스크린 리더가 "무엇을 입력하는 칸인지" 읽어줄 수 있습니다. placeholder는 라벨의 대체재가 아닙니다 — 값을 입력하는 순간 사라지기 때문입니다.</p>
+    <h4>실습 예시</h4>
+    <div class="viz demo-row">
+      <div class="demo-field">
+        <label for="core-label-demo">이메일</label>
+        <input id="core-label-demo" type="text" placeholder="you@example.com">
+      </div>
+    </div>
+    <div class="tip">위 "이메일" 글자를 클릭해보세요 — <code>label[for]</code>이 연결돼 있으면 라벨을 눌러도 옆 입력창에 포커스가 잡힙니다.</div>
+  </div>
+
+  <div class="fn">
+    <div class="fn-h"><h3>③ 네이티브 요소 vs 커스텀 위젯</h3></div>
+    <p>브라우저 기본 <code>&lt;select&gt;</code>, <code>&lt;input type="checkbox"&gt;</code> 같은 요소는 키보드 내비게이션·스크린리더 지원·모바일 네이티브 UI가 공짜로 따라옵니다. 디자인 통일성을 위해 커스텀 위젯을 만들 땐, 이 페이지의 체크박스·라디오·토글·별점처럼 <b>실제 <code>&lt;input&gt;</code>은 숨기고 그 위에 스타일만 새로 그리는 방식</b>을 권장합니다 — 시각적으로는 완전히 바뀌어도 접근성·폼 제출 동작은 그대로 유지됩니다.</p>
+    <h4>실습 예시</h4>
+    <div class="viz demo-row center">
+      <select aria-label="네이티브 select 예시">
+        <option>네이티브 select</option>
+        <option>브라우저가 렌더링</option>
+      </select>
+      <label class="ui-switch">
+        <input type="checkbox">
+        <span class="track"></span>
+        커스텀 토글(속은 checkbox)
+      </label>
+    </div>
+  </div>
+
+  <div class="fn">
+    <div class="fn-h"><h3>④ 터치 타겟과 상대 단위</h3></div>
+    <p>모바일에서 손가락으로 정확히 누를 수 있는 최소 크기는 대략 <b>44×44px</b>입니다(iOS HIG 권장 기준). 아이콘 버튼을 24px 아이콘 그대로 클릭 영역으로 두지 말고 여백(padding)으로 타겟을 키우세요. 크기 단위는 브라우저 글자 크기 설정을 존중하도록 <code>px</code> 대신 <code>rem</code>/<code>em</code>을 우선 고려합니다.</p>
+    <h4>실습 예시</h4>
+    <div class="viz demo-row center">
+      <button class="ui-icon-btn" style="width:24px;height:24px;font-size:11px" aria-label="너무 작은 타겟 예시">✕</button>
+      <button class="ui-icon-btn" aria-label="적절한 타겟 예시">✕</button>
+    </div>
+    <div class="tip">왼쪽(24px)과 오른쪽(38px, 위 <code>.ui-icon-btn</code> 기본값)을 비교해보세요. 시각적 아이콘 크기는 비슷해 보여도 실제로 누를 수 있는 영역 차이가 모바일에서는 오클릭률을 좌우합니다.</div>
+  </div>
+</section>
+
+<!-- ============ A. 텍스트 입력 ============ -->
+<section id="a">
+  <div class="sec-h"><span class="key">A</span><h2>텍스트 입력</h2><span class="cnt">5 components</span></div>
+  <p class="sec-note">사용자가 자유 형식의 값을 타이핑하는 요소들입니다. <code>type</code> 속성만 바꿔도 모바일 키보드 배열과 브라우저 검증 규칙이 달라집니다.</p>
+
+  <div class="fn" data-key="Text Field 텍스트필드 인풋 input">
+    <div class="fn-h"><span class="rank">#02</span><h3>Text Field <span class="dim">(한 줄 입력)</span></h3></div>
+    <p>가장 기본적인 자유 입력란입니다. 이름, 검색어, 짧은 값 등 한 줄로 끝나는 모든 입력의 기본형이며, 다른 대부분의 입력 요소(숫자, 이메일, 비밀번호)는 이 요소의 변형입니다.</p>
+    <h4>실습 예시</h4>
+    <div class="viz demo-row">
+      <div class="demo-field">
+        <label for="a-text-1">이름</label>
+        <input id="a-text-1" type="text" placeholder="홍길동">
+      </div>
+      <div class="demo-field">
+        <label for="a-text-2">비활성 상태</label>
+        <input id="a-text-2" type="text" value="수정 불가" disabled>
+      </div>
+    </div>
+    <div class="note">placeholder는 값이 아니라 힌트입니다. 폼 제출 시 placeholder 텍스트는 절대 전송되지 않으므로, 기본값이 필요하면 <code>value</code> 속성을 쓰세요.</div>
+  </div>
+
+  <div class="fn" data-key="Textarea 텍스트영역 여러줄">
+    <div class="fn-h"><span class="rank">#—</span><h3>Textarea <span class="dim">(여러 줄 입력)</span></h3></div>
+    <p>후기, 설명, 코멘트처럼 여러 줄에 걸친 텍스트를 받을 때 씁니다. 기본적으로 사용자가 크기를 드래그로 조절할 수 있어(리사이즈 핸들), 레이아웃이 깨지지 않는 선에서 허용해주는 것이 사용성에 좋습니다.</p>
+    <h4>실습 예시</h4>
+    <div class="viz demo-row">
+      <div class="demo-field" style="flex:1;min-width:220px">
+        <label for="a-textarea-1">후기</label>
+        <textarea id="a-textarea-1" placeholder="사용해보신 소감을 남겨주세요"></textarea>
+      </div>
+    </div>
+    <div class="tip">오른쪽 아래 모서리를 드래그해 크기를 조절해보세요. <code>resize:none</code>으로 막을 수도 있지만, 긴 글을 쓰는 사용자에겐 불편할 수 있으니 신중히 사용하세요.</div>
+  </div>
+
+  <div class="fn" data-key="Search 검색창 검색입력">
+    <div class="fn-h"><h3>Search <span class="dim">(검색창)</span></h3></div>
+    <p><code>type="search"</code>은 겉보기엔 텍스트 필드와 같지만, 데스크톱 브라우저에서 값을 입력하면 자동으로 지우기(×) 버튼이 나타나고, 모바일 키보드의 Enter 키가 "검색"으로 바뀝니다.</p>
+    <h4>실습 예시</h4>
+    <div class="viz demo-row">
+      <div class="demo-field">
+        <label for="a-search-1">검색</label>
+        <input id="a-search-1" type="search" placeholder="라이브러리 검색…" value="gradio">
+      </div>
+    </div>
+  </div>
+
+  <div class="fn" data-key="Number 숫자입력 스피너">
+    <div class="fn-h"><h3>Number <span class="dim">(숫자 입력)</span></h3></div>
+    <p><code>type="number"</code>은 값 증감 화살표(스피너)가 함께 제공되고, 모바일에서는 숫자 키패드가 뜹니다. <code>min</code>/<code>max</code>/<code>step</code>으로 허용 범위를 제한할 수 있습니다.</p>
+    <h4>실습 예시</h4>
+    <div class="viz demo-row">
+      <div class="demo-field">
+        <label for="a-number-1">수량</label>
+        <input id="a-number-1" type="number" min="1" max="10" step="1" value="1">
+      </div>
+    </div>
+    <div class="warn">숫자만 저장하고 싶다고 해서 전화번호·우편번호에 <code>type="number"</code>를 쓰지 마세요. 앞자리 0이 사라지고, 스피너 화살표가 의미 없이 붙습니다. 이런 값은 <code>type="text"</code> + <code>inputmode="numeric"</code>이 정답입니다.</div>
+  </div>
+
+  <div class="fn" data-key="특수 입력 타입 email password date color file tel url">
+    <div class="fn-h"><h3>그 밖의 입력 타입 <span class="dim">(email · password · date · color · file …)</span></h3></div>
+    <p><code>&lt;input&gt;</code>은 <code>type</code> 하나만 바꿔도 완전히 다른 네이티브 UI와 검증 규칙을 제공합니다. 직접 만들지 말고 우선 이 표에서 맞는 타입을 찾아보세요.</p>
+    <div class="tbl-wrap"><table>
+      <tr><th>type</th><th>제공되는 UI</th><th>용도</th></tr>
+      <tr><td>email</td><td>@ 포함 여부 자동 검증, 모바일 @ 키 노출</td><td>이메일 주소</td></tr>
+      <tr><td>password</td><td>입력값 마스킹(●●●)</td><td>비밀번호</td></tr>
+      <tr><td>date</td><td>네이티브 달력 피커</td><td>생년월일, 예약일</td></tr>
+      <tr><td>color</td><td>네이티브 색상 선택기</td><td>테마 색상 지정</td></tr>
+      <tr><td>file</td><td>파일 탐색기(찾아보기 버튼)</td><td>업로드</td></tr>
+      <tr><td>tel</td><td>모바일 전화 키패드</td><td>전화번호(형식 검증은 별도 필요)</td></tr>
+      <tr><td>url</td><td>URL 형식 자동 검증</td><td>웹사이트 주소</td></tr>
+    </table></div>
+    <h4>실습 예시</h4>
+    <div class="viz demo-row">
+      <div class="demo-field"><label for="a-pw">password</label><input id="a-pw" type="password" value="secret123"></div>
+      <div class="demo-field"><label for="a-date">date</label><input id="a-date" type="date"></div>
+      <div class="demo-field"><label for="a-color">color</label><input id="a-color" type="color" value="#3c63b8"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ B. 선택 입력 ============ -->
+<section id="b">
+  <div class="sec-h"><span class="key">B</span><h2>선택 입력</h2><span class="cnt">4 components</span></div>
+  <p class="sec-note">정해진 값 중에서 고르는 요소들입니다. 자유 입력보다 오타·형식 오류가 없어 데이터 품질이 좋아집니다.</p>
+
+  <div class="fn" data-key="Checkbox 체크박스">
+    <div class="fn-h"><span class="rank">#03</span><h3>Checkbox <span class="dim">(체크박스)</span></h3></div>
+    <p>하나의 값을 켜고 끄거나(약관 동의), 여러 항목을 동시에 선택할 때 씁니다. 라디오와 헷갈리기 쉬운데 기준은 간단합니다 — <b>여러 개를 동시에 선택 가능하면 체크박스</b>, 하나만 고를 수 있으면 라디오입니다.</p>
+    <h4>실습 예시</h4>
+    <div class="viz demo-row">
+      <label class="ui-check"><input type="checkbox" checked><span class="box"></span>이용약관에 동의합니다</label>
+      <label class="ui-check"><input type="checkbox"><span class="box"></span>마케팅 정보 수신</label>
+      <label class="ui-check disabled"><input type="checkbox" disabled><span class="box"></span>선택 불가 항목</label>
+    </div>
+    <div class="note">실제 <code>&lt;input type="checkbox"&gt;</code>는 화면에서 투명 처리하고 그 위에 <code>&lt;span class="box"&gt;</code>로 체크 모양을 그린 구조입니다 — 클릭·키보드·폼 제출 동작은 네이티브 체크박스 그대로 유지됩니다.</div>
+  </div>
+
+  <div class="fn" data-key="Radio Button 라디오버튼">
+    <div class="fn-h"><span class="rank">#04</span><h3>Radio Button <span class="dim">(라디오 버튼)</span></h3></div>
+    <p>같은 <code>name</code>을 공유하는 라디오 버튼 그룹 중에서 <b>정확히 하나만</b> 선택됩니다. 옵션이 2~5개 정도로 적고 항상 화면에 다 보여줘도 괜찮을 때 <code>&lt;select&gt;</code>보다 라디오가 낫습니다 — 비교가 쉽기 때문입니다.</p>
+    <h4>실습 예시</h4>
+    <div class="viz demo-row">
+      <label class="ui-radio"><input type="radio" name="a-plan" checked><span class="box"></span>무료</label>
+      <label class="ui-radio"><input type="radio" name="a-plan"><span class="box"></span>프로</label>
+      <label class="ui-radio"><input type="radio" name="a-plan"><span class="box"></span>팀</label>
+    </div>
+    <h4>세그먼트형 변형</h4>
+    <p>같은 "하나만 선택" 로직을 칩(chip) 형태로 그리면 세그먼트 컨트롤이 됩니다. 필터·정렬 기준처럼 짧은 옵션을 나란히 보여줄 때 자주 쓰입니다.</p>
+    <div class="viz demo-row">
+      <div class="ui-segment">
+        <input type="radio" name="a-seg" id="a-seg-1" checked><label for="a-seg-1">일간</label>
+        <input type="radio" name="a-seg" id="a-seg-2"><label for="a-seg-2">주간</label>
+        <input type="radio" name="a-seg" id="a-seg-3"><label for="a-seg-3">월간</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="fn" data-key="Toggle Switch 토글스위치">
+    <div class="fn-h"><span class="rank">#09</span><h3>Toggle Switch <span class="dim">(토글 스위치)</span></h3></div>
+    <p>내부적으로는 체크박스와 똑같이 on/off 두 상태지만, "즉시 적용되는 설정"이라는 의미를 시각적으로 강조합니다. 다크 모드, 알림 켜기/끄기처럼 <b>저장 버튼 없이 바로 반영되는 설정</b>에 씁니다 — 폼 제출이 필요한 동의 항목엔 체크박스를 쓰세요.</p>
+    <h4>실습 예시</h4>
+    <div class="viz demo-row">
+      <label class="ui-switch"><input type="checkbox" checked><span class="track"></span>알림 받기</label>
+      <label class="ui-switch"><input type="checkbox"><span class="track"></span>다크 모드</label>
+    </div>
+  </div>
+
+  <div class="fn" data-key="Select Dropdown 셀렉트 드롭다운 콤보박스">
+    <div class="fn-h"><span class="rank">#05</span><h3>Select <span class="dim">(드롭다운 선택)</span></h3></div>
+    <p>옵션이 많거나(6개 이상) 화면 공간이 좁을 때, 네이티브 <code>&lt;select&gt;</code>는 평소엔 한 줄만 차지하다가 클릭하면 전체 목록을 펼쳐줍니다. 모바일에서는 OS의 네이티브 휠/시트 UI로 자동 전환됩니다.</p>
+    <h4>실습 예시</h4>
+    <div class="viz demo-row">
+      <div class="demo-field">
+        <label for="b-select-1">국가</label>
+        <select id="b-select-1">
+          <option>대한민국</option>
+          <option>일본</option>
+          <option>미국</option>
+          <option>기타</option>
+        </select>
+      </div>
+    </div>
+    <div class="tip">타이핑으로 자동완성이 필요하면 <code>&lt;input list="id"&gt;</code> + <code>&lt;datalist id="id"&gt;</code> 조합(콤보박스)을 검토하세요 — 자유 입력과 추천 목록을 동시에 지원합니다.</div>
+  </div>
+</section>
+
+<!-- ============ C. 범위·평가·진행 ============ -->
+<section id="c">
+  <div class="sec-h"><span class="key">C</span><h2>범위·평가·진행</h2><span class="cnt">3 components</span></div>
+  <p class="sec-note">정확한 숫자보다 "대략적인 위치·양·정도"를 다루는 요소들입니다.</p>
+
+  <div class="fn" data-key="Range Slider 슬라이더 범위">
+    <div class="fn-h"><span class="rank">#17</span><h3>Range Slider <span class="dim">(슬라이더)</span></h3></div>
+    <p>최소~최대 사이의 값을 드래그로 고릅니다. 숫자 입력보다 직관적이지만 <b>정확한 값을 타이핑할 수 없다</b>는 단점이 있어, 정밀한 값이 중요하면 숫자 입력을 함께 보여주는 것이 좋습니다.</p>
+    <h4>실습 예시</h4>
+    <div class="viz demo-row">
+      <div class="demo-field" style="flex:1;min-width:220px">
+        <label for="c-range-1">음량</label>
+        <input id="c-range-1" class="ui-range" type="range" min="0" max="100" value="70">
+      </div>
+    </div>
+  </div>
+
+  <div class="fn" data-key="Rating 별점 평가">
+    <div class="fn-h"><h3>Rating <span class="dim">(별점)</span></h3></div>
+    <p>만족도·품질처럼 정성적인 값을 5단계 내외로 빠르게 입력받을 때 씁니다. 내부는 라디오 버튼 그룹이며, 별 아이콘은 CSS로 그려진 라벨일 뿐입니다.</p>
+    <h4>실습 예시</h4>
+    <div class="viz demo-row center">
+      <div class="ui-rating">
+        <input type="radio" name="c-rating" id="c-r5"><label for="c-r5">★</label>
+        <input type="radio" name="c-rating" id="c-r4" checked><label for="c-r4">★</label>
+        <input type="radio" name="c-rating" id="c-r3"><label for="c-r3">★</label>
+        <input type="radio" name="c-rating" id="c-r2"><label for="c-r2">★</label>
+        <input type="radio" name="c-rating" id="c-r1"><label for="c-r1">★</label>
+      </div>
+    </div>
+    <div class="note">별 5개를 HTML에서 <b>역순(5→1)</b>으로 배치하고 <code>flex-direction:row-reverse</code>로 화면에서만 다시 뒤집는 것이 핵심 트릭입니다. 그래야 "hover한 별부터 그 왼쪽까지 전부 채우기"를 <code>~</code>(형제) 선택자만으로 구현할 수 있습니다.</div>
+  </div>
+
+  <div class="fn" data-key="Progress Bar 프로그레스바 진행률">
+    <div class="fn-h"><span class="rank">#14</span><h3>Progress Bar <span class="dim">(진행률 표시줄)</span></h3></div>
+    <p>업로드·설치처럼 <b>끝이 예측 가능한</b> 작업의 진행 정도를 보여줍니다. 끝을 알 수 없는 대기 상태(서버 응답 기다림 등)에는 진행률 바 대신 스피너를 쓰는 것이 맞습니다.</p>
+    <h4>실습 예시</h4>
+    <div class="viz demo-row" style="flex-direction:column;align-items:stretch;gap:10px">
+      <progress value="70" max="100" style="width:100%"></progress>
+      <div class="ui-progress"><span style="width:45%"></span></div>
+    </div>
+    <div class="tip">첫 번째 줄은 네이티브 <code>&lt;progress&gt;</code> 요소(브라우저 기본 스타일), 두 번째 줄은 <code>div</code> 두 개로 직접 그린 커스텀 버전입니다. 디자인 자유도가 필요하면 커스텀 쪽을, 접근성을 최소 노력으로 챙기려면 네이티브 쪽을 선택하세요.</div>
+  </div>
+</section>
+
+<!-- ============ D. 버튼과 액션 ============ -->
+<section id="d">
+  <div class="sec-h"><span class="key">D</span><h2>버튼과 액션</h2><span class="cnt">3 components</span></div>
+  <p class="sec-note">사용자의 의도적인 클릭으로 어떤 동작을 실행시키는 요소들입니다.</p>
+
+  <div class="fn" data-key="Button 버튼 primary secondary">
+    <div class="fn-h"><span class="rank">#01</span><h3>Button <span class="dim">(버튼 변형)</span></h3></div>
+    <p>한 화면에 버튼이 여러 개 있을 때 <b>시각적 위계</b>가 필요합니다. Primary는 화면당 보통 하나(가장 원하는 행동), Secondary는 대안 행동, Ghost는 부가 행동, Danger는 삭제처럼 되돌리기 어려운 행동에 씁니다.</p>
+    <h4>실습 예시</h4>
+    <div class="viz demo-row center">
+      <button class="ui-btn primary">저장</button>
+      <button class="ui-btn secondary">취소</button>
+      <button class="ui-btn ghost">더 보기</button>
+      <button class="ui-btn danger">삭제</button>
+      <button class="ui-btn primary" disabled>처리 중</button>
+    </div>
+    <div class="warn">한 화면에 primary 버튼을 여러 개 두면 사용자가 뭘 눌러야 할지 판단하는 데 시간이 걸립니다. "가장 하이라이트된 행동"은 화면(혹은 카드) 하나당 원칙적으로 하나만 두세요.</div>
+  </div>
+
+  <div class="fn" data-key="Icon Button 아이콘버튼">
+    <div class="fn-h"><h3>Icon Button <span class="dim">(아이콘 버튼)</span></h3></div>
+    <p>텍스트 없이 아이콘만으로 동작을 표시합니다. 공간을 아낄 수 있지만 <b>의미가 명확한 아이콘</b>(닫기 ✕, 검색 🔍)에만 써야 하며, 스크린 리더를 위해 반드시 <code>aria-label</code>로 텍스트 설명을 붙여야 합니다.</p>
+    <h4>실습 예시</h4>
+    <div class="viz demo-row center">
+      <button class="ui-icon-btn" aria-label="검색">🔍</button>
+      <button class="ui-icon-btn" aria-label="즐겨찾기">★</button>
+      <button class="ui-icon-btn" aria-label="닫기">✕</button>
+    </div>
+  </div>
+
+  <div class="fn" data-key="Link Button 링크버튼 텍스트링크">
+    <div class="fn-h"><h3>Link 버튼 <span class="dim">(텍스트 링크)</span></h3></div>
+    <p>버튼처럼 스타일링된 <code>&lt;a&gt;</code>와, 밑줄만 있는 순수 텍스트 링크는 다릅니다. <b>페이지 이동</b>이면 <code>&lt;a href&gt;</code>, <b>같은 페이지에서 상태만 바뀌는 동작</b>이면 <code>&lt;button&gt;</code>을 쓰는 것이 시맨틱상 올바릅니다 — 겉모습이 같아 보여도 내부 태그는 역할에 맞춰야 합니다.</p>
+    <h4>실습 예시</h4>
+    <div class="viz demo-row center">
+      <a href="#" class="ui-btn secondary" onclick="return false">버튼처럼 보이는 링크</a>
+      <a href="#" onclick="return false">밑줄 텍스트 링크</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ E. 네비게이션 ============ -->
+<section id="e">
+  <div class="sec-h"><span class="key">E</span><h2>네비게이션</h2><span class="cnt">4 components</span></div>
+  <p class="sec-note">"지금 어디에 있고, 어디로 갈 수 있는지"를 알려주는 요소들입니다.</p>
+
+  <div class="fn" data-key="Tabs 탭">
+    <div class="fn-h"><span class="rank">#08</span><h3>Tabs <span class="dim">(탭)</span></h3></div>
+    <p>같은 층위의 콘텐츠를 여러 개 두고, 한 번에 하나씩만 보여줄 때 씁니다. 페이지 이동 없이 전환된다는 점에서 링크 내비게이션과 다릅니다. 탭이 7개를 넘어가면 스크롤이 생기거나 드롭다운으로 접는 것을 고려하세요.</p>
+    <h4>실습 예시</h4>
+    <div class="viz">
+      <div class="ui-tabs">
+        <input type="radio" name="e-tabs" id="tab1" checked>
+        <input type="radio" name="e-tabs" id="tab2">
+        <input type="radio" name="e-tabs" id="tab3">
+        <div class="tab-heads">
+          <label for="tab1">개요</label>
+          <label for="tab2">사양</label>
+          <label for="tab3">리뷰</label>
+        </div>
+        <div class="panels">
+          <div class="tab-panel" id="panel1">제품 개요 내용이 여기 표시됩니다.</div>
+          <div class="tab-panel" id="panel2">상세 사양 표가 여기 표시됩니다.</div>
+          <div class="tab-panel" id="panel3">사용자 리뷰 목록이 여기 표시됩니다.</div>
+        </div>
+      </div>
+    </div>
+    <div class="note">JavaScript 없이 숨은 라디오 버튼 + <code>:checked ~</code> 형제 선택자만으로 동작합니다. 실무에서는 접근성(<code>role="tablist"</code>, 화살표 키 이동)까지 챙기려면 JS 기반 구현이 더 안전합니다.</div>
+  </div>
+
+  <div class="fn" data-key="Breadcrumb 브레드크럼 경로">
+    <div class="fn-h"><h3>Breadcrumb <span class="dim">(경로 표시)</span></h3></div>
+    <p>깊은 계층 구조 안에서 현재 위치와 상위 경로를 보여줍니다. 사용자가 중간 단계로 한 번에 돌아갈 수 있게 해, "뒤로가기"를 여러 번 누르지 않아도 됩니다.</p>
+    <h4>실습 예시</h4>
+    <div class="viz">
+      <nav class="ui-breadcrumb" aria-label="현재 위치">
+        <a href="#" onclick="return false">홈</a><span class="sep">/</span>
+        <a href="#" onclick="return false">라이브러리</a><span class="sep">/</span>
+        <span aria-current="page">Gradio</span>
+      </nav>
+    </div>
+  </div>
+
+  <div class="fn" data-key="Pagination 페이지네이션 페이지번호">
+    <div class="fn-h"><h3>Pagination <span class="dim">(페이지네이션)</span></h3></div>
+    <p>긴 목록을 여러 페이지로 나눠 번호로 이동합니다. 무한 스크롤과 달리 <b>특정 위치로 다시 돌아오기 쉽다</b>는 장점이 있어, 검색 결과·게시판처럼 "몇 번째"가 중요한 목록에 적합합니다.</p>
+    <h4>실습 예시</h4>
+    <div class="viz">
+      <ul class="ui-pagination">
+        <li><button aria-label="이전 페이지">‹</button></li>
+        <li><button aria-current="page">1</button></li>
+        <li><button>2</button></li>
+        <li><button>3</button></li>
+        <li><button aria-label="다음 페이지">›</button></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="fn" data-key="Dropdown Menu 드롭다운메뉴 네비게이션메뉴">
+    <div class="fn-h"><h3>Dropdown Menu <span class="dim">(네비게이션 메뉴)</span></h3></div>
+    <p>버튼이나 아바타를 클릭하면 관련 행동 목록이 펼쳐지는 메뉴입니다. Select와 다른 점은, 메뉴 항목이 "값 선택"이 아니라 "각각 다른 동작 실행"이라는 것입니다.</p>
+    <h4>실습 예시</h4>
+    <div class="viz">
+      <details class="ui-menu">
+        <summary>내 계정</summary>
+        <div class="menu-list">
+          <a href="#" onclick="return false">프로필 보기</a>
+          <a href="#" onclick="return false">설정</a>
+          <a href="#" onclick="return false">로그아웃</a>
+        </div>
+      </details>
+    </div>
+    <div class="tip">네이티브 <code>&lt;details&gt;/&lt;summary&gt;</code>로 만들면 클릭·<kbd>Enter</kbd>·<kbd>Space</kbd> 토글이 브라우저에서 공짜로 제공됩니다.</div>
+  </div>
+</section>
+
+<!-- ============ F. 오버레이·컨테이너 ============ -->
+<section id="f">
+  <div class="sec-h"><span class="key">F</span><h2>오버레이·컨테이너</h2><span class="cnt">4 components</span></div>
+  <p class="sec-note">콘텐츠를 접었다 펼치거나, 화면 위에 떠 있는 레이어로 보여주는 요소들입니다.</p>
+
+  <div class="fn" data-key="Accordion 아코디언 접기펼치기">
+    <div class="fn-h"><span class="rank">#13</span><h3>Accordion <span class="dim">(아코디언)</span></h3></div>
+    <p>제목만 보여주다가 클릭하면 내용이 펼쳐지는 목록입니다. FAQ처럼 <b>한 번에 하나씩만 훑어봐도 되는 긴 콘텐츠</b>를 처음부터 다 펼쳐두지 않아 화면을 짧게 유지해줍니다.</p>
+    <h4>실습 예시</h4>
+    <div class="viz ui-accordion">
+      <details open>
+        <summary>배송은 얼마나 걸리나요?</summary>
+        <div class="acc-body">평균 2~3영업일 내 도착합니다. 도서산간 지역은 1~2일 추가될 수 있습니다.</div>
+      </details>
+      <details>
+        <summary>환불은 어떻게 하나요?</summary>
+        <div class="acc-body">수령 후 7일 이내, 마이페이지에서 신청할 수 있습니다.</div>
+      </details>
+    </div>
+    <div class="note">네이티브 <code>&lt;details&gt;</code>는 그 자체로 완전히 동작하는 아코디언입니다 — 위 CSS는 화살표 아이콘과 테두리만 입힌 것으로, 토글 로직에는 전혀 관여하지 않습니다.</div>
+  </div>
+
+  <div class="fn" data-key="Modal Dialog 모달 다이얼로그 팝업">
+    <div class="fn-h"><span class="rank">#06</span><h3>Modal <span class="dim">(모달 다이얼로그)</span></h3></div>
+    <p>현재 화면 위에 떠서 다른 조작을 막고(모달), 확인이 꼭 필요한 정보나 짧은 폼을 받을 때 씁니다. 뒤 배경을 어둡게(오버레이) 처리해 "지금은 이것부터 처리해야 한다"는 것을 알려줍니다.</p>
+    <h4>실습 예시</h4>
+    <div class="viz ui-modal-host">
+      <a href="#f-modal-demo" class="ui-btn primary">삭제 확인 모달 열기</a>
+      <div class="ui-modal-overlay" id="f-modal-demo">
+        <div class="ui-modal-box">
+          <h5>정말 삭제하시겠어요?</h5>
+          <p>이 작업은 되돌릴 수 없습니다.</p>
+          <div class="demo-row center">
+            <a href="#" class="ui-btn danger" onclick="return false">삭제</a>
+            <a href="#!" class="ui-btn secondary">취소</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="note">JavaScript 없이 <code>href="#id"</code> 링크와 CSS <code>:target</code> 가상 클래스만으로 열고 닫습니다. 실무에서는 <code>&lt;dialog&gt;</code> 요소나 포커스 트랩(모달 밖으로 <kbd>Tab</kbd>이 빠져나가지 않게)까지 챙기는 라이브러리 사용을 권장합니다.</div>
+  </div>
+
+  <div class="fn" data-key="Tooltip 툴팁 말풍선">
+    <div class="fn-h"><span class="rank">#10</span><h3>Tooltip <span class="dim">(툴팁)</span></h3></div>
+    <p>아이콘이나 축약된 텍스트에 마우스를 올리면(또는 포커스하면) 잠깐 나타나는 보조 설명입니다. 클릭해야만 알 수 있는 중요한 정보를 숨기는 용도로 쓰면 안 됩니다 — 어디까지나 "있으면 좋은" 부가 설명용입니다.</p>
+    <h4>실습 예시</h4>
+    <div class="viz demo-row center">
+      <span class="ui-tooltip" tabindex="0" data-tip="Query Per Second">QPS <span aria-hidden="true">ⓘ</span></span>
+    </div>
+    <div class="tip">위 글자에 마우스를 올리거나 <kbd>Tab</kbd>으로 포커스를 옮겨보세요. <code>:hover</code>뿐 아니라 <code>:focus</code>도 함께 처리해야 키보드·터치 사용자도 툴팁을 볼 수 있습니다.</div>
+  </div>
+
+  <div class="fn" data-key="Card 카드 컨테이너">
+    <div class="fn-h"><h3>Card <span class="dim">(카드)</span></h3></div>
+    <p>이미지·제목·설명·행동 버튼처럼 서로 관련된 정보 묶음을 하나의 시각적 단위로 묶습니다. 목록·그리드 형태로 반복 배치되는 경우가 많아, 이 사이트의 라이브러리 카드도 같은 패턴입니다.</p>
+    <h4>실습 예시</h4>
+    <div class="viz demo-row">
+      <div class="ui-card">
+        <div class="thumb"></div>
+        <h5>카드 제목</h5>
+        <p>카드 안에는 이미지·제목·설명·행동이 한 묶음으로 들어갑니다.</p>
+        <button class="ui-btn secondary">자세히 보기</button>
+      </div>
+    </div>
+    <div class="tip">마우스를 카드 위에 올려보세요 — 살짝 떠오르는(elevate) hover 효과는 "이 영역 전체가 클릭 가능하다"는 신호를 줍니다.</div>
+  </div>
+</section>
+
+<!-- ============ G. 피드백과 표시 ============ -->
+<section id="g">
+  <div class="sec-h"><span class="key">G</span><h2>피드백과 표시</h2><span class="cnt">5 components</span></div>
+  <p class="sec-note">시스템 상태나 짧은 정보를 사용자에게 알려주는 요소들입니다.</p>
+
+  <div class="fn" data-key="Alert Banner 알림 배너 경고">
+    <div class="fn-h"><span class="rank">#11</span><h3>Alert / Banner <span class="dim">(알림 배너)</span></h3></div>
+    <p>화면 흐름 안에 고정되어 표시되는 상태 메시지입니다. 몇 초 뒤 사라지는 토스트와 달리, 사용자가 직접 닫기 전까지(또는 원인이 해결되기 전까지) 남아있는 경우가 많습니다.</p>
+    <h4>실습 예시</h4>
+    <div class="viz">
+      <div class="ui-alert-wrap">
+        <input type="checkbox" id="g-alert-1">
+        <div class="ui-alert warn">
+          <span>일부 브라우저에서는 이 기능이 지원되지 않을 수 있습니다.</span>
+          <label for="g-alert-1" aria-label="알림 닫기">✕</label>
+        </div>
+      </div>
+    </div>
+    <div class="note">오른쪽 ✕를 눌러보세요. 숨겨진 체크박스가 "닫힘" 상태를 기억하고, <code>:checked ~ .ui-alert{display:none}</code> 형제 선택자로 알림을 감춥니다 — JS 없이 닫기 버튼을 구현하는 흔한 트릭입니다.</div>
+  </div>
+
+  <div class="fn" data-key="Badge Tag 뱃지 태그 라벨">
+    <div class="fn-h"><span class="rank">#12</span><h3>Badge · Tag <span class="dim">(뱃지 · 태그)</span></h3></div>
+    <p>Badge는 상태·개수를 나타내는 작은 표식(알림 개수, "NEW"), Tag는 분류·키워드를 나타내며 종종 삭제 가능한 형태로 쓰입니다. 이 사이트의 <code>.tag.new</code>, <code>.rank</code> 배지도 같은 계열입니다.</p>
+    <h4>실습 예시</h4>
+    <div class="viz demo-row center">
+      <span class="ui-badge blue">NEW</span>
+      <span class="ui-badge green">완료</span>
+      <span class="ui-badge amber">대기 중</span>
+      <span class="ui-badge rose">긴급</span>
+      <span class="ui-tag">React<button aria-label="태그 삭제">✕</button></span>
+    </div>
+  </div>
+
+  <div class="fn" data-key="Avatar 아바타 프로필이미지">
+    <div class="fn-h"><h3>Avatar <span class="dim">(아바타)</span></h3></div>
+    <p>사용자를 나타내는 원형 이미지 또는 이니셜입니다. 우측 하단에 작은 점(status dot)을 얹어 온라인/오프라인 같은 실시간 상태를 함께 표시하는 경우가 많습니다.</p>
+    <h4>실습 예시</h4>
+    <div class="viz demo-row center">
+      <span class="ui-avatar">JS</span>
+      <span class="ui-avatar offline">KM</span>
+    </div>
+  </div>
+
+  <div class="fn" data-key="Spinner 로딩스피너 로딩인디케이터">
+    <div class="fn-h"><h3>Spinner <span class="dim">(로딩 스피너)</span></h3></div>
+    <p>얼마나 걸릴지 예측할 수 없는 짧은 대기 상태(서버 응답 등)를 나타냅니다. 순수 CSS 애니메이션(<code>@keyframes</code> 회전)만으로 구현되며, 사용자에게 "멈춘 게 아니라 처리 중"이라는 확신을 줍니다.</p>
+    <h4>실습 예시</h4>
+    <div class="viz demo-row center">
+      <div class="ui-spinner" role="status" aria-label="로딩 중"></div>
+    </div>
+    <div class="tip">3초 이상 걸리는 작업이면 스피너만으로는 불안감을 줄 수 있습니다 — 진행률을 알 수 있는 작업이라면 <a href="#c">C. Progress Bar</a>로 바꾸는 것을 검토하세요.</div>
+  </div>
+
+  <div class="fn" data-key="Skeleton Loader 스켈레톤 로딩">
+    <div class="fn-h"><h3>Skeleton <span class="dim">(스켈레톤 로더)</span></h3></div>
+    <p>실제 콘텐츠가 로드되기 전, 대략적인 레이아웃 모양(회색 블록)을 미리 보여줍니다. 빈 화면이나 스피너보다 <b>체감 로딩 속도가 빠르게</b> 느껴진다는 연구 결과 때문에 카드형 목록 로딩에 널리 쓰입니다.</p>
+    <h4>실습 예시</h4>
+    <div class="viz" style="max-width:260px">
+      <div class="ui-skeleton" style="width:70%;margin-bottom:8px"></div>
+      <div class="ui-skeleton" style="width:100%;margin-bottom:8px"></div>
+      <div class="ui-skeleton" style="width:90%"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Z. 전체 색인 ============ -->
+<section id="z">
+  <div class="sec-h"><span class="key">Z</span><h2>전체 색인</h2></div>
+  <p class="sec-note">이 문서에 등장한 모든 구성요소를 분류·섹션별로 훑을 수 있는 목록입니다.</p>
+  <div class="tbl-wrap">
+  <table>
+    <tr><th>구성요소</th><th>분류</th><th>섹션</th></tr>
+    <tr><td>Text Field</td><td>텍스트 입력</td><td><a href="#a">A</a></td></tr>
+    <tr><td>Textarea</td><td>텍스트 입력</td><td><a href="#a">A</a></td></tr>
+    <tr><td>Search</td><td>텍스트 입력</td><td><a href="#a">A</a></td></tr>
+    <tr><td>Number</td><td>텍스트 입력</td><td><a href="#a">A</a></td></tr>
+    <tr><td>email / password / date / color / file / tel / url</td><td>텍스트 입력</td><td><a href="#a">A</a></td></tr>
+    <tr><td>Checkbox</td><td>선택 입력</td><td><a href="#b">B</a></td></tr>
+    <tr><td>Radio Button / 세그먼트 컨트롤</td><td>선택 입력</td><td><a href="#b">B</a></td></tr>
+    <tr><td>Toggle Switch</td><td>선택 입력</td><td><a href="#b">B</a></td></tr>
+    <tr><td>Select / Dropdown</td><td>선택 입력</td><td><a href="#b">B</a></td></tr>
+    <tr><td>Range Slider</td><td>범위·평가·진행</td><td><a href="#c">C</a></td></tr>
+    <tr><td>Rating</td><td>범위·평가·진행</td><td><a href="#c">C</a></td></tr>
+    <tr><td>Progress Bar</td><td>범위·평가·진행</td><td><a href="#c">C</a></td></tr>
+    <tr><td>Button (primary/secondary/ghost/danger)</td><td>버튼과 액션</td><td><a href="#d">D</a></td></tr>
+    <tr><td>Icon Button</td><td>버튼과 액션</td><td><a href="#d">D</a></td></tr>
+    <tr><td>Link 버튼</td><td>버튼과 액션</td><td><a href="#d">D</a></td></tr>
+    <tr><td>Tabs</td><td>네비게이션</td><td><a href="#e">E</a></td></tr>
+    <tr><td>Breadcrumb</td><td>네비게이션</td><td><a href="#e">E</a></td></tr>
+    <tr><td>Pagination</td><td>네비게이션</td><td><a href="#e">E</a></td></tr>
+    <tr><td>Dropdown Menu</td><td>네비게이션</td><td><a href="#e">E</a></td></tr>
+    <tr><td>Accordion</td><td>오버레이·컨테이너</td><td><a href="#f">F</a></td></tr>
+    <tr><td>Modal</td><td>오버레이·컨테이너</td><td><a href="#f">F</a></td></tr>
+    <tr><td>Tooltip</td><td>오버레이·컨테이너</td><td><a href="#f">F</a></td></tr>
+    <tr><td>Card</td><td>오버레이·컨테이너</td><td><a href="#f">F</a></td></tr>
+    <tr><td>Alert / Banner</td><td>피드백과 표시</td><td><a href="#g">G</a></td></tr>
+    <tr><td>Badge / Tag</td><td>피드백과 표시</td><td><a href="#g">G</a></td></tr>
+    <tr><td>Avatar</td><td>피드백과 표시</td><td><a href="#g">G</a></td></tr>
+    <tr><td>Spinner</td><td>피드백과 표시</td><td><a href="#g">G</a></td></tr>
+    <tr><td>Skeleton</td><td>피드백과 표시</td><td><a href="#g">G</a></td></tr>
+  </table>
+  </div>
+</section>
+
+</main>
+</div>
+
+<script src="reference.js"></script>
+</body>
+</html>

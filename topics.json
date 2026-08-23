@@ -89,5 +89,15 @@
     "color": "#e67a30",
     "icon": "gr",
     "count": 37
+  },
+  {
+    "id": "ui-components",
+    "title": "UI 구성요소",
+    "subtitle": "Interface Design Basics",
+    "desc": "텍스트필드·체크박스·라디오·토글부터 탭·모달·툴팁까지, 언어·프레임워크에 상관없이 통용되는 기본 UI 요소와 HTML/CSS만으로 만든 실습 예시.",
+    "file": "pages/ui-components-reference.html",
+    "color": "#5c6bc0",
+    "icon": "ui",
+    "count": 28
   }
 ]
