@@ -1,5 +1,15 @@
 [
   {
+    "id": "linux",
+    "title": "Linux",
+    "subtitle": "Command Line",
+    "desc": "WSL2 Ubuntu에서 직접 검증한 파일 탐색·조작, 검색, 텍스트 가공, 파이프·리다이렉션, 권한, 프로세스, 네트워크, 압축, 패키지 관리까지 실무 셸 명령어.",
+    "file": "pages/linux-reference.html",
+    "color": "#455a64",
+    "icon": "sh",
+    "count": 49
+  },
+  {
     "id": "python",
     "title": "Python",
     "subtitle": "Core Language",

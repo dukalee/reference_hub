@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Linux 실무 레퍼런스 — 명령어 A to Z</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="reference.css">
+</head>
+<body>
+
+<div class="bar">
+  <div class="bar-in">
+    <a class="home" href="../index.html">← 홈</a>
+    <div class="brand">Linux<span>[$]</span>Reference</div>
+    <input id="q" type="search" placeholder="명령어 이름으로 찾기 — grep, chmod, tar …" aria-label="명령어 검색">
+    <div id="qn" aria-live="polite"></div>
+  </div>
+</div>
+
+<header class="hero">
+  <h1>Linux 명령어 사전</h1>
+</header>
+
+<div class="wrap">
+<nav class="toc" aria-label="목차">
+  <ol>
+    <li><a href="#install"><span class="k">§</span>WSL 설치</a></li>
+    <li><a href="#rank"><span class="k">§</span>사용 빈도 랭킹</a></li>
+    <li><a href="#core"><span class="k">§</span>먼저 알아야 할 4가지</a></li>
+    <li><a href="#a"><span class="k">A</span>위치와 탐색</a></li>
+    <li><a href="#b"><span class="k">B</span>파일과 폴더 조작</a></li>
+    <li><a href="#c"><span class="k">C</span>내용 보기와 편집</a></li>
+    <li><a href="#d"><span class="k">D</span>검색</a></li>
+    <li><a href="#e"><span class="k">E</span>텍스트 가공</a></li>
+    <li><a href="#f"><span class="k">F</span>파이프와 리다이렉션</a></li>
+    <li><a href="#g"><span class="k">G</span>권한과 소유권</a></li>
+    <li><a href="#h"><span class="k">H</span>프로세스 관리</a></li>
+    <li><a href="#i"><span class="k">I</span>네트워크</a></li>
+    <li><a href="#j"><span class="k">J</span>압축과 아카이브</a></li>
+    <li><a href="#k"><span class="k">K</span>패키지 관리</a></li>
+    <li><a href="#l"><span class="k">L</span>시스템 정보</a></li>
+    <li><a href="#m"><span class="k">M</span>환경변수와 기타</a></li>
+    <li><a href="#z"><span class="k">Z</span>전체 색인</a></li>
+  </ol>
+</nav>
+
+<main>
+
+<!-- ============ WSL 설치 ============ -->
+<section id="install">
+  <div class="sec-h"><span class="key">§</span><h2>WSL 설치</h2></div>
+  <p class="sec-note">이 문서의 모든 명령어는 Windows의 <b>WSL2(Windows Subsystem for Linux) + Ubuntu</b> 환경에서 직접 실행하고 검증했습니다. Linux나 macOS를 쓴다면 이 절은 건너뛰어도 됩니다.</p>
+
+  <div class="fn">
+    <div class="fn-h"><h3>Windows에 Ubuntu 설치하기</h3></div>
+    <p>Windows 10(2004 이상) / Windows 11에서는 명령어 한 줄로 WSL과 기본 배포판(Ubuntu)이 함께 설치됩니다. <b>관리자 권한 PowerShell 또는 명령 프롬프트</b>에서 실행하세요.</p>
+    <h4>설치</h4>
+    <pre>wsl --install</pre>
+    <div class="note">설치가 끝나면 PC를 <b>재부팅</b>해야 합니다. 재부팅 후 자동으로 Ubuntu 터미널이 열리고, 사용할 Linux 사용자 이름과 비밀번호를 만들라는 안내가 나옵니다 — 이 비밀번호가 이후 <code>sudo</code> 명령을 쓸 때 필요한 비밀번호입니다.</div>
+    <h4>특정 배포판을 지정해서 설치</h4>
+    <pre>wsl --install -d Ubuntu</pre>
+    <h4>설치 확인 · 실행</h4>
+    <pre class="has-out">wsl -l -v          <span class="c"># 설치된 배포판과 버전(WSL1/2) 확인</span>
+wsl -d Ubuntu       <span class="c"># Ubuntu 셸 진입</span></pre>
+    <div class="out">  NAME      STATE           VERSION
+* Ubuntu    Running         2</div>
+    <div class="tip">이미 WSL은 있는데 배포판만 없다면 <code>wsl --list --online</code>으로 설치 가능한 배포판 목록을 보고 <code>wsl --install -d &lt;배포판명&gt;</code>으로 추가할 수 있습니다. 기존 설치를 업데이트하려면 <code>wsl --update</code>를 사용하세요.</div>
+  </div>
+</section>
+
+<!-- ============ 랭킹 ============ -->
+<section id="rank">
+  <div class="sec-h"><span class="key">§</span><h2>사용 빈도 랭킹 Top 25</h2></div>
+  <p class="sec-note">터미널에서 손이 가장 먼저 나가는 25개입니다. 이 문서의 카드에는 <span class="rank">#01</span> 같은 배지로 순위를 표시했습니다.</p>
+  <div class="viz wide"><svg viewBox="0 0 700 704" style="max-width:700px" xmlns="http://www.w3.org/2000/svg" role="img"><defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" class="ahp"/></marker></defs><text class="rl" x="150" y="54" text-anchor="end">cd</text><rect class="bar b1" x="162" y="40" width="470" height="19" rx="3"/><text class="rn" x="640" y="54">100</text><text class="rl" x="150" y="80" text-anchor="end">ls</text><rect class="bar b1" x="162" y="66" width="461" height="19" rx="3"/><text class="rn" x="631" y="80">98</text><text class="rl" x="150" y="106" text-anchor="end">pwd</text><rect class="bar b1" x="162" y="92" width="423" height="19" rx="3"/><text class="rn" x="593" y="106">90</text><text class="rl" x="150" y="132" text-anchor="end">cat</text><rect class="bar b1" x="162" y="118" width="414" height="19" rx="3"/><text class="rn" x="584" y="132">88</text><text class="rl" x="150" y="158" text-anchor="end">grep</text><rect class="bar b1" x="162" y="144" width="400" height="19" rx="3"/><text class="rn" x="570" y="158">85</text><text class="rl" x="150" y="184" text-anchor="end">cp</text><rect class="bar b1" x="162" y="170" width="385" height="19" rx="3"/><text class="rn" x="555" y="184">82</text><text class="rl" x="150" y="210" text-anchor="end">mv</text><rect class="bar b1" x="162" y="196" width="376" height="19" rx="3"/><text class="rn" x="546" y="210">80</text><text class="rl" x="150" y="236" text-anchor="end">rm</text><rect class="bar b2" x="162" y="222" width="367" height="19" rx="3"/><text class="rn" x="537" y="236">78</text><text class="rl" x="150" y="262" text-anchor="end">mkdir</text><rect class="bar b2" x="162" y="248" width="353" height="19" rx="3"/><text class="rn" x="523" y="262">75</text><text class="rl" x="150" y="288" text-anchor="end">find</text><rect class="bar b2" x="162" y="274" width="338" height="19" rx="3"/><text class="rn" x="508" y="288">72</text><text class="rl" x="150" y="314" text-anchor="end">chmod</text><rect class="bar b2" x="162" y="300" width="329" height="19" rx="3"/><text class="rn" x="499" y="314">70</text><text class="rl" x="150" y="340" text-anchor="end">ps</text><rect class="bar b2" x="162" y="326" width="320" height="19" rx="3"/><text class="rn" x="490" y="340">68</text><text class="rl" x="150" y="366" text-anchor="end">top</text><rect class="bar b2" x="162" y="352" width="310" height="19" rx="3"/><text class="rn" x="480" y="366">66</text><text class="rl" x="150" y="392" text-anchor="end">kill</text><rect class="bar b2" x="162" y="378" width="301" height="19" rx="3"/><text class="rn" x="471" y="392">64</text><text class="rl" x="150" y="418" text-anchor="end">tar</text><rect class="bar b2" x="162" y="404" width="291" height="19" rx="3"/><text class="rn" x="461" y="418">62</text><text class="rl" x="150" y="444" text-anchor="end">curl</text><rect class="bar b2" x="162" y="430" width="282" height="19" rx="3"/><text class="rn" x="452" y="444">60</text><text class="rl" x="150" y="470" text-anchor="end">df</text><rect class="bar b2" x="162" y="456" width="273" height="19" rx="3"/><text class="rn" x="443" y="470">58</text><text class="rl" x="150" y="496" text-anchor="end">du</text><rect class="bar b2" x="162" y="482" width="263" height="19" rx="3"/><text class="rn" x="433" y="496">56</text><text class="rl" x="150" y="522" text-anchor="end">ssh</text><rect class="bar b3" x="162" y="508" width="254" height="19" rx="3"/><text class="rn" x="424" y="522">54</text><text class="rl" x="150" y="548" text-anchor="end">sed</text><rect class="bar b3" x="162" y="534" width="244" height="19" rx="3"/><text class="rn" x="414" y="548">52</text><text class="rl" x="150" y="574" text-anchor="end">awk</text><rect class="bar b3" x="162" y="560" width="235" height="19" rx="3"/><text class="rn" x="405" y="574">50</text><text class="rl" x="150" y="600" text-anchor="end">echo</text><rect class="bar b3" x="162" y="586" width="226" height="19" rx="3"/><text class="rn" x="396" y="600">48</text><text class="rl" x="150" y="626" text-anchor="end">export</text><rect class="bar b3" x="162" y="612" width="216" height="19" rx="3"/><text class="rn" x="386" y="626">46</text><text class="rl" x="150" y="652" text-anchor="end">history</text><rect class="bar b3" x="162" y="638" width="207" height="19" rx="3"/><text class="rn" x="377" y="652">44</text><text class="rl" x="150" y="678" text-anchor="end">man</text><rect class="bar b3" x="162" y="664" width="197" height="19" rx="3"/><text class="rn" x="367" y="678">42</text><text class="gt" x="20" y="24">상대 사용 빈도 지수 (100 = 최상위)</text></svg></div>
+</section>
+
+<!-- ============ 핵심 개념 ============ -->
+<section id="core">
+  <div class="sec-h"><span class="key">§</span><h2>먼저 알아야 할 4가지</h2></div>
+  <p class="sec-note">개별 명령어를 외우기 전에 이 네 가지를 이해하면 나머지는 대부분 유추됩니다.</p>
+
+  <div class="fn">
+    <div class="fn-h"><h3>① 셸(shell)과 프롬프트 — 명령어의 구조</h3></div>
+    <p>터미널을 열면 보이는 <code>$</code> 또는 <code>user@host:~$</code> 같은 표시를 <b>프롬프트</b>라고 합니다. 그 뒤에 입력하는 한 줄은 대부분 <b>명령어 옵션(플래그) 인자</b> 구조를 따릅니다.</p>
+    <h4>예시</h4>
+    <pre>user@DESKTOP:~/project$ ls -l data
+                         <span class="c">↑명령어  ↑옵션(-)  ↑인자</span></pre>
+    <div class="tbl-wrap"><table>
+      <tr><th>구성요소</th><th>설명</th><th>예</th></tr>
+      <tr><td>명령어</td><td>실행할 프로그램 이름</td><td><code>ls</code>, <code>grep</code></td></tr>
+      <tr><td>옵션(플래그)</td><td><code>-</code> 하나 + 짧은 문자, 또는 <code>--</code> + 긴 이름. 여러 개를 묶어 <code>-la</code>처럼 쓸 수 있음</td><td><code>-l</code>, <code>--all</code>, <code>-la</code></td></tr>
+      <tr><td>인자</td><td>명령어가 실제로 다룰 대상(파일·경로·문자열)</td><td><code>data</code>, <code>*.txt</code></td></tr>
+    </table></div>
+    <div class="tip"><code>man &lt;명령어&gt;</code>는 그 명령어의 모든 옵션을 알려주는 사전입니다. 옵션이 기억나지 않으면 외우지 말고 <code>man</code>부터 찾는 습관을 들이세요.</div>
+  </div>
+
+  <div class="fn">
+    <div class="fn-h"><h3>② 경로 — 절대경로 · 상대경로 · 홈 디렉터리</h3></div>
+    <p>Linux의 모든 파일은 <code>/</code>(루트)에서 시작하는 하나의 나무 구조에 속합니다. 경로는 <b>절대경로</b>(<code>/</code>부터 시작)와 <b>상대경로</b>(현재 위치 기준)로 나뉩니다.</p>
+    <div class="viz wide"><svg viewBox="0 0 620 160" style="max-width:620px" xmlns="http://www.w3.org/2000/svg" role="img"><rect class="c c-base" x="16" y="16" width="30" height="30" rx="4"/><text class="ct" x="31" y="36">/</text><rect class="c c-base" x="90" y="16" width="70" height="30" rx="4"/><text class="ct" x="125" y="36">home</text><rect class="c c-acc" x="204" y="16" width="70" height="30" rx="4"/><text class="ct ct-acc" x="239" y="36">user</text><rect class="c c-acc" x="318" y="16" width="90" height="30" rx="4"/><text class="ct ct-acc" x="363" y="36">refdemo</text><rect class="c c-acc2" x="452" y="16" width="90" height="30" rx="4"/><text class="ct ct-acc2" x="497" y="36">project</text><line class="ar" x1="46" y1="31" x2="86" y2="31"/><line class="ar" x1="160" y1="31" x2="200" y2="31"/><line class="ar" x1="274" y1="31" x2="314" y2="31"/><line class="ar" x1="408" y1="31" x2="448" y2="31"/><text class="gd" x="16" y="80">절대경로: <tspan class="al">/home/user/refdemo/project</tspan></text><text class="gd" x="16" y="104">현재 위치가 <tspan class="al">/home/user</tspan>일 때 상대경로: <tspan class="al">refdemo/project</tspan></text><text class="gd" x="16" y="128">~ = 홈 디렉터리(/home/user) · . = 현재 위치 · .. = 한 단계 위</text></svg></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">cd ~                 <span class="c"># 홈 디렉터리로</span>
+pwd
+cd refdemo/project   <span class="c"># 상대경로</span>
+pwd
+cd /tmp               <span class="c"># 절대경로</span>
+pwd
+cd -                  <span class="c"># 바로 직전 디렉터리로</span>
+pwd
+cd ..                 <span class="c"># 한 단계 위로</span>
+pwd</pre>
+    <div class="out">/home/user
+/home/user/refdemo/project
+/tmp
+/home/user/refdemo/project
+/home/user/refdemo</div>
+  </div>
+
+  <div class="fn">
+    <div class="fn-h"><h3>③ 표준입출력 — stdin · stdout · stderr</h3></div>
+    <p>모든 명령어는 기본으로 3개의 통로를 갖습니다. <b>표준입력(0)</b>으로 받고, <b>표준출력(1)</b>으로 정상 결과를 내보내고, <b>표준에러(2)</b>로 에러 메시지를 따로 내보냅니다. <code>|</code>·<code>&gt;</code>·<code>2&gt;</code> 같은 리다이렉션은 전부 이 세 통로를 다시 연결하는 것입니다(<a href="#f">F. 파이프와 리다이렉션</a> 참고).</p>
+    <div class="viz"><svg viewBox="0 0 420 160" style="max-width:420px" xmlns="http://www.w3.org/2000/svg" role="img"><defs><marker id="ah2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" class="ahp"/></marker></defs><rect class="c c-base" x="150" y="55" width="120" height="50" rx="6"/><text class="ct" x="210" y="84">command</text><line class="ar" x1="20" y1="80" x2="146" y2="80" marker-end="url(#ah2)"/><text class="axl" x="24" y="72">stdin (0)</text><line class="ar" x1="274" y1="70" x2="400" y2="30" marker-end="url(#ah2)"/><text class="al" x="285" y="26">stdout (1) 정상 출력</text><line class="ar" x1="274" y1="90" x2="400" y2="130" marker-end="url(#ah2)"/><text class="al" x="285" y="146" style="fill:#6b52c4">stderr (2) 에러 출력</text></svg></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out"><span class="c"># 정상 출력과 에러 출력이 각자 다른 통로로 나간다</span>
+ls existing_dir nope_dir 1&gt; out.log 2&gt; err.log
+cat out.log
+cat err.log</pre>
+    <div class="out">existing_dir:
+
+ls: cannot access 'nope_dir': No such file or directory</div>
+  </div>
+
+  <div class="fn">
+    <div class="fn-h"><h3>④ 권한 표기법 — <code>rwxr-xr-x</code> 읽는 법</h3></div>
+    <p><code>ls -l</code> 맨 앞 10글자는 파일 타입 1글자 + <b>소유자(u)·그룹(g)·기타(o)</b> 각 3글자(r=읽기, w=쓰기, x=실행)로 구성됩니다. 3글자씩을 2진수로 보면 8진수 한 자리가 됩니다.</p>
+    <div class="viz wide"><svg viewBox="0 0 620 130" style="max-width:620px" xmlns="http://www.w3.org/2000/svg" role="img"><rect class="c c-ghost" x="16" y="16" width="30" height="30" rx="4"/><text class="ct ct-ghost" x="31" y="36">-</text><rect class="c c-acc" x="52" y="16" width="30" height="30" rx="4"/><text class="ct ct-acc" x="67" y="36">r</text><rect class="c c-acc" x="82" y="16" width="30" height="30" rx="4"/><text class="ct ct-acc" x="97" y="36">w</text><rect class="c c-acc" x="112" y="16" width="30" height="30" rx="4"/><text class="ct ct-acc" x="127" y="36">x</text><rect class="c c-acc2" x="150" y="16" width="30" height="30" rx="4"/><text class="ct ct-acc2" x="165" y="36">r</text><rect class="c c-acc2" x="180" y="16" width="30" height="30" rx="4"/><text class="ct ct-acc2" x="195" y="36">-</text><rect class="c c-acc2" x="210" y="16" width="30" height="30" rx="4"/><text class="ct ct-acc2" x="225" y="36">x</text><rect class="c c-warn" x="248" y="16" width="30" height="30" rx="4"/><text class="ct ct-warn" x="263" y="36">r</text><rect class="c c-warn" x="278" y="16" width="30" height="30" rx="4"/><text class="ct ct-warn" x="293" y="36">-</text><rect class="c c-warn" x="308" y="16" width="30" height="30" rx="4"/><text class="ct ct-warn" x="323" y="36">x</text><text class="gd" x="16" y="68">타입</text><text class="al" x="67" y="68">소유자 rwx = 7</text><text class="gd" x="150" y="68" fill="#6b52c4">그룹 r-x = 5</text><text class="axl" x="248" y="68">기타 r-x = 5</text><text class="gt" x="16" y="104">→ 8진수 표기: chmod 755</text></svg></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">ls -l run.sh
+chmod 644 run.sh   <span class="c"># rw-r--r-- : 소유자만 쓰기 가능</span>
+ls -l run.sh</pre>
+    <div class="out">-rwxr-xr-x 1 user user 8 Sep  4 09:29 run.sh
+-rw-r--r-- 1 user user 8 Sep  4 09:29 run.sh</div>
+  </div>
+</section>
+
+<!-- ============ A. 위치와 탐색 ============ -->
+<section id="a">
+  <div class="sec-h"><span class="key">A</span><h2>위치와 탐색</h2><span class="cnt">3 commands</span></div>
+  <p class="sec-note">지금 내가 어디에 있고 무엇이 있는지 확인하는, 가장 먼저 몸에 배는 세 개입니다.</p>
+
+  <div class="fn" data-key="pwd 현재경로 위치">
+    <div class="fn-h"><span class="rank">#03</span><h3>pwd</h3></div>
+    <p>현재 작업 디렉터리의 <b>절대경로</b>를 출력합니다. Print Working Directory의 약자.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">cd ~/refdemo/project
+pwd</pre>
+    <div class="out">/home/user/refdemo/project</div>
+  </div>
+
+  <div class="fn" data-key="cd 디렉터리 이동 change directory">
+    <div class="fn-h"><span class="rank">#01</span><h3>cd</h3></div>
+    <p>디렉터리를 이동합니다. 인자 없이 <code>cd</code>만 치면 홈으로, <code>cd -</code>는 직전 디렉터리로 돌아갑니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig">cd [경로]</div>
+    <div class="tbl-wrap"><table>
+      <tr><th>형태</th><th>이동 위치</th></tr>
+      <tr><td><code>cd</code> / <code>cd ~</code></td><td>홈 디렉터리</td></tr>
+      <tr><td><code>cd -</code></td><td>바로 이전 디렉터리</td></tr>
+      <tr><td><code>cd ..</code></td><td>한 단계 상위</td></tr>
+      <tr><td><code>cd /경로</code></td><td>절대경로로 이동</td></tr>
+    </table></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">cd /tmp
+pwd
+cd -
+pwd</pre>
+    <div class="out">/tmp
+/home/user/refdemo/project</div>
+  </div>
+
+  <div class="fn" data-key="ls 목록 파일목록 list">
+    <div class="fn-h"><span class="rank">#02</span><h3>ls</h3></div>
+    <p>디렉터리 내용을 나열합니다. 옵션 없이 쓰면 숨김파일(<code>.</code>로 시작)은 보이지 않습니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig">ls [옵션] [경로]</div>
+    <div class="tbl-wrap"><table>
+      <tr><th>옵션</th><th>설명</th></tr>
+      <tr><td>-a</td><td>숨김파일까지 전부(<code>.</code>, <code>..</code> 포함)</td></tr>
+      <tr><td>-l</td><td>긴 목록(권한·소유자·크기·수정일)</td></tr>
+      <tr><td>-h</td><td>-l과 함께, 크기를 사람이 읽기 쉬운 단위로</td></tr>
+      <tr><td>-la / -al</td><td>-l과 -a를 묶어서</td></tr>
+    </table></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">ls
+ls -a
+ls -l</pre>
+    <div class="out">docs
+src
+
+.
+..
+.env
+docs
+src
+
+total 8
+drwxr-xr-x 2 user user 4096 Sep  4 09:29 docs
+drwxr-xr-x 2 user user 4096 Sep  4 09:29 src</div>
+    <div class="note">1열이 <a href="#core">권한</a>, 3·4열이 소유자·그룹, 5열이 바이트 크기입니다. 폴더인지 파일인지는 맨 앞 글자로 구분합니다 — <code>d</code>는 디렉터리, <code>-</code>는 일반 파일.</div>
+  </div>
+</section>
+
+<!-- ============ B. 파일과 폴더 조작 ============ -->
+<section id="b">
+  <div class="sec-h"><span class="key">B</span><h2>파일과 폴더 조작</h2><span class="cnt">6 commands</span></div>
+  <p class="sec-note">만들고, 복사하고, 옮기고, 지우는 여섯 개. <code>rm</code>은 휴지통이 없다는 점만 기억하세요.</p>
+
+  <div class="fn" data-key="mkdir 디렉터리생성 폴더생성">
+    <div class="fn-h"><span class="rank">#09</span><h3>mkdir</h3></div>
+    <p>새 디렉터리를 만듭니다. <code>-p</code>를 쓰면 중간 경로가 없어도 한 번에 만들고, 이미 있어도 에러 없이 넘어갑니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig">mkdir [-p] 디렉터리...</div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">mkdir data
+mkdir -p archive/2024/reports   <span class="c"># 중간 폴더까지 한 번에</span>
+ls</pre>
+    <div class="out">archive
+data
+project</div>
+  </div>
+
+  <div class="fn" data-key="touch 빈파일생성 파일생성">
+    <div class="fn-h"><h3>touch</h3></div>
+    <p>빈 파일을 만들거나, 이미 있는 파일이면 <b>수정 시각만 지금으로</b> 갱신합니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">touch data/notes.txt
+ls data</pre>
+    <div class="out">notes.txt</div>
+  </div>
+
+  <div class="fn" data-key="cp 복사 copy">
+    <div class="fn-h"><span class="rank">#06</span><h3>cp</h3></div>
+    <p>파일이나 디렉터리를 복사합니다. 디렉터리를 통째로 복사하려면 <code>-r</code>(재귀)이 필수입니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig">cp [-r] 원본 대상</div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">cp data/notes.txt data/notes_backup.txt
+ls data
+cp -r project project_copy   <span class="c"># 폴더 전체 복사엔 -r 필수</span>
+ls</pre>
+    <div class="out">notes.txt
+notes_backup.txt
+
+archive
+data
+project
+project_copy</div>
+    <div class="warn"><code>-r</code> 없이 디렉터리를 <code>cp</code>하면 <code>cp: -r not specified; omitting directory 'project'</code> 에러가 납니다.</div>
+  </div>
+
+  <div class="fn" data-key="mv 이동 이름변경 rename move">
+    <div class="fn-h"><span class="rank">#07</span><h3>mv</h3></div>
+    <p>파일을 이동하거나 이름을 바꿉니다. Linux에는 별도의 rename 명령이 없고 <b>같은 폴더 안에서 mv하면 그게 이름 변경</b>입니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">mv data/notes_backup.txt data/notes_old.txt
+ls data</pre>
+    <div class="out">notes.txt
+notes_old.txt</div>
+  </div>
+
+  <div class="fn" data-key="rm 삭제 remove">
+    <div class="fn-h"><span class="rank">#08</span><h3>rm</h3><span class="tag perf">주의</span></div>
+    <p>파일을 삭제합니다. 디렉터리를 지우려면 <code>-r</code>, 확인 없이 강제로 지우려면 <code>-f</code>. <b>휴지통을 거치지 않고 즉시 사라집니다.</b></p>
+    <h4>시그니처</h4>
+    <div class="sig">rm [-r] [-f] 대상...</div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">rm data/notes_old.txt
+rm -r project_copy
+ls</pre>
+    <div class="out">archive
+data
+project</div>
+    <div class="warn"><code>rm -rf /</code> 같은 실수는 되돌릴 수 없습니다. <code>rm -rf 변수명/</code>처럼 변수가 비어버리면 의도치 않게 루트를 지우는 사고가 실제로 일어납니다 — 스크립트에서 변수로 경로를 만들 때는 항상 값이 비어있지 않은지 확인하세요.</div>
+  </div>
+
+  <div class="fn" data-key="rmdir 빈디렉터리삭제">
+    <div class="fn-h"><h3>rmdir</h3></div>
+    <p><b>비어 있는</b> 디렉터리만 지웁니다. 안에 뭐가 있으면 에러가 나서, 실수로 내용물째 지우는 사고를 막아줍니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">mkdir empty_dir
+rmdir empty_dir
+ls</pre>
+    <div class="out">archive
+data
+project</div>
+    <div class="tip">내용물까지 통째로 지우고 싶다면 <code>rmdir</code>이 아니라 <code>rm -r 디렉터리</code>를 쓰세요.</div>
+  </div>
+</section>
+
+<!-- ============ C. 내용 보기와 편집 ============ -->
+<section id="c">
+  <div class="sec-h"><span class="key">C</span><h2>내용 보기와 편집</h2><span class="cnt">4 commands</span></div>
+  <p class="sec-note">파일을 열어보고 고치는 방법들. 전체를 쏟아낼지, 페이지 단위로 볼지, 편집기로 열지를 고릅니다.</p>
+
+  <div class="fn" data-key="cat 파일내용출력 concatenate">
+    <div class="fn-h"><span class="rank">#04</span><h3>cat</h3></div>
+    <p>파일 내용 전체를 화면에 그대로 쏟아냅니다. 짧은 파일 확인, 그리고 <a href="#f">리다이렉션</a>과 조합해 파일을 합칠 때도 씁니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">cat project/src/main.py</pre>
+    <div class="out">def main():
+    print('hello')</div>
+  </div>
+
+  <div class="fn" data-key="less more 페이지단위보기 pager">
+    <div class="fn-h"><h3>less · more</h3></div>
+    <p>긴 파일을 <b>화면 단위로 끊어서</b> 보여주는 페이저(pager)입니다. 로그 파일처럼 <code>cat</code>으로 쏟아내면 스크롤이 다 날아가는 파일에 씁니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig">less 파일
+more 파일</div>
+    <div class="tbl-wrap"><table>
+      <tr><th>도구</th><th>특징</th></tr>
+      <tr><td>more</td><td>앞으로만 스크롤 가능한 구형 페이저</td></tr>
+      <tr><td>less</td><td>위아래 자유 스크롤, <code>/검색어</code>로 파일 내 검색, <code>q</code>로 종료 — 사실상 <code>more</code>의 상위 호환</td></tr>
+    </table></div>
+    <div class="note"><code>less</code>·<code>more</code>는 화면을 그대로 차지하는 대화형 프로그램이라 터미널 캡처로 결과를 보여줄 수 없습니다. 직접 <code>less data/access.log</code>를 실행해서 <kbd>Space</kbd>로 다음 페이지, <kbd>q</kbd>로 종료해보세요.</div>
+  </div>
+
+  <div class="fn" data-key="head tail 앞부분 뒷부분">
+    <div class="fn-h"><span class="rank">#05</span><h3>head · tail</h3></div>
+    <p>파일의 <b>앞부분</b>(<code>head</code>) 또는 <b>뒷부분</b>(<code>tail</code>)만 봅니다. 기본은 10줄, <code>-n</code>으로 줄 수를 지정합니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig">head [-n 줄수] 파일
+tail [-n 줄수] 파일
+tail -f 파일   <span class="c"># 실시간으로 추가되는 내용을 계속 보여줌</span></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">seq 1 20 &gt; data/numbers.txt
+head -n 5 data/numbers.txt
+tail -n 5 data/numbers.txt</pre>
+    <div class="out">1
+2
+3
+4
+5
+
+16
+17
+18
+19
+20</div>
+    <div class="tip"><code>tail -f app.log</code>는 실시간 로그를 지켜볼 때 표준입니다. <kbd>Ctrl</kbd>+<kbd>C</kbd>로 종료합니다.</div>
+  </div>
+
+  <div class="fn" data-key="nano vim 텍스트편집기 에디터">
+    <div class="fn-h"><h3>nano · vim</h3></div>
+    <p>터미널 안에서 파일을 편집하는 에디터입니다. <code>nano</code>는 화면 하단에 단축키가 항상 보여 입문에 부담이 적고, <code>vim</code>은 학습 곡선은 가파르지만 서버 관리자 대부분이 기본으로 씁니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig">nano 파일
+vim 파일</div>
+    <div class="tbl-wrap"><table>
+      <tr><th>에디터</th><th>저장 후 종료</th><th>종료(저장 안 함)</th></tr>
+      <tr><td>nano</td><td><kbd>Ctrl</kbd>+<kbd>O</kbd> → <kbd>Enter</kbd>, 그 다음 <kbd>Ctrl</kbd>+<kbd>X</kbd></td><td><kbd>Ctrl</kbd>+<kbd>X</kbd> 후 저장 여부에 <code>N</code></td></tr>
+      <tr><td>vim</td><td><kbd>Esc</kbd> 후 <code>:wq</code></td><td><kbd>Esc</kbd> 후 <code>:q!</code></td></tr>
+    </table></div>
+    <div class="warn">vim을 처음 실행하면 글자를 입력해도 반응이 없어 당황하기 쉽습니다 — 시작은 <b>명령 모드</b>이고, <kbd>i</kbd>를 눌러야 <b>입력 모드</b>로 들어가 타이핑할 수 있습니다. 빠져나가고 싶으면 <kbd>Esc</kbd> 후 <code>:q!</code>.</div>
+  </div>
+</section>
+
+<!-- ============ D. 검색 ============ -->
+<section id="d">
+  <div class="sec-h"><span class="key">D</span><h2>검색</h2><span class="cnt">3 commands</span></div>
+  <p class="sec-note">파일을 찾을 땐 <code>find</code>, 파일 안 내용을 찾을 땐 <code>grep</code>, 명령어 자체의 위치를 찾을 땐 <code>which</code>.</p>
+
+  <div class="fn" data-key="find 파일찾기 검색">
+    <div class="fn-h"><span class="rank">#10</span><h3>find</h3></div>
+    <p>디렉터리 트리를 훑으며 이름·타입·크기·수정일 등 조건에 맞는 파일을 찾습니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig">find 경로 -name "패턴"
+find 경로 -type f|d</div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">find . -name "*.py"
+find . -type d</pre>
+    <div class="out">./project/src/utils.py
+./project/src/main.py
+
+.
+./data
+./archive
+./archive/2024
+./archive/2024/reports
+./project
+./project/src
+./project/docs</div>
+    <div class="tip">파일을 찾자마자 바로 처리하고 싶다면 <code>find . -name "*.log" -delete</code>나 <code>find . -name "*.py" -exec grep -l TODO {} \;</code>처럼 <code>-exec</code>/<code>-delete</code>를 붙이세요.</div>
+  </div>
+
+  <div class="fn" data-key="grep 문자열검색 텍스트검색">
+    <div class="fn-h"><span class="rank">#05</span><h3>grep</h3></div>
+    <p>파일(또는 표준입력) 안에서 패턴과 일치하는 <b>줄</b>을 찾습니다. 정규식을 지원하며, 로그 분석·코드 검색의 기본기입니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig">grep [옵션] "패턴" 파일...</div>
+    <div class="tbl-wrap"><table>
+      <tr><th>옵션</th><th>설명</th></tr>
+      <tr><td>-n</td><td>줄 번호 표시</td></tr>
+      <tr><td>-r</td><td>디렉터리를 재귀적으로 검색</td></tr>
+      <tr><td>-i</td><td>대소문자 무시</td></tr>
+      <tr><td>-v</td><td>패턴과 <b>일치하지 않는</b> 줄만</td></tr>
+      <tr><td>-c</td><td>일치한 줄 개수만</td></tr>
+    </table></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">grep -n "import" project/src/utils.py
+grep -rn "print" project</pre>
+    <div class="out">1:import os
+
+project/src/main.py:2:    print('hello')</div>
+  </div>
+
+  <div class="fn" data-key="which 명령어위치 실행파일경로">
+    <div class="fn-h"><h3>which</h3></div>
+    <p>어떤 명령어가 <b>어느 실행파일을 가리키는지</b> 경로를 알려줍니다. "이 명령어가 진짜 설치돼 있나?"를 확인할 때 씁니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">which python3
+which ls</pre>
+    <div class="out">/usr/bin/python3
+/usr/bin/ls</div>
+    <div class="note">같은 이름의 명령어가 여러 경로에 있을 수 있습니다(예: pyenv, conda). <code>which</code>은 <code>$PATH</code>에서 <b>가장 먼저 발견되는</b> 것을 보여줍니다.</div>
+  </div>
+</section>
+
+<!-- ============ E. 텍스트 가공 ============ -->
+<section id="e">
+  <div class="sec-h"><span class="key">E</span><h2>텍스트 가공</h2><span class="cnt">6 commands</span></div>
+  <p class="sec-note">로그·CSV 같은 줄 단위 텍스트를 자르고 세고 바꾸는 도구들. 서로 <a href="#f">파이프</a>로 이어 쓰는 게 진짜 힘입니다.</p>
+
+  <div class="fn" data-key="sed 치환 스트림에디터">
+    <div class="fn-h"><span class="rank">#20</span><h3>sed</h3></div>
+    <p>스트림 에디터. 가장 많이 쓰는 건 <b>문자열 치환</b> <code>s/찾을것/바꿀것/</code>입니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig">sed 's/찾을패턴/바꿀문자열/' 파일
+sed -i 's/.../.../' 파일   <span class="c"># -i: 파일을 직접 수정</span></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">cat data/access.log
+sed 's/200/OK/' data/access.log</pre>
+    <div class="out">192.168.0.1 GET /index.html 200
+192.168.0.2 GET /about.html 200
+192.168.0.1 POST /login 401
+192.168.0.3 GET /index.html 200
+192.168.0.2 GET /index.html 404
+
+192.168.0.1 GET /index.html OK
+192.168.0.2 GET /about.html OK
+192.168.0.1 POST /login 401
+192.168.0.3 GET /index.html OK
+192.168.0.2 GET /index.html 404</div>
+    <div class="warn">기본적으로 <code>sed</code>는 결과를 <b>화면에만</b> 출력하고 원본 파일은 그대로입니다. 파일을 실제로 바꾸려면 <code>-i</code>를 붙이세요 — 되돌릴 수 없으니 먼저 <code>-i</code> 없이 결과를 확인하는 습관을 들이세요.</div>
+  </div>
+
+  <div class="fn" data-key="awk 열추출 필드처리">
+    <div class="fn-h"><span class="rank">#21</span><h3>awk</h3></div>
+    <p>줄을 공백 기준으로 <code>$1</code>, <code>$2</code> … <b>필드</b>로 쪼개 다룹니다. 로그에서 특정 컬럼만 뽑아낼 때 표준입니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig">awk '{print $1, $4}' 파일</div>
+    <h4>예시 코드</h4>
+    <pre class="has-out"><span class="c"># $1 = IP, $4 = 상태코드</span>
+awk '{print $1, $4}' data/access.log</pre>
+    <div class="out">192.168.0.1 200
+192.168.0.2 200
+192.168.0.1 401
+192.168.0.3 200
+192.168.0.2 404</div>
+    <div class="tip"><code>awk -F,</code>처럼 <code>-F</code>로 구분자를 바꾸면 CSV도 그대로 처리할 수 있습니다. 조건까지 걸고 싶으면 <code>awk '$4==200 {print $1}'</code>처럼 씁니다.</div>
+  </div>
+
+  <div class="fn" data-key="cut 열자르기 필드추출">
+    <div class="fn-h"><h3>cut</h3></div>
+    <p><code>awk</code>보다 단순하게, 구분자 기준으로 특정 필드(열)만 잘라냅니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig">cut -d '구분자' -f 필드번호 파일</div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">cut -d ' ' -f 1 data/access.log</pre>
+    <div class="out">192.168.0.1
+192.168.0.2
+192.168.0.1
+192.168.0.3
+192.168.0.2</div>
+  </div>
+
+  <div class="fn" data-key="sort uniq 정렬 중복제거">
+    <div class="fn-h"><h3>sort · uniq</h3></div>
+    <p><code>sort</code>는 줄 단위로 정렬하고, <code>uniq</code>는 <b>연속된</b> 중복 줄을 제거합니다. 그래서 <code>uniq</code>는 거의 항상 <code>sort</code> 뒤에 붙습니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig">sort [-u] [-n] [-r] 파일
+... | uniq [-c]</div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">cut -d ' ' -f 1 data/access.log | sort
+cut -d ' ' -f 1 data/access.log | sort -u   <span class="c"># -u: 정렬하며 중복 제거</span>
+cut -d ' ' -f 1 data/access.log | sort | uniq -c   <span class="c"># -c: 개수까지</span></pre>
+    <div class="out">192.168.0.1
+192.168.0.1
+192.168.0.2
+192.168.0.2
+192.168.0.3
+
+192.168.0.1
+192.168.0.2
+192.168.0.3
+
+      2 192.168.0.1
+      2 192.168.0.2
+      1 192.168.0.3</div>
+    <div class="warn"><code>uniq</code>는 정렬돼 있지 않으면 제대로 동작하지 않습니다 — <code>1 2 1</code>에 <code>uniq</code>만 걸면 그대로 <code>1 2 1</code>이 나옵니다. 항상 <code>sort | uniq</code> 순서로 쓰세요.</div>
+  </div>
+
+  <div class="fn" data-key="wc 줄수 단어수 카운트">
+    <div class="fn-h"><h3>wc</h3></div>
+    <p>줄 수(<code>-l</code>)·단어 수(<code>-w</code>)·바이트 수(<code>-c</code>)를 셉니다. 파이프 끝에서 "결과가 몇 개인지"만 알고 싶을 때 자주 씁니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">wc -l data/access.log
+wc -l &lt; data/access.log   <span class="c"># 파일명 없이 숫자만</span></pre>
+    <div class="out">5 data/access.log
+5</div>
+  </div>
+
+  <div class="fn" data-key="tr 문자변환 대소문자">
+    <div class="fn-h"><h3>tr</h3></div>
+    <p>문자 단위로 치환하거나 삭제합니다. 파일이 아니라 <b>표준입력</b>만 받으므로 항상 파이프와 함께 씁니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig">... | tr '집합1' '집합2'
+... | tr -d '집합'</div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">echo "Hello World" | tr 'a-z' 'A-Z'
+echo "Hello World" | tr -d 'l'</pre>
+    <div class="out">HELLO WORLD
+Heo Word</div>
+  </div>
+</section>
+
+<!-- ============ F. 파이프와 리다이렉션 ============ -->
+<section id="f">
+  <div class="sec-h"><span class="key">F</span><h2>파이프와 리다이렉션</h2><span class="cnt">4 items</span></div>
+  <p class="sec-note"><a href="#core">표준입출력</a>의 통로를 다시 연결하는 기호들. Linux 명령어를 조합하는 힘의 원천입니다.</p>
+
+  <div class="fn" data-key="파이프 pipe 명령어연결">
+    <div class="fn-h"><span class="rank">#16</span><h3>| (파이프)</h3></div>
+    <p>왼쪽 명령의 <b>표준출력</b>을 오른쪽 명령의 <b>표준입력</b>으로 그대로 연결합니다. 중간 파일 없이 명령어를 이어 붙이는 핵심 도구입니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">cat data/access.log | grep 200 | wc -l</pre>
+    <div class="out">3</div>
+  </div>
+
+  <div class="fn" data-key="리다이렉션 출력 append 덮어쓰기 추가">
+    <div class="fn-h"><h3>&gt; · &gt;&gt; (출력 리다이렉션)</h3></div>
+    <p><code>&gt;</code>는 표준출력을 파일로 보내며 <b>파일을 덮어씁니다</b>. <code>&gt;&gt;</code>는 같은 일을 하되 기존 내용 뒤에 <b>이어붙입니다</b>.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">echo "192.168.0.9 GET /new.html 200" &gt; data/new.log
+cat data/new.log
+echo "192.168.0.9 GET /new2.html 200" &gt;&gt; data/new.log
+cat data/new.log</pre>
+    <div class="out">192.168.0.9 GET /new.html 200
+
+192.168.0.9 GET /new.html 200
+192.168.0.9 GET /new2.html 200</div>
+    <div class="warn"><code>&gt;</code>는 기존 파일을 확인 없이 통째로 지웁니다. <code>cmd &gt; input.txt</code>처럼 입력과 출력이 같은 파일이면 <b>파일이 빈 채로 잘려나갈 수 있으니</b> 주의하세요.</div>
+  </div>
+
+  <div class="fn" data-key="입력 리다이렉션 stdin에서읽기">
+    <div class="fn-h"><h3>&lt; (입력 리다이렉션)</h3></div>
+    <p>파일 내용을 <b>표준입력</b>으로 흘려보냅니다. <code>cat 파일 | 명령어</code>와 결과는 비슷하지만 <code>cat</code> 프로세스 하나를 아낍니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">wc -l &lt; data/access.log</pre>
+    <div class="out">5</div>
+  </div>
+
+  <div class="fn" data-key="2> 에러 리다이렉션 stderr">
+    <div class="fn-h"><h3>2&gt; (에러 리다이렉션)</h3></div>
+    <p>표준에러(파일 디스크립터 2번)만 따로 파일로 보냅니다. 정상 출력과 에러를 분리해서 로그를 남길 때 씁니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">ls /no/such/dir 2&gt; data/err.log
+cat data/err.log</pre>
+    <div class="out">ls: cannot access '/no/such/dir': No such file or directory</div>
+    <div class="tip">에러까지 한 파일에 합치고 싶으면 <code>cmd &gt; out.log 2&gt;&amp;1</code>(순서 중요: 먼저 stdout을 파일로 돌린 뒤, stderr을 stdout이 가리키는 곳으로). 최신 셸에서는 <code>cmd &amp;&gt; out.log</code>로도 같은 효과를 낼 수 있습니다.</div>
+  </div>
+</section>
+
+<!-- ============ G. 권한과 소유권 ============ -->
+<section id="g">
+  <div class="sec-h"><span class="key">G</span><h2>권한과 소유권</h2><span class="cnt">3 items</span></div>
+  <p class="sec-note"><a href="#core">rwx 표기법</a>을 실제로 바꾸는 명령어들입니다.</p>
+
+  <div class="fn" data-key="chmod 권한변경 실행권한">
+    <div class="fn-h"><span class="rank">#11</span><h3>chmod</h3></div>
+    <p>파일·디렉터리의 권한을 바꿉니다. 8진수(<code>755</code>) 방식과 기호(<code>+x</code>) 방식 둘 다 흔히 씁니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig">chmod 8진수 파일
+chmod [ugo][+-][rwx] 파일</div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">echo 'echo hi' &gt; run.sh
+ls -l run.sh
+chmod +x run.sh        <span class="c"># 실행 권한 추가</span>
+ls -l run.sh
+./run.sh
+chmod 644 run.sh       <span class="c"># rw-r--r--로 되돌리기</span>
+ls -l run.sh</pre>
+    <div class="out">-rw-r--r-- 1 user user 8 Sep  4 09:29 run.sh
+-rwxr-xr-x 1 user user 8 Sep  4 09:29 run.sh
+hi
+-rw-r--r-- 1 user user 8 Sep  4 09:29 run.sh</div>
+    <div class="note">쉘 스크립트를 만들고 <code>./script.sh: Permission denied</code>가 뜬다면 십중팔구 <code>chmod +x script.sh</code>를 잊은 것입니다.</div>
+  </div>
+
+  <div class="fn" data-key="chown 소유자변경 그룹변경">
+    <div class="fn-h"><h3>chown</h3><span class="tag uf">sudo 필요</span></div>
+    <p>파일의 <b>소유자</b>와 <b>그룹</b>을 바꿉니다. 자기가 소유한 파일이라도 다른 사용자에게 넘기려면 보통 <code>sudo</code>가 필요합니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig">sudo chown 사용자:그룹 파일
+sudo chown -R 사용자:그룹 디렉터리   <span class="c"># -R: 하위 전체</span></div>
+    <div class="note">웹 서버 배포 시 <code>www-data</code> 사용자가 파일을 읽지 못해 502 에러가 나는 흔한 원인이 잘못된 소유권입니다. <code>sudo chown -R www-data:www-data /var/www/app</code>처럼 서비스 실행 계정에 맞춰 넘겨줍니다.</div>
+  </div>
+
+  <div class="fn" data-key="ls -l 권한읽기 소유자확인">
+    <div class="fn-h"><h3>ls -l로 권한 확인하기</h3></div>
+    <p>권한을 바꾸기 전엔 항상 <code>ls -l</code>로 현재 상태부터 확인합니다. 3~4열이 소유자·그룹입니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">ls -l run.sh</pre>
+    <div class="out">-rw-r--r-- 1 user user 8 Sep  4 09:29 run.sh</div>
+    <div class="tbl-wrap"><table>
+      <tr><th>열</th><th>의미</th><th>이 예시 값</th></tr>
+      <tr><td>1</td><td>타입+권한(<a href="#core">rwx 표기</a>)</td><td><code>-rw-r--r--</code></td></tr>
+      <tr><td>2</td><td>하드 링크 수</td><td><code>1</code></td></tr>
+      <tr><td>3 / 4</td><td>소유자 / 그룹</td><td><code>user / user</code></td></tr>
+      <tr><td>5</td><td>크기(바이트)</td><td><code>8</code></td></tr>
+      <tr><td>6~8</td><td>마지막 수정 시각</td><td><code>Sep 4 09:29</code></td></tr>
+    </table></div>
+  </div>
+</section>
+
+<!-- ============ H. 프로세스 관리 ============ -->
+<section id="h">
+  <div class="sec-h"><span class="key">H</span><h2>프로세스 관리</h2><span class="cnt">4 commands</span></div>
+  <p class="sec-note">지금 뭐가 돌고 있는지 보고, 필요하면 멈추는 도구들.</p>
+
+  <div class="fn" data-key="ps top 프로세스목록 프로세스확인">
+    <div class="fn-h"><span class="rank">#12</span><h3>ps · top</h3></div>
+    <p><code>ps</code>는 현재 프로세스 목록의 <b>스냅샷</b>을, <code>top</code>은 CPU·메모리 사용량을 <b>실시간 갱신</b>으로 보여줍니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig">ps aux   <span class="c"># 시스템 전체 프로세스</span>
+top       <span class="c"># 실시간 모니터, q로 종료</span></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">ps
+ps aux | head -5</pre>
+    <div class="out">    PID TTY          TIME CMD
+    310 pts/0    00:00:00 bash
+    478 pts/0    00:00:00 ps
+
+USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+root           1 16.7  0.1  24132 15424 ?        Ss   09:29   0:00 /sbin/init
+root           2  0.0  0.0   3180  2204 hvc0     Sl+  09:29   0:00 /init
+root           6  0.0  0.0   3180  2048 hvc0     Sl+  09:29   0:00 plan9 --control-socket 7 --log-level 4 --server-fd 8 --pipe-fd 10 --log-truncate
+root          46  4.8  0.2  42072 16640 ?        S&lt;s  09:29   0:00 /usr/lib/systemd/systemd-journald</div>
+    <div class="tip"><code>top -bn1</code>은 화면을 차지하지 않고 <b>딱 한 번만</b> 스냅샷을 찍고 종료합니다. 스크립트나 로그에 넣기 좋습니다. 대화형 <code>top</code> 안에서는 <kbd>P</kbd>로 CPU순, <kbd>M</kbd>으로 메모리순 정렬, <kbd>q</kbd>로 종료합니다.</div>
+  </div>
+
+  <div class="fn" data-key="kill 프로세스종료 강제종료">
+    <div class="fn-h"><span class="rank">#14</span><h3>kill</h3><span class="tag perf">주의</span></div>
+    <p>PID(프로세스 번호)로 프로세스에 <b>신호(signal)</b>를 보냅니다. 기본은 정상 종료 요청(<code>SIGTERM</code>), <code>-9</code>는 즉시 강제 종료(<code>SIGKILL</code>)입니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig">kill PID
+kill -9 PID   <span class="c"># 강제 종료, 최후의 수단</span></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">sleep 60 &amp;
+sleep 60 &amp;
+jobs</pre>
+    <div class="out">[1]-  Running                    sleep 60 &amp;
+[2]+  Running                    sleep 60 &amp;</div>
+    <pre class="has-out">kill %1   <span class="c"># %1은 잡 번호. PID로도 kill 4321 가능</span>
+jobs</pre>
+    <div class="out">[1]-  Terminated                 sleep 60
+[2]+  Running                    sleep 60 &amp;</div>
+    <div class="warn"><code>kill -9</code>는 프로세스가 정리 작업(파일 저장, 연결 종료)을 할 기회를 주지 않고 즉시 죽입니다. 먼저 <code>kill</code>(SIGTERM)로 정상 종료를 시도하고, 반응이 없을 때만 <code>-9</code>를 쓰세요.</div>
+  </div>
+
+  <div class="fn" data-key="jobs bg fg 백그라운드 포그라운드 작업제어">
+    <div class="fn-h"><h3>jobs · bg · fg · &amp;</h3></div>
+    <p>하나의 터미널에서 여러 작업을 관리하는 도구입니다. 명령 끝에 <code>&amp;</code>를 붙이면 <b>백그라운드</b>로 실행되어 셸을 바로 돌려받습니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig">명령 &amp;      <span class="c"># 백그라운드로 실행</span>
+jobs -l    <span class="c"># 현재 셸의 작업 목록 + PID</span>
+fg %잡번호  <span class="c"># 포그라운드로 가져오기</span>
+bg %잡번호  <span class="c"># 멈춰있던 작업을 백그라운드로 재개</span></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">jobs -l</pre>
+    <div class="out">[1]-   483 Running                    sleep 60 &amp;
+[2]+   484 Running                    sleep 60 &amp;</div>
+    <div class="tip">포그라운드로 실행 중인 작업을 <kbd>Ctrl</kbd>+<kbd>Z</kbd>로 잠시 멈추고(suspend), <code>bg</code>로 백그라운드에서 이어가거나 <code>fg</code>로 다시 앞으로 가져올 수 있습니다.</div>
+  </div>
+</section>
+
+<!-- ============ I. 네트워크 ============ -->
+<section id="i">
+  <div class="sec-h"><span class="key">I</span><h2>네트워크</h2><span class="cnt">4 commands</span></div>
+  <p class="sec-note">연결을 확인하고, 데이터를 주고받고, 원격 서버에 접속하는 도구들.</p>
+
+  <div class="fn" data-key="ping 연결확인 네트워크테스트">
+    <div class="fn-h"><h3>ping</h3></div>
+    <p>상대 호스트로 작은 패킷을 보내 응답 시간을 잽니다. "인터넷이 되는지" 확인하는 가장 기본적인 방법.</p>
+    <h4>시그니처</h4>
+    <div class="sig">ping [-c 횟수] 호스트</div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">ping -c 3 8.8.8.8</pre>
+    <div class="out">PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.
+64 bytes from 8.8.8.8: icmp_seq=1 ttl=115 time=32.7 ms
+64 bytes from 8.8.8.8: icmp_seq=2 ttl=115 time=33.7 ms
+64 bytes from 8.8.8.8: icmp_seq=3 ttl=115 time=33.1 ms
+
+--- 8.8.8.8 ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 2001ms
+rtt min/avg/max/mdev = 32.745/33.202/33.736/0.408 ms</div>
+    <div class="note">Linux에서 <code>-c</code>를 빼면 <kbd>Ctrl</kbd>+<kbd>C</kbd>를 누를 때까지 무한히 계속됩니다. 스크립트에서는 항상 <code>-c</code>로 횟수를 지정하세요.</div>
+  </div>
+
+  <div class="fn" data-key="curl HTTP요청 API테스트">
+    <div class="fn-h"><span class="rank">#15</span><h3>curl</h3></div>
+    <p>URL로 HTTP 요청을 보냅니다. API 테스트, 파일 다운로드, 응답 헤더 확인까지 웹 관련 작업의 만능 도구.</p>
+    <h4>시그니처</h4>
+    <div class="sig">curl [옵션] URL</div>
+    <div class="tbl-wrap"><table>
+      <tr><th>옵션</th><th>설명</th></tr>
+      <tr><td>-s</td><td>진행률 표시 끄기(silent)</td></tr>
+      <tr><td>-I</td><td>응답 헤더만(HEAD 요청)</td></tr>
+      <tr><td>-o 파일</td><td>응답 본문을 파일로 저장</td></tr>
+      <tr><td>-X POST -d '...'</td><td>POST 요청 + 본문 데이터</td></tr>
+    </table></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">curl -sI https://example.com | head -5</pre>
+    <div class="out">HTTP/2 200
+date: Fri, 04 Sep 2026 00:29:09 GMT
+content-type: text/html
+server: cloudflare
+last-modified: Wed, 02 Sep 2026 22:14:26 GMT</div>
+  </div>
+
+  <div class="fn" data-key="wget 파일다운로드 다운로드">
+    <div class="fn-h"><h3>wget</h3></div>
+    <p>URL의 내용을 그대로 다운로드합니다. <code>curl</code>과 겹치지만, 재귀적으로 웹사이트를 통째로 받거나 다운로드가 끊겼을 때 이어받기(<code>-c</code>)에 강합니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">wget -q -O - https://example.com | head -5   <span class="c"># -O -: 파일 대신 화면으로</span></pre>
+    <div class="out">&lt;!doctype html&gt;&lt;html lang="en"&gt;&lt;head&gt;&lt;title&gt;Example Domain&lt;/title&gt;...&lt;body&gt;&lt;div&gt;&lt;h1&gt;Example Domain&lt;/h1&gt;&lt;p&gt;This domain is for use in documentation examples without needing permission. Avoid use in operations.&lt;/p&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</div>
+  </div>
+
+  <div class="fn" data-key="ssh scp 원격접속 원격복사">
+    <div class="fn-h"><span class="rank">#19</span><h3>ssh · scp</h3></div>
+    <p><code>ssh</code>는 원격 서버에 암호화된 셸로 접속하고, <code>scp</code>는 같은 방식(SSH)으로 파일을 주고받습니다. 서버 작업의 출발점입니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig">ssh 사용자@호스트
+ssh -i 키파일 사용자@호스트   <span class="c"># 키 파일로 인증</span>
+scp 로컬파일 사용자@호스트:원격경로   <span class="c"># 로컬 → 원격</span>
+scp 사용자@호스트:원격파일 로컬경로   <span class="c"># 원격 → 로컬</span>
+scp -r 로컬디렉터리 사용자@호스트:원격경로   <span class="c"># 디렉터리 전체</span></div>
+    <div class="note">실습에는 접속 가능한 원격 서버가 필요해 이 문서에서 실제 접속 결과는 담지 않았습니다. 문법과 옵션은 실제 서버 접속 시 그대로 재현됩니다.</div>
+    <div class="tip">비밀번호를 매번 입력하기 귀찮다면 <code>ssh-keygen</code>으로 키 쌍을 만들고 <code>ssh-copy-id 사용자@호스트</code>로 공개키를 등록해두면 이후 <code>ssh</code>·<code>scp</code>가 비밀번호 없이 동작합니다.</div>
+  </div>
+</section>
+
+<!-- ============ J. 압축과 아카이브 ============ -->
+<section id="j">
+  <div class="sec-h"><span class="key">J</span><h2>압축과 아카이브</h2><span class="cnt">2 commands</span></div>
+  <p class="sec-note">여러 파일을 하나로 묶거나(아카이브), 용량을 줄이는(압축) 도구들.</p>
+
+  <div class="fn" data-key="tar 압축 아카이브 백업">
+    <div class="fn-h"><span class="rank">#13</span><h3>tar</h3></div>
+    <p>여러 파일·디렉터리를 하나의 아카이브 파일로 묶습니다. <code>z</code> 옵션을 더하면 gzip으로 압축까지 동시에 합니다(<code>.tar.gz</code>).</p>
+    <h4>시그니처</h4>
+    <div class="sig">tar czf 결과.tar.gz 대상   <span class="c"># c=생성 z=gzip f=파일명</span>
+tar xzf 아카이브.tar.gz -C 대상폴더   <span class="c"># x=압축해제</span>
+tar tzf 아카이브.tar.gz   <span class="c"># t=목록만 확인(해제 안 함)</span></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">tar czf project_backup.tar.gz project
+ls -l project_backup.tar.gz
+tar tzf project_backup.tar.gz</pre>
+    <div class="out">-rw-r--r-- 1 user user 323 Sep  4 09:29 project_backup.tar.gz
+
+project/
+project/src/
+project/src/utils.py
+project/src/main.py
+project/.env
+project/docs/
+project/docs/readme.md</div>
+    <pre class="has-out">mkdir restore
+tar xzf project_backup.tar.gz -C restore
+find restore -type f</pre>
+    <div class="out">restore/project/src/utils.py
+restore/project/src/main.py
+restore/project/.env
+restore/project/docs/readme.md</div>
+    <div class="tip">옵션 순서를 외우기 어렵다면 <b>"압축해서(z) 파일로(f) 만들어라(c)/풀어라(x)"</b>로 기억하세요. <code>-C 대상폴더</code>는 해제 위치를 지정합니다(생략하면 현재 위치에 풂).</div>
+  </div>
+
+  <div class="fn" data-key="gzip gunzip 압축 단일파일압축">
+    <div class="fn-h"><h3>gzip · gunzip</h3></div>
+    <p>파일 <b>하나</b>를 압축합니다(여러 파일을 묶으려면 먼저 <code>tar</code>로 아카이브를 만들어야 함). 기본은 원본을 <code>.gz</code>로 <b>대체</b>합니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">ls data
+gzip data/access.log
+ls data</pre>
+    <div class="out">access.log
+err.log
+new.log
+notes.txt
+numbers.txt
+
+access.log.gz
+err.log
+new.log
+notes.txt
+numbers.txt</div>
+    <pre class="has-out">gunzip data/access.log.gz
+ls data</pre>
+    <div class="out">access.log
+err.log
+new.log
+notes.txt
+numbers.txt</div>
+    <div class="note">원본을 남겨두고 압축본만 만들고 싶다면 <code>gzip -k</code>(keep)를 쓰세요. <code>zip</code>/<code>unzip</code>은 WSL Ubuntu에 기본 설치돼 있지 않아(<code>sudo apt install zip unzip</code> 필요) 이 문서에서는 실제 실행 결과를 담지 않았습니다 — 여러 파일을 하나의 <code>.zip</code>으로 묶고 싶을 때 쓰는 도구라는 점만 참고하세요.</div>
+  </div>
+</section>
+
+<!-- ============ K. 패키지 관리 ============ -->
+<section id="k">
+  <div class="sec-h"><span class="key">K</span><h2>패키지 관리</h2><span class="cnt">2 items</span></div>
+  <p class="sec-note">Ubuntu/Debian 계열은 <code>apt</code>를 씁니다. 다른 배포판·OS는 도구만 다를 뿐 개념은 같습니다.</p>
+
+  <div class="fn" data-key="apt 패키지설치 설치 업데이트">
+    <div class="fn-h"><span class="rank">#17</span><h3>apt</h3></div>
+    <p>Ubuntu/Debian 계열의 패키지 관리자. 검색·조회는 권한이 필요 없지만, <b>설치·삭제·업데이트는 <code>sudo</code>가 필요</b>합니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig">apt search 키워드      <span class="c"># 패키지 검색 (권한 불필요)</span>
+apt show 패키지         <span class="c"># 상세 정보 (권한 불필요)</span>
+apt list --installed   <span class="c"># 설치된 패키지 목록 (권한 불필요)</span>
+sudo apt update         <span class="tag uf">sudo 필요</span>
+sudo apt install 패키지  <span class="tag uf">sudo 필요</span>
+sudo apt remove 패키지   <span class="tag uf">sudo 필요</span></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">apt list --installed | head -5</pre>
+    <div class="out">Listing...
+adduser/resolute,now 3.153ubuntu1 all [installed,automatic]
+adwaita-icon-theme/resolute,now 50.0-1 all [installed,automatic]
+apparmor/resolute,now 5.0.0~beta1-0ubuntu7 amd64 [installed,upgradable to: 5.0.2-0ubuntu1~26.04.1]
+apport-core-dump-handler/resolute,now 2.34.0-0ubuntu2 all [installed,upgradable to: 2.34.1-0ubuntu0.1]</div>
+    <pre class="has-out">apt show curl | head -4</pre>
+    <div class="out">Package: curl
+Version: 8.18.0-1ubuntu2.4
+Priority: optional
+Section: web</div>
+    <div class="tip">새 패키지를 설치하기 전엔 항상 <code>sudo apt update</code>로 패키지 목록부터 최신화하는 것이 관례입니다 — <code>update</code>는 목록만 새로고침할 뿐 실제 패키지를 올리지 않으며, 패키지 자체를 최신 버전으로 올리는 건 <code>sudo apt upgrade</code>입니다.</div>
+  </div>
+
+  <div class="fn" data-key="yum dnf brew 다른배포판 패키지관리자">
+    <div class="fn-h"><h3>다른 배포판 · OS의 패키지 관리자</h3></div>
+    <p>Ubuntu가 아니라면 아래처럼 도구 이름만 바뀝니다. 이 문서는 WSL Ubuntu 기준이라 이 도구들은 직접 검증하지 않았습니다.</p>
+    <div class="tbl-wrap"><table>
+      <tr><th>도구</th><th>대상 OS/배포판</th><th>설치 명령 예</th></tr>
+      <tr><td>apt</td><td>Ubuntu, Debian</td><td><code>sudo apt install curl</code></td></tr>
+      <tr><td>dnf</td><td>Fedora, RHEL 8+, CentOS Stream</td><td><code>sudo dnf install curl</code></td></tr>
+      <tr><td>yum</td><td>RHEL 7 이하, CentOS 7 이하 (dnf의 전신)</td><td><code>sudo yum install curl</code></td></tr>
+      <tr><td>brew</td><td>macOS (Homebrew)</td><td><code>brew install curl</code></td></tr>
+    </table></div>
+  </div>
+</section>
+
+<!-- ============ L. 시스템 정보 ============ -->
+<section id="l">
+  <div class="sec-h"><span class="key">L</span><h2>시스템 정보</h2><span class="cnt">4 commands</span></div>
+  <p class="sec-note">디스크·메모리·커널 버전처럼 "이 기계가 지금 어떤 상태인가"를 확인하는 도구들.</p>
+
+  <div class="fn" data-key="df 디스크용량 저장공간">
+    <div class="fn-h"><span class="rank">#18</span><h3>df</h3></div>
+    <p>파일시스템 단위의 디스크 사용량을 보여줍니다. "디스크 가득 찼나?"를 확인하는 첫 번째 명령.</p>
+    <h4>시그니처</h4>
+    <div class="sig">df -h [경로]   <span class="c"># -h: 사람이 읽기 쉬운 단위(G, M)</span></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">df -h /</pre>
+    <div class="out">Filesystem      Size  Used Avail Use% Mounted on
+/dev/sdd       1007G  1.7G  954G   1% /</div>
+  </div>
+
+  <div class="fn" data-key="du 디렉터리용량 폴더크기">
+    <div class="fn-h"><h3>du</h3></div>
+    <p>특정 디렉터리·파일이 차지하는 용량을 보여줍니다. <code>df</code>가 전체 디스크라면, <code>du</code>는 "이 폴더가 얼마나 크지"입니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig">du -sh 경로               <span class="c"># -s: 합계만, -h: 읽기 쉬운 단위</span>
+du -h --max-depth=1 경로   <span class="c"># 바로 아래 하위 폴더별로</span></div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">du -sh project
+du -h --max-depth=1 project</pre>
+    <div class="out">24K	project
+
+12K	project/src
+8.0K	project/docs
+24K	project</div>
+  </div>
+
+  <div class="fn" data-key="free 메모리사용량 RAM">
+    <div class="fn-h"><h3>free</h3></div>
+    <p>시스템의 RAM·스왑 사용량을 요약해서 보여줍니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">free -h</pre>
+    <div class="out">               total        used        free      shared  buff/cache   available
+Mem:           7.7Gi       641Mi       6.5Gi       3.4Mi       805Mi       7.1Gi
+Swap:          2.0Gi          0B       2.0Gi</div>
+    <div class="note"><code>available</code>이 진짜 여유 메모리입니다. <code>free</code>가 작아 보여도 대부분 캐시(<code>buff/cache</code>)라서 필요하면 즉시 반환되므로, 메모리가 부족한지는 <code>available</code> 열로 판단하세요.</div>
+  </div>
+
+  <div class="fn" data-key="uname whoami 커널버전 시스템정보 사용자확인">
+    <div class="fn-h"><h3>uname · whoami</h3></div>
+    <p><code>uname</code>은 커널·아키텍처 정보를, <code>whoami</code>는 현재 로그인한 사용자 이름을 보여줍니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig">uname -a   <span class="c"># 전체 정보</span>
+uname -r   <span class="c"># 커널 버전만</span>
+whoami</div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">uname -a
+whoami</pre>
+    <div class="out">Linux DESKTOP-58TV9FU 6.18.33.2-microsoft-standard-WSL2 #1 SMP PREEMPT_DYNAMIC Thu Jun 18 21:54:43 UTC 2026 x86_64 GNU/Linux
+user</div>
+    <div class="tip">출력 중 <code>microsoft-standard-WSL2</code> 부분이 바로 지금 이 문서를 검증한 환경이 WSL2라는 증거입니다. 순수 Linux 서버라면 <code>5.15.0-...-generic</code> 같은 배포판 고유 커널명이 나옵니다.</div>
+  </div>
+</section>
+
+<!-- ============ M. 환경변수와 기타 ============ -->
+<section id="m">
+  <div class="sec-h"><span class="key">M</span><h2>환경변수와 기타</h2><span class="cnt">5 commands</span></div>
+  <p class="sec-note">셸 자체를 다루는 명령어 모음.</p>
+
+  <div class="fn" data-key="echo 출력 변수출력">
+    <div class="fn-h"><span class="rank">#22</span><h3>echo</h3></div>
+    <p>문자열이나 변수 값을 화면에 출력합니다. 디버깅·스크립트에서 값 확인용으로 가장 자주 쓰입니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">echo "Hello, WSL!"
+echo $HOME</pre>
+    <div class="out">Hello, WSL!
+/home/user</div>
+  </div>
+
+  <div class="fn" data-key="export 환경변수 환경변수설정">
+    <div class="fn-h"><span class="rank">#23</span><h3>export</h3></div>
+    <p>셸 변수를 <b>환경변수</b>로 승격시켜, 이 셸에서 실행하는 모든 <b>자식 프로세스</b>가 그 값을 물려받게 합니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig">export 변수명=값</div>
+    <h4>예시 코드</h4>
+    <pre class="has-out">export MY_NAME="claude"
+echo $MY_NAME
+bash -c 'echo child sees: $MY_NAME'   <span class="c"># 자식 프로세스에서도 보임</span></pre>
+    <div class="out">claude
+child sees: claude</div>
+    <div class="warn"><code>export</code> 없이 <code>MY_NAME="claude"</code>만 하면 <b>현재 셸에서만</b> 보이고 자식 프로세스(스크립트, 하위 명령)에는 전달되지 않습니다. 매번 새 터미널에서도 유지하려면 <code>~/.bashrc</code>에 <code>export</code> 줄을 추가하세요.</div>
+  </div>
+
+  <div class="fn" data-key="alias 별칭 단축명령">
+    <div class="fn-h"><span class="rank">#24</span><h3>alias</h3></div>
+    <p>자주 쓰는 긴 명령어에 짧은 이름을 붙입니다.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">alias ll='ls -la'
+alias</pre>
+    <div class="out">alias ll='ls -la'</div>
+    <div class="tip">터미널을 새로 열어도 유지하려면 <code>~/.bashrc</code>에 <code>alias ll='ls -la'</code> 줄을 추가하고 <code>source ~/.bashrc</code>로 반영하세요.</div>
+  </div>
+
+  <div class="fn" data-key="history 명령어기록 이전명령">
+    <div class="fn-h"><span class="rank">#25</span><h3>history</h3></div>
+    <p>지금까지 입력한 명령어 목록을 보여줍니다. <code>!번호</code>로 재실행하거나, <kbd>Ctrl</kbd>+<kbd>R</kbd>로 역방향 검색할 수 있습니다.</p>
+    <h4>시그니처</h4>
+    <div class="sig">history       <span class="c"># 전체 기록</span>
+history | tail -20
+!352           <span class="c"># 352번 명령 재실행</span></div>
+    <div class="note">이 문서의 예시는 스크립트로 일괄 실행해서 검증했기 때문에 대화형 셸의 <code>history</code>에는 기록이 남지 않습니다. 직접 터미널에 명령어 몇 개를 입력한 뒤 <code>history</code>를 실행해서 확인해보세요.</div>
+  </div>
+
+  <div class="fn" data-key="man 매뉴얼 도움말">
+    <div class="fn-h"><span class="rank">#25</span><h3>man</h3></div>
+    <p>명령어의 공식 매뉴얼을 보여줍니다. 옵션이 기억나지 않을 때 가장 먼저 찾아야 할 곳.</p>
+    <h4>예시 코드</h4>
+    <pre class="has-out">man ls | head -6</pre>
+    <div class="out">LS(1)                    General Commands Manual                    LS(1)
+
+NAME
+       ls - List directory contents.
+
+SYNOPSIS
+       ls [--help] [--format] [-C] [-l|--long] ...</div>
+    <div class="tip">화면 가득 찬 매뉴얼 안에서는 <code>/검색어</code>로 찾고 <code>n</code>으로 다음 결과, <code>q</code>로 종료합니다. 명령어가 아니라 특정 시스템 콜·설정 파일의 매뉴얼을 볼 때는 <code>man 5 crontab</code>처럼 섹션 번호를 붙이기도 합니다.</div>
+  </div>
+</section>
+
+<!-- ============ Z. 전체 색인 ============ -->
+<section id="z">
+  <div class="sec-h"><span class="key">Z</span><h2>전체 색인</h2></div>
+  <p class="sec-note">이 문서에 담긴 모든 명령어를 카테고리별로 훑어볼 수 있는 표입니다.</p>
+  <div class="tbl-wrap"><table>
+    <tr><th>카테고리</th><th>명령어</th></tr>
+    <tr><td>위치와 탐색</td><td><code>pwd</code> <code>cd</code> <code>ls</code></td></tr>
+    <tr><td>파일과 폴더 조작</td><td><code>mkdir</code> <code>touch</code> <code>cp</code> <code>mv</code> <code>rm</code> <code>rmdir</code></td></tr>
+    <tr><td>내용 보기와 편집</td><td><code>cat</code> <code>less</code> <code>more</code> <code>head</code> <code>tail</code> <code>nano</code> <code>vim</code></td></tr>
+    <tr><td>검색</td><td><code>find</code> <code>grep</code> <code>which</code></td></tr>
+    <tr><td>텍스트 가공</td><td><code>sed</code> <code>awk</code> <code>cut</code> <code>sort</code> <code>uniq</code> <code>wc</code> <code>tr</code></td></tr>
+    <tr><td>파이프와 리다이렉션</td><td><code>|</code> <code>&gt;</code> <code>&gt;&gt;</code> <code>&lt;</code> <code>2&gt;</code></td></tr>
+    <tr><td>권한과 소유권</td><td><code>chmod</code> <code>chown</code> <code>ls -l</code></td></tr>
+    <tr><td>프로세스 관리</td><td><code>ps</code> <code>top</code> <code>kill</code> <code>jobs</code> <code>bg</code> <code>fg</code> <code>&amp;</code></td></tr>
+    <tr><td>네트워크</td><td><code>ping</code> <code>curl</code> <code>wget</code> <code>ssh</code> <code>scp</code></td></tr>
+    <tr><td>압축과 아카이브</td><td><code>tar</code> <code>gzip</code> <code>gunzip</code></td></tr>
+    <tr><td>패키지 관리</td><td><code>apt</code> (참고: <code>yum</code> <code>dnf</code> <code>brew</code>)</td></tr>
+    <tr><td>시스템 정보</td><td><code>df</code> <code>du</code> <code>free</code> <code>uname</code> <code>whoami</code></td></tr>
+    <tr><td>환경변수와 기타</td><td><code>echo</code> <code>export</code> <code>alias</code> <code>history</code> <code>man</code></td></tr>
+  </table></div>
+</section>
+
+</main>
+</div>
+
+<script src="reference.js"></script>
+</body>
+</html>
